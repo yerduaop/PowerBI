@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bonnes Pratiques Projet Power BI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --info: #8e44ad;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #ecf0f1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        header p {
+            text-align: center;
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .nav-menu {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
+        
+        .nav-menu ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .nav-menu a {
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+        
+        .nav-menu a:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .section {
+            background: white;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .section h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        .section h3 {
+            color: var(--secondary);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .phase-card {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .phase-card h4 {
+            color: var(--info);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .best-practice {
+            background: #e8f5e9;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--success);
+        }
+        
+        .best-practice h5 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .best-practice h5:before {
+            content: "✓";
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .anti-pattern {
+            background: #ffebee;
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--accent);
+        }
+        
+        .anti-pattern h5 {
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .anti-pattern h5:before {
+            content: "✗";
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .code-block .comment {
+            color: #6c757d;
+        }
+        
+        .code-block .keyword {
+            color: #f92672;
+        }
+        
+        .code-block .function {
+            color: #66d9ef;
+        }
+        
+        .code-block .string {
+            color: #a6e22e;
+        }
+        
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid var(--warning);
+            padding: 1.2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .tip-box strong {
+            color: var(--warning);
+        }
+        
+        .checklist {
+            background: #f3e5f5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        
+        .checklist h4 {
+            color: var(--info);
+            margin-bottom: 1rem;
+        }
+        
+        .checklist ul {
+            list-style: none;
+        }
+        
+        .checklist li {
+            padding: 0.6rem 0;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .checklist li:before {
+            content: "☑";
+            position: absolute;
+            left: 0;
+            color: var(--info);
+            font-size: 1.2rem;
+        }
+        
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .comparison-card {
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        
+        .good-card {
+            background: #e8f5e9;
+            border: 2px solid var(--success);
+        }
+        
+        .bad-card {
+            background: #ffebee;
+            border: 2px solid var(--accent);
+        }
+        
+        .comparison-card h5 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .good-card h5 {
+            color: var(--success);
+        }
+        
+        .bad-card h5 {
+            color: var(--accent);
+        }
+        
+        .tool-badge {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+        }
+        
+        .priority-high {
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .priority-medium {
+            background: var(--warning);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        .priority-low {
+            background: var(--success);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        th, td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+        }
+        
+        tr:hover {
+            background: #f5f5f5;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-menu ul {
+                flex-direction: column;
+            }
+            
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 1.5rem;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🏗️ Bonnes Pratiques Projet Power BI</h1>
+            <p>Guide complet du développement à la production</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <a href="index.html" class="back-link">← Retour à l'accueil</a>
+        
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#planning">Planification</a></li>
+                <li><a href="#data-model">Modélisation</a></li>
+                <li><a href="#dax">DAX</a></li>
+                <li><a href="#performance">Performance</a></li>
+                <li><a href="#security">Sécurité</a></li>
+                <li><a href="#deployment">Déploiement</a></li>
+                <li><a href="#governance">Gouvernance</a></li>
+                <li><a href="#maintenance">Maintenance</a></li>
+            </ul>
+        </nav>
+        
+        <!-- PHASE 1: PLANNING -->
+        <section id="planning" class="section">
+            <h2>📋 Phase 1: Planification & Cadrage</h2>
+            
+            <div class="phase-card">
+                <h4>1.1 Définir les Objectifs Business</h4>
+                
+                <div class="best-practice">
+                    <h5>Questions à poser AVANT de commencer</h5>
+                    <ul>
+                        <li>Quelles décisions ce rapport doit-il permettre de prendre ?</li>
+                        <li>Qui sont les utilisateurs finaux ? (Exec, managers, analystes)</li>
+                        <li>Quelle est la fréquence de mise à jour nécessaire ?</li>
+                        <li>Quelles sont les 3-5 métriques les plus critiques ?</li>
+                        <li>Existe-t-il des rapports legacy à remplacer ?</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Pro Tip:</strong> Créer un document de cadrage (1-2 pages) validé par les stakeholders AVANT tout développement. Cela évite 80% des allers-retours futurs.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>1.2 Inventaire des Sources de Données</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Aspect</th>
+                            <th>Questions à Répondre</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Sources</strong></td>
+                            <td>SQL Server, Excel, SharePoint, API, Cloud?</td>
+                            <td>Choix de connexion (Import/DirectQuery)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Volumétrie</strong></td>
+                            <td>Combien de lignes? Historique?</td>
+                            <td>Stratégie de refresh et performance</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Qualité</strong></td>
+                            <td>Données propres? Doublons? Nulls?</td>
+                            <td>Nettoyage Power Query nécessaire</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Sécurité</strong></td>
+                            <td>Données sensibles? RLS nécessaire?</td>
+                            <td>Architecture de sécurité</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Accès</strong></td>
+                            <td>Credentials? Gateway on-premise?</td>
+                            <td>Infrastructure technique</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="phase-card">
+                <h4>1.3 Architecture de Solution</h4>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card good-card">
+                        <h5>✓ Import Mode</h5>
+                        <ul>
+                            <li>Performance ultra-rapide</li>
+                            <li>Toutes fonctionnalités DAX</li>
+                            <li>Idéal pour < 1 million lignes</li>
+                            <li>Refresh programmé (8x/jour max)</li>
+                        </ul>
+                        <p><strong>Utiliser quand:</strong> Performance critique, volumétrie raisonnable</p>
+                    </div>
+                    
+                    <div class="comparison-card good-card">
+                        <h5>✓ DirectQuery</h5>
+                        <ul>
+                            <li>Données toujours à jour</li>
+                            <li>Pas de limite de volume</li>
+                            <li>RLS au niveau source</li>
+                            <li>Dépend de performance source</li>
+                        </ul>
+                        <p><strong>Utiliser quand:</strong> Données temps réel, volumes énormes, sécurité source</p>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>⚡ Hybrid Mode:</strong> Possibilité de combiner Import + DirectQuery dans le même modèle (mode composite). Importer les petites tables de référence, DirectQuery pour les faits volumineux.
+                </div>
+            </div>
+        </section>
+        
+        <!-- PHASE 2: DATA MODELING -->
+        <section id="data-model" class="section">
+            <h2>🗄️ Phase 2: Modélisation des Données</h2>
+            
+            <div class="phase-card">
+                <h4>2.1 Star Schema - Le Standard</h4>
+                
+                <div class="best-practice">
+                    <h5>Architecture Star Schema</h5>
+                    <p>Organiser en <strong>Tables de Faits</strong> (Facts) et <strong>Tables de Dimensions</strong> (Dimensions)</p>
+                    
+                    <ul style="margin-top: 1rem;">
+                        <li><strong>Tables de Faits:</strong> Contiennent les mesures numériques et clés étrangères
+                            <br>Ex: Sales (OrderDate, CustomerKey, ProductKey, Quantity, Amount)</li>
+                        <li><strong>Tables de Dimensions:</strong> Contiennent les attributs descriptifs
+                            <br>Ex: DimCustomer (CustomerKey, Name, City, Country, Segment)</li>
+                    </ul>
+                </div>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card bad-card">
+                        <h5>✗ À ÉVITER: Flat Tables</h5>
+                        <div class="code-block">
+Sales Table (dénormalisée):
+OrderID, Date, CustomerName, 
+CustomerCity, CustomerCountry,
+ProductName, Category, Quantity,
+Price, Amount
+                        </div>
+                        <p>Problèmes: Redondance, taille énorme, lenteur, difficile à maintenir</p>
+                    </div>
+                    
+                    <div class="comparison-card good-card">
+                        <h5>✓ CORRECT: Star Schema</h5>
+                        <div class="code-block">
+FactSales:
+- OrderID, DateKey, CustomerKey,
+  ProductKey, Quantity, Amount
+
+DimDate: DateKey, Date, Year, Month...
+DimCustomer: CustomerKey, Name, City...
+DimProduct: ProductKey, Name, Category...
+                        </div>
+                        <p>Avantages: Performant, maintenable, extensible</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>2.2 Relations - Best Practices</h4>
+                
+                <div class="best-practice">
+                    <h5>Types de Relations</h5>
+                    <ul>
+                        <li><strong>One-to-Many (1:*)</strong> - STANDARD: Dimension → Fact
+                            <br>Ex: DimProduct (1) → FactSales (*)</li>
+                        <li><strong>Many-to-Many (*:*)</strong> - À éviter si possible, utiliser table de liaison</li>
+                        <li><strong>One-to-One (1:1)</strong> - Rare, souvent indique qu'il faut fusionner les tables</li>
+                    </ul>
+                </div>
+                
+                <div class="best-practice">
+                    <h5>Direction de Filtrage</h5>
+                    <ul>
+                        <li><strong>Single:</strong> Standard, Dimension filtre Fact (1 → *)</li>
+                        <li><strong>Both:</strong> Éviter sauf cas spécifiques (risque d'ambiguïté)</li>
+                        <li><strong>Règle d'or:</strong> Toujours de Dimension vers Fact, jamais l'inverse</li>
+                    </ul>
+                </div>
+                
+                <div class="anti-pattern">
+                    <h5>Relations circulaires</h5>
+                    <p>Power BI n'accepte PAS les relations circulaires. Si vous en avez, revoir le modèle ou utiliser des mesures DAX avec CALCULATE et USERELATIONSHIP.</p>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>2.3 Table de Dates - OBLIGATOIRE</h4>
+                
+                <div class="best-practice">
+                    <h5>Créer une DimDate complète</h5>
+                    <p>Ne JAMAIS utiliser les champs de date directement depuis les tables de faits.</p>
+                </div>
+                
+                <div class="code-block">
+<span class="comment">// Fonction DAX pour créer DimDate</span>
+DimDate = 
+<span class="keyword">ADDCOLUMNS</span>(
+    <span class="keyword">CALENDAR</span>(<span class="keyword">DATE</span>(2020,1,1), <span class="keyword">DATE</span>(2030,12,31)),
+    <span class="string">"Year"</span>, <span class="keyword">YEAR</span>([Date]),
+    <span class="string">"Quarter"</span>, <span class="string">"Q"</span> & <span class="keyword">FORMAT</span>([Date], <span class="string">"Q"</span>),
+    <span class="string">"Month"</span>, <span class="keyword">FORMAT</span>([Date], <span class="string">"MMMM"</span>),
+    <span class="string">"MonthNum"</span>, <span class="keyword">MONTH</span>([Date]),
+    <span class="string">"Week"</span>, <span class="keyword">WEEKNUM</span>([Date]),
+    <span class="string">"DayOfWeek"</span>, <span class="keyword">FORMAT</span>([Date], <span class="string">"dddd"</span>),
+    <span class="string">"DayOfWeekNum"</span>, <span class="keyword">WEEKDAY</span>([Date]),
+    <span class="string">"YearMonth"</span>, <span class="keyword">FORMAT</span>([Date], <span class="string">"YYYY-MM"</span>),
+    <span class="string">"IsWeekend"</span>, <span class="keyword">IF</span>(<span class="keyword">WEEKDAY</span>([Date]) <span class="keyword">IN</span> {1,7}, <span class="keyword">TRUE</span>(), <span class="keyword">FALSE</span>())
+)
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Marquer comme Table de Dates:</strong> Table > Marquer comme table de dates dans Power BI. Cela active les fonctionnalités Time Intelligence.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>2.4 Naming Conventions</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Élément</th>
+                            <th>Convention</th>
+                            <th>Exemple</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tables de Faits</td>
+                            <td>Fact[Nom] ou [Nom] simple</td>
+                            <td>FactSales, Sales</td>
+                        </tr>
+                        <tr>
+                            <td>Tables de Dimensions</td>
+                            <td>Dim[Nom]</td>
+                            <td>DimProduct, DimCustomer</td>
+                        </tr>
+                        <tr>
+                            <td>Mesures</td>
+                            <td>PascalCase descriptif</td>
+                            <td>TotalRevenue, YoYGrowth%</td>
+                        </tr>
+                        <tr>
+                            <td>Colonnes calculées</td>
+                            <td>PascalCase, préfixe calc</td>
+                            <td>calcFullName, calcMargin</td>
+                        </tr>
+                        <tr>
+                            <td>Paramètres</td>
+                            <td>Préfixe p_</td>
+                            <td>p_TopN, p_DateRange</td>
+                        </tr>
+                        <tr>
+                            <td>Tables cachées</td>
+                            <td>Préfixe _ ou suffixe (Hidden)</td>
+                            <td>_Measures, Parameters(Hidden)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        
+        <!-- PHASE 3: DAX -->
+        <section id="dax" class="section">
+            <h2>📐 Phase 3: DAX Best Practices</h2>
+            
+            <div class="phase-card">
+                <h4>3.1 Mesures vs Colonnes Calculées</h4>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card good-card">
+                        <h5>✓ Mesures (Measures)</h5>
+                        <ul>
+                            <li>Calculées à la volée (query time)</li>
+                            <li>Consomment peu de mémoire</li>
+                            <li>Réagissent aux filtres</li>
+                            <li>Agrégations dynamiques</li>
+                        </ul>
+                        <p><strong>Utiliser pour:</strong> Sommes, moyennes, comptages, ratios, toute agrégation</p>
+                    </div>
+                    
+                    <div class="comparison-card bad-card">
+                        <h5>⚠️ Colonnes Calculées</h5>
+                        <ul>
+                            <li>Calculées au refresh</li>
+                            <li>Stockées en mémoire</li>
+                            <li>Calcul ligne par ligne</li>
+                            <li>Augmentent la taille</li>
+                        </ul>
+                        <p><strong>Utiliser UNIQUEMENT pour:</strong> Concaténations, classifications, catégorisation row-level</p>
+                    </div>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>🎯 Règle d'or:</strong> 90% du temps, utiliser des Mesures. Colonnes calculées seulement si vraiment nécessaire.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>3.2 Mesures Essentielles - Template</h4>
+                
+                <div class="code-block">
+<span class="comment">// 1. MESURES DE BASE</span>
+TotalRevenue = <span class="keyword">SUM</span>(Sales[Amount])
+
+TotalQuantity = <span class="keyword">SUM</span>(Sales[Quantity])
+
+OrderCount = <span class="keyword">DISTINCTCOUNT</span>(Sales[OrderID])
+
+<span class="comment">// 2. MESURES AVEC FILTRES</span>
+RevenueThisYear = 
+<span class="keyword">CALCULATE</span>(
+    [TotalRevenue],
+    <span class="keyword">YEAR</span>(DimDate[Date]) = <span class="keyword">YEAR</span>(<span class="keyword">TODAY</span>())
+)
+
+<span class="comment">// 3. TIME INTELLIGENCE</span>
+RevenueLastYear = 
+<span class="keyword">CALCULATE</span>(
+    [TotalRevenue],
+    <span class="keyword">SAMEPERIODLASTYEAR</span>(DimDate[Date])
+)
+
+RevenueYoY% = 
+<span class="keyword">DIVIDE</span>(
+    [TotalRevenue] - [RevenueLastYear],
+    [RevenueLastYear],
+    0
+)
+
+<span class="comment">// 4. MESURES CUMUL</span>
+RevenueYTD = 
+<span class="keyword">TOTALYTD</span>(
+    [TotalRevenue],
+    DimDate[Date]
+)
+
+<span class="comment">// 5. RATIOS & MOYENNES</span>
+AvgOrderValue = 
+<span class="keyword">DIVIDE</span>(
+    [TotalRevenue],
+    [OrderCount],
+    0
+)
+
+ConversionRate% = 
+<span class="keyword">DIVIDE</span>(
+    [OrderCount],
+    <span class="keyword">DISTINCTCOUNT</span>(Sessions[SessionID]),
+    0
+)
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>3.3 DAX Anti-Patterns à Éviter</h4>
+                
+                <div class="anti-pattern">
+                    <h5>Ne JAMAIS diviser par zéro sans protection</h5>
+                    <div class="comparison-grid">
+                        <div class="bad-card">
+                            <strong>✗ MAL:</strong>
+                            <div class="code-block">Margin% = [Profit] / [Revenue]</div>
+                            <p>Erreur si Revenue = 0</p>
+                        </div>
+                        <div class="good-card">
+                            <strong>✓ BIEN:</strong>
+                            <div class="code-block">Margin% = DIVIDE([Profit], [Revenue], 0)</div>
+                            <p>Retourne 0 si Revenue = 0</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="anti-pattern">
+                    <h5>Éviter les colonnes calculées pour agrégations</h5>
+                    <div class="comparison-grid">
+                        <div class="bad-card">
+                            <strong>✗ MAL:</strong>
+                            <div class="code-block">
+<span class="comment">// Colonne calculée</span>
+LineTotal = Sales[Quantity] * Sales[Price]
+                            </div>
+                            <p>Consomme mémoire</p>
+                        </div>
+                        <div class="good-card">
+                            <strong>✓ BIEN:</strong>
+                            <div class="code-block">
+<span class="comment">// Mesure</span>
+LineTotal = SUMX(Sales, Sales[Quantity] * Sales[Price])
+                            </div>
+                            <p>Calculé à la demande</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="anti-pattern">
+                    <h5>Ne pas imbriquer trop de CALCULATE</h5>
+                    <div class="code-block">
+<span class="comment">// ✗ Difficile à lire et maintenir</span>
+Measure = 
+<span class="keyword">CALCULATE</span>(
+    <span class="keyword">CALCULATE</span>(
+        <span class="keyword">CALCULATE</span>(
+            [Base],
+            Filter1
+        ),
+        Filter2
+    ),
+    Filter3
+)
+
+<span class="comment">// ✓ Mieux: combiner les filtres</span>
+Measure = 
+<span class="keyword">CALCULATE</span>(
+    [Base],
+    Filter1,
+    Filter2,
+    Filter3
+)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>3.4 Organisation des Mesures</h4>
+                
+                <div class="best-practice">
+                    <h5>Table de Mesures Dédiée</h5>
+                    <p>Créer une table vide "_Measures" pour organiser toutes les mesures</p>
+                    
+                    <div class="code-block">
+<span class="comment">// Power Query: créer table vide</span>
+_Measures = <span class="keyword">DATATABLE</span>(<span class="string">"Placeholder"</span>, <span class="keyword">STRING</span>, {})
+                    </div>
+                    
+                    <p style="margin-top: 1rem;">Puis créer des Display Folders:</p>
+                    <ul style="margin-left: 2rem;">
+                        <li>📊 Sales Metrics</li>
+                        <li>👥 Customer Metrics</li>
+                        <li>📈 Growth & Trends</li>
+                        <li>💰 Financial Metrics</li>
+                        <li>🔧 Utility Measures</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PHASE 4: PERFORMANCE -->
+        <section id="performance" class="section">
+            <h2>⚡ Phase 4: Optimisation Performance</h2>
+            
+            <div class="phase-card">
+                <h4>4.1 Réduction de la Taille du Modèle</h4>
+                
+                <div class="checklist">
+                    <h4>Checklist d'Optimisation</h4>
+                    <ul>
+                        <li>Supprimer colonnes inutilisées dans Power Query</li>
+                        <li>Désactiver auto-date/time hierarchy (Options > Data Load)</li>
+                        <li>Utiliser types de données corrects (Int au lieu de Text si possible)</li>
+                        <li>Filtrer les lignes historiques non nécessaires</li>
+                        <li>Éviter colonnes avec haute cardinalité (ex: descriptions longues)</li>
+                        <li>Utiliser des mesures au lieu de colonnes calculées</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>🎯 Objectif:</strong> Un modèle < 1 GB est idéal. Au-delà de 3 GB, envisager DirectQuery ou agrégations.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>4.2 DAX Performance</h4>
+                
+                <div class="best-practice">
+                    <h5>Utiliser Variables</h5>
+                    <div class="comparison-grid">
+                        <div class="bad-card">
+                            <strong>✗ Sans variables (calcul répété):</strong>
+                            <div class="code-block">
+Margin% = 
+<span class="keyword">DIVIDE</span>(
+    <span class="keyword">SUM</span>(Sales[Revenue]) - <span class="keyword">SUM</span>(Sales[Cost]),
+    <span class="keyword">SUM</span>(Sales[Revenue])
+)
+                            </div>
+                        </div>
+                        <div class="good-card">
+                            <strong>✓ Avec variables (calcul une fois):</strong>
+                            <div class="code-block">
+Margin% = 
+<span class="keyword">VAR</span> _Revenue = <span class="keyword">SUM</span>(Sales[Revenue])
+<span class="keyword">VAR</span> _Cost = <span class="keyword">SUM</span>(Sales[Cost])
+<span class="keyword">RETURN</span>
+    <span class="keyword">DIVIDE</span>(_Revenue - _Cost, _Revenue)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="best-practice">
+                    <h5>Préférer SUMMARIZE à ADDCOLUMNS pour agrégations</h5>
+                    <div class="code-block">
+<span class="comment">// Plus performant pour grandes tables</span>
+Summary = 
+<span class="keyword">SUMMARIZE</span>(
+    Sales,
+    DimProduct[Category],
+    <span class="string">"TotalRevenue"</span>, <span class="keyword">SUM</span>(Sales[Amount])
+)
+                    </div>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>4.3 Visuels Performance</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Visuel</th>
+                            <th>Performance</th>
+                            <th>Recommandation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Card, KPI</td>
+                            <td>🟢 Excellent</td>
+                            <td>Toujours OK</td>
+                        </tr>
+                        <tr>
+                            <td>Bar, Column, Line</td>
+                            <td>🟢 Excellent</td>
+                            <td>Limiter à 100 catégories</td>
+                        </tr>
+                        <tr>
+                            <td>Table, Matrix</td>
+                            <td>🟡 Moyen</td>
+                            <td>Limiter lignes affichées (Top N)</td>
+                        </tr>
+                        <tr>
+                            <td>Scatter Plot</td>
+                            <td>🟡 Moyen</td>
+                            <td>< 10K points</td>
+                        </tr>
+                        <tr>
+                            <td>Map</td>
+                            <td>🔴 Lent</td>
+                            <td>< 5K points, éviter si possible</td>
+                        </tr>
+                        <tr>
+                            <td>Custom Visuals</td>
+                            <td>🔴 Variable</td>
+                            <td>Tester performance avant prod</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="tip-box">
+                    <strong>⚡ Règle:</strong> Maximum 10-15 visuels par page. Au-delà, créer pages multiples ou utiliser bookmarks pour vues alternées.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>4.4 Outils de Diagnostic</h4>
+                
+                <div class="best-practice">
+                    <h5>Performance Analyzer</h5>
+                    <p>View > Performance Analyzer pour identifier visuels lents</p>
+                    <ul style="margin-left: 2rem;">
+                        <li>DAX Query time</li>
+                        <li>Visual Display time</li>
+                        <li>Other time</li>
+                    </ul>
+                </div>
+                
+                <div class="best-practice">
+                    <h5>DAX Studio</h5>
+                    <span class="tool-badge">Outil Externe</span>
+                    <p>Analyse avancée des requêtes DAX et du modèle</p>
+                    <ul style="margin-left: 2rem;">
+                        <li>Server Timings</li>
+                        <li>Query Plans</li>
+                        <li>VertiPaq Analyzer (taille tables/colonnes)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Continue with other sections... -->
+        <section id="security" class="section">
+            <h2>🔒 Phase 5: Sécurité & RLS</h2>
+            
+            <div class="phase-card">
+                <h4>5.1 Row-Level Security (RLS)</h4>
+                
+                <div class="best-practice">
+                    <h5>Mise en place RLS</h5>
+                    <p><strong>Étapes:</strong></p>
+                    <ol style="margin-left: 2rem;">
+                        <li>Créer table de sécurité (Users, Regions, etc.)</li>
+                        <li>Modeling > Manage Roles</li>
+                        <li>Créer rôles avec filtres DAX</li>
+                        <li>Tester avec "View as"</li>
+                        <li>Publier et assigner utilisateurs dans Service</li>
+                    </ol>
+                </div>
+                
+                <div class="code-block">
+<span class="comment">// Exemple RLS: Filtrer par région</span>
+<span class="comment">// Dans table DimRegion:</span>
+[Region] = <span class="keyword">USERNAME</span>()
+
+<span class="comment">// Ou avec table de mapping:</span>
+<span class="comment">// Table SecurityUsers: Email, Region</span>
+[Region] <span class="keyword">IN</span> 
+    <span class="keyword">CALCULATETABLE</span>(
+        <span class="keyword">VALUES</span>(SecurityUsers[Region]),
+        SecurityUsers[Email] = <span class="keyword">USERPRINCIPALNAME</span>()
+    )
+                </div>
+                
+                <div class="tip-box">
+                    <strong>⚠️ Important:</strong> RLS ne fonctionne PAS dans Power BI Desktop. Toujours tester avec "View as Roles" avant publication.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>5.2 Bonnes Pratiques Sécurité</h4>
+                
+                <div class="checklist">
+                    <ul>
+                        <li>Masquer colonnes sensibles (ex: emails, salaires) dans le modèle</li>
+                        <li>Ne pas exposer credentials dans Power Query</li>
+                        <li>Utiliser Gateway pour sources on-premise</li>
+                        <li>Activer MFA pour comptes Power BI Service</li>
+                        <li>Limiter permissions "Build" aux développeurs uniquement</li>
+                        <li>Éviter "Publish to Web" pour données sensibles</li>
+                        <li>Auditer accès régulièrement (Admin Portal > Usage Metrics)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section id="deployment" class="section">
+            <h2>🚀 Phase 6: Déploiement</h2>
+            
+            <div class="phase-card">
+                <h4>6.1 Environnements DEV/TEST/PROD</h4>
+                
+                <div class="best-practice">
+                    <h5>Stratégie Workspaces</h5>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Environnement</th>
+                                <th>Workspace</th>
+                                <th>Accès</th>
+                                <th>Usage</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>DEV</strong></td>
+                                <td>MyProject - DEV</td>
+                                <td>Développeurs (Admin/Member)</td>
+                                <td>Développement actif, tests</td>
+                            </tr>
+                            <tr>
+                                <td><strong>TEST</strong></td>
+                                <td>MyProject - TEST</td>
+                                <td>Dev + Business (Viewer)</td>
+                                <td>Validation UAT</td>
+                            </tr>
+                            <tr>
+                                <td><strong>PROD</strong></td>
+                                <td>MyProject - PROD</td>
+                                <td>Users (Viewer), Dev (Admin)</td>
+                                <td>Production</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Deployment Pipelines:</strong> Power BI Premium offre Deployment Pipelines pour automatiser DEV → TEST → PROD avec gestion des paramètres.
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>6.2 Paramètres & Configuration</h4>
+                
+                <div class="best-practice">
+                    <h5>Paramètres Power Query</h5>
+                    <p>Pour gérer différentes sources entre environnements:</p>
+                    
+                    <div class="code-block">
+<span class="comment">// Créer paramètre</span>
+ServerName = <span class="string">"sql-prod.company.com"</span> <span class="keyword">meta</span> [IsParameterQuery=<span class="keyword">true</span>]
+
+<span class="comment">// Utiliser dans source</span>
+Source = Sql.Database(ServerName, <span class="string">"DatabaseName"</span>)
+                    </div>
+                    
+                    <p style="margin-top: 1rem;">Puis modifier paramètres dans Power BI Service après publication pour pointer vers bonne source.</p>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>6.3 Refresh Schedule</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type de Données</th>
+                            <th>Fréquence Recommandée</th>
+                            <th>Notes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Transactions quotidiennes</td>
+                            <td>1-2x / jour</td>
+                            <td>Matin avant arrivée users</td>
+                        </tr>
+                        <tr>
+                            <td>Données temps réel</td>
+                            <td>DirectQuery ou 8x/jour (Premium)</td>
+                            <td>Considérer coût performance</td>
+                        </tr>
+                        <tr>
+                            <td>Master data (produits, clients)</td>
+                            <td>1x / semaine</td>
+                            <td>Change peu fréquemment</td>
+                        </tr>
+                        <tr>
+                            <td>Données historiques</td>
+                            <td>1x / mois</td>
+                            <td>Refresh incrémentiel si possible</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="tip-box">
+                    <strong>⚡ Incremental Refresh:</strong> Pour tables volumineuses, activer refresh incrémentiel (Premium) pour ne rafraîchir que nouvelles données.
+                </div>
+            </div>
+        </section>
+        
+        <section id="governance" class="section">
+            <h2>📋 Phase 7: Gouvernance</h2>
+            
+            <div class="phase-card">
+                <h4>7.1 Documentation</h4>
+                
+                <div class="checklist">
+                    <h4>Documents à Maintenir</h4>
+                    <ul>
+                        <li><strong>Data Dictionary:</strong> Description de chaque table, colonne, mesure</li>
+                        <li><strong>Architecture Diagram:</strong> Schéma du modèle de données</li>
+                        <li><strong>User Guide:</strong> Comment utiliser le rapport (pour users)</li>
+                        <li><strong>Refresh Log:</strong> Historique des refresh et incidents</li>
+                        <li><strong>Change Log:</strong> Versions et modifications</li>
+                        <li><strong>Access Matrix:</strong> Qui a accès à quoi</li>
+                    </ul>
+                </div>
+                
+                <div class="best-practice">
+                    <h5>Documentation dans Power BI</h5>
+                    <ul style="margin-left: 2rem;">
+                        <li>Descriptions sur tables et mesures (Properties)</li>
+                        <li>Page "About" dans le rapport avec infos clés</li>
+                        <li>Tooltips explicatifs sur visuels complexes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>7.2 Version Control</h4>
+                
+                <div class="best-practice">
+                    <h5>Git pour Power BI</h5>
+                    <span class="tool-badge">Premium Feature</span>
+                    <p>Power BI supporte désormais Git integration (en preview)</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Alternative classique:</strong></p>
+                    <ul style="margin-left: 2rem;">
+                        <li>Sauvegarder .pbix avec version dans nom (MyReport_v1.2.pbix)</li>
+                        <li>Stocker sur SharePoint/OneDrive avec historique versions</li>
+                        <li>Exporter définition modèle avec Tabular Editor + Git</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>7.3 Standards & Templates</h4>
+                
+                <div class="best-practice">
+                    <h5>Créer Template Organisation</h5>
+                    <p>Développer .pbit (Power BI Template) avec:</p>
+                    <ul style="margin-left: 2rem;">
+                        <li>Thème corporate (couleurs, fonts)</li>
+                        <li>Structure pages standardisée</li>
+                        <li>Mesures de base pré-créées</li>
+                        <li>DimDate configurée</li>
+                        <li>Best practices appliquées</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-box">
+                    <strong>💡 Template Report:</strong> File > Export > Power BI Template (.pbit) pour créer template réutilisable.
+                </div>
+            </div>
+        </section>
+        
+        <section id="maintenance" class="section">
+            <h2>🔧 Phase 8: Maintenance & Support</h2>
+            
+            <div class="phase-card">
+                <h4>8.1 Monitoring</h4>
+                
+                <div class="checklist">
+                    <h4>À Surveiller Régulièrement</h4>
+                    <ul>
+                        <li><strong>Refresh Success:</strong> Vérifier logs de refresh quotidiens</li>
+                        <li><strong>Performance:</strong> Temps de chargement pages (< 3 sec)</li>
+                        <li><strong>Usage:</strong> Qui utilise? Quelles pages? (Usage Metrics)</li>
+                        <li><strong>Erreurs:</strong> Visuels qui timeout ou échouent</li>
+                        <li><strong>Taille Modèle:</strong> Évolution dans le temps</li>
+                        <li><strong>Coûts:</strong> Premium capacity utilization</li>
+                    </ul>
+                </div>
+                
+                <div class="best-practice">
+                    <h5>Outils de Monitoring</h5>
+                    <ul style="margin-left: 2rem;">
+                        <li><strong>Power BI Admin Portal:</strong> Métriques d'usage globales</li>
+                        <li><strong>Refresh History:</strong> Dans workspace settings</li>
+                        <li><strong>Usage Metrics Report:</strong> Activable par workspace</li>
+                        <li><strong>Premium Metrics App:</strong> Pour capacités Premium</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>8.2 Process de Support</h4>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type d'Issue</th>
+                            <th>Priorité</th>
+                            <th>SLA</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Rapport ne charge pas</td>
+                            <td><span class="priority-high">HAUTE</span></td>
+                            <td>2h</td>
+                            <td>Vérifier refresh, données sources, RLS</td>
+                        </tr>
+                        <tr>
+                            <td>Données incorrectes</td>
+                            <td><span class="priority-high">HAUTE</span></td>
+                            <td>4h</td>
+                            <td>Audit DAX, sources, transformations</td>
+                        </tr>
+                        <tr>
+                            <td>Performance lente</td>
+                            <td><span class="priority-medium">MOYENNE</span></td>
+                            <td>1 jour</td>
+                            <td>Performance Analyzer, optimisation</td>
+                        </tr>
+                        <tr>
+                            <td>Demande nouvelle métrique</td>
+                            <td><span class="priority-low">BASSE</span></td>
+                            <td>1 semaine</td>
+                            <td>Évaluation, développement, test</td>
+                        </tr>
+                        <tr>
+                            <td>Problème accès/permissions</td>
+                            <td><span class="priority-medium">MOYENNE</span></td>
+                            <td>4h</td>
+                            <td>Vérifier workspace roles, RLS</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="phase-card">
+                <h4>8.3 Maintenance Préventive</h4>
+                
+                <div class="checklist">
+                    <h4>Routine Mensuelle</h4>
+                    <ul>
+                        <li>Review performance metrics et optimiser si nécessaire</li>
+                        <li>Vérifier logs de refresh pour patterns d'erreurs</li>
+                        <li>Auditer accès et permissions</li>
+                        <li>Mettre à jour documentation si changements</li>
+                        <li>Nettoyer datasets/rapports obsolètes</li>
+                    </ul>
+                </div>
+                
+                <div class="checklist">
+                    <h4>Routine Trimestrielle</h4>
+                    <ul>
+                        <li>Rencontrer users pour feedback</li>
+                        <li>Évaluer nouvelles features Power BI</li>
+                        <li>Review architecture pour opportunités d'amélioration</li>
+                        <li>Backup .pbix files (versions archivées)</li>
+                        <li>Formation refresh pour nouveaux utilisateurs</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FINAL CHECKLIST -->
+        <section class="section" style="background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%); border-left: 5px solid var(--success);">
+            <h2>✅ Checklist Complète: Projet Power BI</h2>
+            
+            <div class="checklist">
+                <h4>📋 Phase 1: Démarrage</h4>
+                <ul>
+                    <li>Objectifs business définis et validés</li>
+                    <li>Stakeholders identifiés</li>
+                    <li>Sources de données inventoriées</li>
+                    <li>Architecture technique définie (Import/DirectQuery)</li>
+                    <li>Environnements DEV/TEST/PROD créés</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>🗄️ Phase 2: Développement</h4>
+                <ul>
+                    <li>Star schema implémenté</li>
+                    <li>Table DimDate créée et configurée</li>
+                    <li>Relations validées (1:* depuis dimensions)</li>
+                    <li>Mesures principales créées avec variables</li>
+                    <li>Naming conventions appliquées</li>
+                    <li>Colonnes inutilisées supprimées</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>⚡ Phase 3: Optimisation</h4>
+                <ul>
+                    <li>Taille modèle < 1 GB</li>
+                    <li>Performance Analyzer vérifié (< 3 sec/page)</li>
+                    <li>Auto date/time hierarchy désactivé</li>
+                    <li>DAX optimisé avec variables</li>
+                    <li>Visuels limités (< 15 par page)</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>🎨 Phase 4: Design</h4>
+                <ul>
+                    <li>Thème corporate appliqué</li>
+                    <li>Structure hiérarchique (KPIs haut, détails bas)</li>
+                    <li>Conditional formatting sur tables</li>
+                    <li>Titres clairs et descriptifs</li>
+                    <li>Mobile layout configuré</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>🔒 Phase 5: Sécurité</h4>
+                <ul>
+                    <li>RLS configuré et testé ("View as")</li>
+                    <li>Colonnes sensibles masquées</li>
+                    <li>Permissions workspace définies</li>
+                    <li>Credentials sécurisés (Gateway si nécessaire)</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>📋 Phase 6: Documentation</h4>
+                <ul>
+                    <li>Data dictionary complété</li>
+                    <li>Diagramme modèle de données</li>
+                    <li>User guide créé</li>
+                    <li>Page "About" dans le rapport</li>
+                    <li>Descriptions sur mesures clés</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>🚀 Phase 7: Déploiement</h4>
+                <ul>
+                    <li>Tests UAT complétés</li>
+                    <li>Refresh schedule configuré</li>
+                    <li>Paramètres PROD validés</li>
+                    <li>Utilisateurs formés</li>
+                    <li>Process de support documenté</li>
+                </ul>
+            </div>
+            
+            <div class="checklist">
+                <h4>🔧 Phase 8: Post-Déploiement</h4>
+                <ul>
+                    <li>Usage metrics activés</li>
+                    <li>Monitoring refresh quotidien</li>
+                    <li>Feedback users collecté</li>
+                    <li>Routine maintenance établie</li>
+                    <li>Roadmap améliorations définie</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- TOOLS & RESOURCES -->
+        <section class="section">
+            <h2>🛠️ Outils & Ressources</h2>
+            
+            <div class="phase-card">
+                <h4>Outils Essentiels</h4>
+                
+                <div style="margin-top: 1rem;">
+                    <p><span class="tool-badge">DAX Studio</span> - Analyse et optimisation DAX</p>
+                    <p style="margin-left: 2rem; color: #666;">https://daxstudio.org/</p>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <p><span class="tool-badge">Tabular Editor</span> - Édition avancée du modèle</p>
+                    <p style="margin-left: 2rem; color: #666;">https://tabulareditor.com/</p>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <p><span class="tool-badge">Power BI Helper</span> - Productivity tools</p>
+                    <p style="margin-left: 2rem; color: #666;">Extensions de productivité</p>
+                </div>
+                
+                <div style="margin-top: 1rem;">
+                    <p><span class="tool-badge">ALM Toolkit</span> - Comparaison de modèles</p>
+                    <p style="margin-left: 2rem; color: #666;">http://alm-toolkit.com/</p>
+                </div>
+            </div>
+            
+            <div class="phase-card">
+                <h4>Ressources d'Apprentissage</h4>
+                
+                <ul style="margin-left: 2rem;">
+                    <li><strong>Microsoft Learn:</strong> Cours officiels gratuits</li>
+                    <li><strong>SQLBI:</strong> Référence pour DAX (Marco Russo, Alberto Ferrari)</li>
+                    <li><strong>Power BI Community:</strong> Forum officiel</li>
+                    <li><strong>Guy in a Cube:</strong> YouTube channel Microsoft</li>
+                    <li><strong>Enterprise DNA:</strong> Formations avancées</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+</body>
+</html>
