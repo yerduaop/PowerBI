@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & DevOps - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🔄 Git & DevOps pour Power BI</h1>
+            <p class="page-subtitle">Versioning, CI/CD et déploiement automatisé</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Git & DevOps</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-expert">
+            🔴 Niveau Expert • ⏱️ 60 min de lecture
+        </div>
+        
+        <!-- INTRODUCTION -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📚</span>
+                <h2 class="section-title">Pourquoi Version Control pour Power BI ?</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Les Défis Sans Version Control</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>❌ <strong>Pas d'historique</strong> : Impossible de revenir en arrière</li>
+                    <li>❌ <strong>Collaboration difficile</strong> : Qui a modifié quoi ?</li>
+                    <li>❌ <strong>Pas de backup</strong> : Perte de travail si erreur</li>
+                    <li>❌ <strong>Déploiement manuel</strong> : Erreurs, lenteur</li>
+                    <li>❌ <strong>Environnements non synchronisés</strong> : DEV ≠ PROD</li>
+                </ul>
+                
+                <p style="margin-top: 1rem;"><strong>La solution :</strong> Git + Azure DevOps / GitHub Actions</p>
+            </div>
+        </section>
+        
+        <!-- GIT POUR POWER BI -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📁</span>
+                <h2 class="section-title">Git pour Power BI : Setup</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Méthode 1 : Tabular Editor + Git (Recommandé)</h3>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🔧 Pourquoi Tabular Editor ?</div>
+                <p><strong>.pbix est un fichier binaire</strong> → impossible de voir différences dans Git</p>
+                <p style="margin-top: 0.5rem;"><strong>Tabular Editor</strong> extrait le modèle en fichiers JSON/text → Git friendly !</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# ÉTAPE 1 : INSTALLER OUTILS
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment"># Installer Git</span>
+winget install Git.Git
+
+<span class="code-comment"># Installer Tabular Editor 2 (gratuit, open-source)</span>
+<span class="code-comment"># Télécharger depuis : https://tabulareditor.com/</span>
+
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# ÉTAPE 2 : INITIALISER REPO GIT
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment"># Créer dossier projet</span>
+mkdir PowerBI-Project
+cd PowerBI-Project
+
+<span class="code-comment"># Initialiser Git</span>
+git init
+
+<span class="code-comment"># Créer .gitignore pour Power BI</span>
+<span class="code-keyword">echo</span> <span class="code-string">"
+*.pbix
+*.pbit
+~$*.pbix
+*.tmp
+
+# Tabular Editor
+*.bim.bak
+.vs/
+.vscode/
+
+# Azure DevOps
+.pipelines/
+"</span> > .gitignore
+
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# ÉTAPE 3 : EXTRAIRE MODÈLE AVEC TABULAR EDITOR
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment"># Ouvrir .pbix dans Tabular Editor</span>
+<span class="code-comment"># File > Save to Folder...</span>
+<span class="code-comment"># Sauvegarder dans: PowerBI-Project/Model/</span>
+
+<span class="code-comment"># Structure créée:</span>
+PowerBI-Project/
+├── Model/
+│   ├── database.json           <span class="code-comment"># Métadonnées modèle</span>
+│   ├── dataSources/            <span class="code-comment"># Connexions sources</span>
+│   │   └── SqlServer.json
+│   ├── tables/                 <span class="code-comment"># Définition tables</span>
+│   │   ├── Sales.json
+│   │   ├── DimProduct.json
+│   │   └── DimDate.json
+│   ├── relationships/          <span class="code-comment"># Relations</span>
+│   │   └── relationships.json
+│   └── measures/               <span class="code-comment"># Mesures DAX</span>
+│       └── _Measures.json
+
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# ÉTAPE 4 : COMMIT INITIAL
+# ═══════════════════════════════════════════════════════════</span>
+
+git add .
+git commit -m <span class="code-string">"Initial commit: Power BI model structure"</span>
+
+<span class="code-comment"># Créer repo distant (GitHub/Azure DevOps)</span>
+git remote add origin https://github.com/username/powerbi-project.git
+git push -u origin main
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Méthode 2 : Power BI Git Integration (Premium)</h3>
+            
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">⚠️ Prérequis</div>
+                <p><strong>Power BI Premium</strong> ou <strong>Premium Per User (PPU)</strong> requis</p>
+                <p>Feature en Preview (2025) - Activation requise</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# POWER BI GIT INTEGRATION (Native)
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment"># ÉTAPE 1 : Activer Git Integration</span>
+<span class="code-comment"># 1. Admin Portal > Tenant Settings</span>
+<span class="code-comment"># 2. Enable "Git integration" for Premium workspaces</span>
+
+<span class="code-comment"># ÉTAPE 2 : Connecter Workspace à Git</span>
+<span class="code-comment"># 1. Dans workspace > Settings > Git integration</span>
+<span class="code-comment"># 2. Connect to: Azure DevOps ou GitHub</span>
+<span class="code-comment"># 3. Sélectionner : Organization > Project > Repo > Branch</span>
+
+<span class="code-comment"># ÉTAPE 3 : Sync modifications</span>
+<span class="code-comment"># Workspace > Git integration > Commit changes</span>
+<span class="code-comment"># Modifications auto-committées en JSON</span>
+
+<span class="code-comment"># Structure créée automatiquement:</span>
+repo/
+├── Reports/
+│   └── SalesReport.Report/
+│       ├── definition.pbir      <span class="code-comment"># Définition rapport</span>
+│       └── pages/               <span class="code-comment"># Pages rapport</span>
+├── Datasets/
+│   └── SalesModel.Dataset/
+│       ├── model.bim            <span class="code-comment"># Modèle tabulaire</span>
+│       └── definition.pbidm     <span class="code-comment"># Définition dataset</span>
+└── Dataflows/
+    └── SalesDataflow.json
+            </div>
+        </section>
+        
+        <!-- WORKFLOW GIT -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🌿</span>
+                <h2 class="section-title">Workflow Git : Branching Strategy</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">🌿 Git Flow pour Power BI</div>
+                <p>Organisation des branches pour développement collaboratif</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# STRATÉGIE DE BRANCHES
+# ═══════════════════════════════════════════════════════════</span>
+
+main (production)
+│
+├── develop (intégration)
+│   │
+│   ├── feature/add-sales-kpi
+│   ├── feature/new-customer-page
+│   └── feature/optimize-dax
+│
+└── hotfix/fix-date-filter
+
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# WORKFLOW DÉVELOPPEUR
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment"># 1. Créer feature branch depuis develop</span>
+git checkout develop
+git pull origin develop
+git checkout -b feature/add-sales-dashboard
+
+<span class="code-comment"># 2. Développer dans Power BI Desktop</span>
+<span class="code-comment"># 3. Sauvegarder modèle via Tabular Editor</span>
+<span class="code-comment"># File > Save to Folder > Model/</span>
+
+<span class="code-comment"># 4. Commit changements</span>
+git add Model/
+git commit -m <span class="code-string">"feat: Add sales dashboard with KPIs
+
+- Add Sales YTD measure
+- Add Sales by Region visual
+- Add conditional formatting on table"</span>
+
+<span class="code-comment"># 5. Push feature branch</span>
+git push origin feature/add-sales-dashboard
+
+<span class="code-comment"># 6. Créer Pull Request (GitHub/Azure DevOps)</span>
+<span class="code-comment"># feature/add-sales-dashboard → develop</span>
+
+<span class="code-comment"># 7. Code Review + Tests</span>
+
+<span class="code-comment"># 8. Merge vers develop</span>
+git checkout develop
+git merge feature/add-sales-dashboard
+git push origin develop
+
+<span class="code-comment"># 9. Déployer vers TEST</span>
+
+<span class="code-comment"># 10. Merge vers main (PROD) après validation</span>
+git checkout main
+git merge develop
+git push origin main
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Conventions de Commit</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">feat: Nouvelle fonctionnalité</div>
+                    <div class="option-description">feat: Add customer segmentation analysis</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">fix: Correction bug</div>
+                    <div class="option-description">fix: Correct date filter on sales page</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">refactor: Refactoring code</div>
+                    <div class="option-description">refactor: Optimize DAX measures with variables</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">docs: Documentation</div>
+                    <div class="option-description">docs: Update README with setup instructions</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">perf: Performance</div>
+                    <div class="option-description">perf: Remove unused columns from model</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">style: Formatage</div>
+                    <div class="option-description">style: Standardize measure naming convention</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- AZURE DEVOPS CI/CD -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🚀</span>
+                <h2 class="section-title">Azure DevOps : CI/CD Pipeline</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Pipeline YAML Complet</h3>
+            
+            <div class="code-block">
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# azure-pipelines.yml
+# Pipeline CI/CD pour Power BI
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">trigger</span>:
+  <span class="code-keyword">branches</span>:
+    <span class="code-keyword">include</span>:
+      - main
+      - develop
+  <span class="code-keyword">paths</span>:
+    <span class="code-keyword">include</span>:
+      - Model/**
+      - Reports/**
+
+<span class="code-keyword">variables</span>:
+  - group: PowerBI-Variables  <span class="code-comment"># Variable group dans Azure DevOps</span>
+  - name: workspaceName
+    value: <span class="code-string">'Sales Analytics - $(Build.SourceBranchName)'</span>
+
+<span class="code-keyword">stages</span>:
+  
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# STAGE 1 : BUILD & VALIDATE
+# ═══════════════════════════════════════════════════════════</span>
+
+- <span class="code-keyword">stage</span>: Build
+  <span class="code-keyword">displayName</span>: <span class="code-string">'Build and Validate Model'</span>
+  <span class="code-keyword">jobs</span>:
+  - <span class="code-keyword">job</span>: ValidateModel
+    <span class="code-keyword">displayName</span>: <span class="code-string">'Validate Power BI Model'</span>
+    <span class="code-keyword">pool</span>:
+      <span class="code-keyword">vmImage</span>: <span class="code-string">'windows-latest'</span>
+    
+    <span class="code-keyword">steps</span>:
+    <span class="code-comment"># Checkout code</span>
+    - <span class="code-keyword">checkout</span>: self
+      <span class="code-keyword">clean</span>: true
+    
+    <span class="code-comment"># Install Tabular Editor CLI</span>
+    - <span class="code-keyword">powershell</span>: |
+        <span class="code-function">Invoke-WebRequest</span> -Uri <span class="code-string">"https://github.com/TabularEditor/TabularEditor/releases/download/2.17.3/TabularEditor.Portable.zip"</span> `
+          -OutFile <span class="code-string">"TabularEditor.zip"</span>
+        <span class="code-function">Expand-Archive</span> -Path <span class="code-string">"TabularEditor.zip"</span> -DestinationPath <span class="code-string">"$(Build.BinariesDirectory)/TabularEditor"</span>
+      <span class="code-keyword">displayName</span>: <span class="code-string">'Install Tabular Editor'</span>
+    
+    <span class="code-comment"># Validate model syntax</span>
+    - <span class="code-keyword">powershell</span>: |
+        $<span class="code-function">te</span> = <span class="code-string">"$(Build.BinariesDirectory)/TabularEditor/TabularEditor.exe"</span>
+        & $te <span class="code-string">"$(Build.SourcesDirectory)/Model/database.json"</span> `
+          -A <span class="code-string">"Model.SaveToFile(@\"$(Build.ArtifactStagingDirectory)/model.bim\")"</span>
+      <span class="code-keyword">displayName</span>: <span class="code-string">'Validate Model Syntax'</span>
+    
+    <span class="code-comment"># Run Best Practice Analyzer</span>
+    - <span class="code-keyword">powershell</span>: |
+        $<span class="code-function">te</span> = <span class="code-string">"$(Build.BinariesDirectory)/TabularEditor/TabularEditor.exe"</span>
+        & $te <span class="code-string">"$(Build.SourcesDirectory)/Model/database.json"</span> `
+          -A <span class="code-string">"Model.BestPracticeAnalyzer.Analyze()"</span> `
+          -E <span class="code-string">"$(Build.ArtifactStagingDirectory)/BPA_Report.txt"</span>
+      <span class="code-keyword">displayName</span>: <span class="code-string">'Run Best Practice Analyzer'</span>
+      <span class="code-keyword">continueOnError</span>: true
+    
+    <span class="code-comment"># Publish artifacts</span>
+    - <span class="code-keyword">task</span>: PublishBuildArtifacts@1
+      <span class="code-keyword">inputs</span>:
+        <span class="code-keyword">PathtoPublish</span>: <span class="code-string">'$(Build.ArtifactStagingDirectory)'</span>
+        <span class="code-keyword">ArtifactName</span>: <span class="code-string">'model'</span>
+
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# STAGE 2 : DEPLOY TO TEST
+# ═══════════════════════════════════════════════════════════</span>
+
+- <span class="code-keyword">stage</span>: DeployTest
+  <span class="code-keyword">displayName</span>: <span class="code-string">'Deploy to TEST'</span>
+  <span class="code-keyword">dependsOn</span>: Build
+  <span class="code-keyword">condition</span>: and(succeeded(), eq(variables[<span class="code-string">'Build.SourceBranch'</span>], <span class="code-string">'refs/heads/develop'</span>))
+  <span class="code-keyword">jobs</span>:
+  - <span class="code-keyword">deployment</span>: DeployToTest
+    <span class="code-keyword">displayName</span>: <span class="code-string">'Deploy to TEST Workspace'</span>
+    <span class="code-keyword">environment</span>: <span class="code-string">'TEST'</span>
+    <span class="code-keyword">pool</span>:
+      <span class="code-keyword">vmImage</span>: <span class="code-string">'windows-latest'</span>
+    <span class="code-keyword">strategy</span>:
+      <span class="code-keyword">runOnce</span>:
+        <span class="code-keyword">deploy</span>:
+          <span class="code-keyword">steps</span>:
+          
+          <span class="code-comment"># Install Power BI PowerShell Module</span>
+          - <span class="code-keyword">powershell</span>: |
+              <span class="code-function">Install-Module</span> -Name MicrosoftPowerBIMgmt -Force -Scope CurrentUser
+            <span class="code-keyword">displayName</span>: <span class="code-string">'Install PowerBI Module'</span>
+          
+          <span class="code-comment"># Connect to Power BI Service</span>
+          - <span class="code-keyword">task</span>: PowerShell@2
+            <span class="code-keyword">displayName</span>: <span class="code-string">'Deploy Model to Power BI'</span>
+            <span class="code-keyword">inputs</span>:
+              <span class="code-keyword">targetType</span>: <span class="code-string">'inline'</span>
+              <span class="code-keyword">script</span>: |
+                $<span class="code-function">credential</span> = <span class="code-function">New-Object</span> System.Management.Automation.PSCredential(
+                  <span class="code-string">"$(ServicePrincipalId)"</span>,
+                  (<span class="code-function">ConvertTo-SecureString</span> <span class="code-string">"$(ServicePrincipalSecret)"</span> -AsPlainText -Force)
+                )
+                
+                <span class="code-function">Connect-PowerBIServiceAccount</span> -ServicePrincipal `
+                  -Credential $credential `
+                  -TenantId <span class="code-string">"$(TenantId)"</span>
+                
+                <span class="code-comment"># Deploy using Tabular Editor</span>
+                $<span class="code-function">te</span> = <span class="code-string">"$(Pipeline.Workspace)/model/TabularEditor.exe"</span>
+                & $te <span class="code-string">"$(Pipeline.Workspace)/model/model.bim"</span> `
+                  -D <span class="code-string">"powerbi://api.powerbi.com/v1.0/myorg/$(WorkspaceNameTest)"</span> `
+                  -U <span class="code-string">"$(ServicePrincipalId)"</span> `
+                  -P <span class="code-string">"$(ServicePrincipalSecret)"</span>
+
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# STAGE 3 : DEPLOY TO PROD (Manual Approval)
+# ═══════════════════════════════════════════════════════════</span>
+
+- <span class="code-keyword">stage</span>: DeployProd
+  <span class="code-keyword">displayName</span>: <span class="code-string">'Deploy to PRODUCTION'</span>
+  <span class="code-keyword">dependsOn</span>: DeployTest
+  <span class="code-keyword">condition</span>: and(succeeded(), eq(variables[<span class="code-string">'Build.SourceBranch'</span>], <span class="code-string">'refs/heads/main'</span>))
+  <span class="code-keyword">jobs</span>:
+  - <span class="code-keyword">deployment</span>: DeployToProd
+    <span class="code-keyword">displayName</span>: <span class="code-string">'Deploy to PROD Workspace'</span>
+    <span class="code-keyword">environment</span>: <span class="code-string">'PRODUCTION'</span>  <span class="code-comment"># Requires manual approval</span>
+    <span class="code-keyword">pool</span>:
+      <span class="code-keyword">vmImage</span>: <span class="code-string">'windows-latest'</span>
+    <span class="code-keyword">strategy</span>:
+      <span class="code-keyword">runOnce</span>:
+        <span class="code-keyword">deploy</span>:
+          <span class="code-keyword">steps</span>:
+          <span class="code-comment"># Similar steps as TEST deployment</span>
+          <span class="code-comment"># but targeting PROD workspace</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Configuration Azure DevOps</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">1. Service Principal</div>
+                    <div class="option-description">Créer App Registration dans Azure AD</div>
+                    <div class="option-relevance">→ Permissions : Dataset.ReadWrite.All</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">2. Variable Groups</div>
+                    <div class="option-description">Azure DevOps > Pipelines > Library</div>
+                    <div class="option-relevance">→ Stocker credentials, workspace IDs</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">3. Environments</div>
+                    <div class="option-description">TEST et PROD avec approvals</div>
+                    <div class="option-relevance">→ PROD require manual approval</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">4. Service Connections</div>
+                    <div class="option-description">Connection vers Power BI Service</div>
+                    <div class="option-relevance">→ Utiliser Service Principal</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- GITHUB ACTIONS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⚙️</span>
+                <h2 class="section-title">GitHub Actions Alternative</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# .github/workflows/deploy-powerbi.yml
+# GitHub Actions pour Power BI
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">name</span>: Deploy Power BI
+
+<span class="code-keyword">on</span>:
+  <span class="code-keyword">push</span>:
+    <span class="code-keyword">branches</span>:
+      - main
+      - develop
+    <span class="code-keyword">paths</span>:
+      - <span class="code-string">'Model/**'</span>
+      - <span class="code-string">'Reports/**'</span>
+  
+  <span class="code-keyword">pull_request</span>:
+    <span class="code-keyword">branches</span>:
+      - main
+      - develop
+
+<span class="code-keyword">env</span>:
+  TENANT_ID: ${{ secrets.TENANT_ID }}
+  CLIENT_ID: ${{ secrets.CLIENT_ID }}
+  CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+
+<span class="code-keyword">jobs</span>:
+  
+  <span class="code-keyword">validate</span>:
+    <span class="code-keyword">name</span>: Validate Model
+    <span class="code-keyword">runs-on</span>: windows-latest
+    
+    <span class="code-keyword">steps</span>:
+    - <span class="code-keyword">name</span>: Checkout code
+      <span class="code-keyword">uses</span>: actions/checkout@v3
+    
+    - <span class="code-keyword">name</span>: Setup Tabular Editor
+      <span class="code-keyword">run</span>: |
+        <span class="code-function">Invoke-WebRequest</span> -Uri <span class="code-string">"https://github.com/TabularEditor/TabularEditor/releases/latest/download/TabularEditor.Portable.zip"</span> `
+          -OutFile <span class="code-string">"TabularEditor.zip"</span>
+        <span class="code-function">Expand-Archive</span> TabularEditor.zip -DestinationPath TabularEditor
+      <span class="code-keyword">shell</span>: pwsh
+    
+    - <span class="code-keyword">name</span>: Validate Model
+      <span class="code-keyword">run</span>: |
+        ./TabularEditor/TabularEditor.exe <span class="code-string">"Model/database.json"</span> `
+          -A <span class="code-string">"Model.SaveToFile(@\"model.bim\")"</span>
+      <span class="code-keyword">shell</span>: pwsh
+    
+    - <span class="code-keyword">name</span>: Upload Artifact
+      <span class="code-keyword">uses</span>: actions/upload-artifact@v3
+      <span class="code-keyword">with</span>:
+        <span class="code-keyword">name</span>: model
+        <span class="code-keyword">path</span>: model.bim
+  
+  <span class="code-keyword">deploy-test</span>:
+    <span class="code-keyword">name</span>: Deploy to TEST
+    <span class="code-keyword">needs</span>: validate
+    <span class="code-keyword">if</span>: github.ref == <span class="code-string">'refs/heads/develop'</span>
+    <span class="code-keyword">runs-on</span>: windows-latest
+    <span class="code-keyword">environment</span>: TEST
+    
+    <span class="code-keyword">steps</span>:
+    - <span class="code-keyword">name</span>: Download Artifact
+      <span class="code-keyword">uses</span>: actions/download-artifact@v3
+      <span class="code-keyword">with</span>:
+        <span class="code-keyword">name</span>: model
+    
+    - <span class="code-keyword">name</span>: Deploy to Power BI
+      <span class="code-keyword">run</span>: |
+        <span class="code-comment"># Deploy script here</span>
+      <span class="code-keyword">shell</span>: pwsh
+  
+  <span class="code-keyword">deploy-prod</span>:
+    <span class="code-keyword">name</span>: Deploy to PRODUCTION
+    <span class="code-keyword">needs</span>: validate
+    <span class="code-keyword">if</span>: github.ref == <span class="code-string">'refs/heads/main'</span>
+    <span class="code-keyword">runs-on</span>: windows-latest
+    <span class="code-keyword">environment</span>: PRODUCTION  <span class="code-comment"># Manual approval required</span>
+    
+    <span class="code-keyword">steps</span>:
+    - <span class="code-keyword">name</span>: Deploy to Power BI PROD
+      <span class="code-keyword">run</span>: |
+        <span class="code-comment"># Deploy to production</span>
+      <span class="code-keyword">shell</span>: pwsh
+            </div>
+        </section>
+        
+        <!-- DEPLOYMENT PIPELINES NATIVE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🚀</span>
+                <h2 class="section-title">Power BI Deployment Pipelines (Native)</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">🚀 Deployment Pipelines Power BI</div>
+                <p><strong>Feature native Premium</strong> pour gérer DEV → TEST → PROD dans l'interface Power BI</p>
+                <p style="margin-top: 0.5rem;">Alternative plus simple que CI/CD externe si pas besoin customisation</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment"># ═══════════════════════════════════════════════════════════
+# SETUP DEPLOYMENT PIPELINE NATIVE
+# ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment"># ÉTAPE 1 : Créer Pipeline</span>
+<span class="code-comment"># Power BI Service > Deployment pipelines > Create pipeline</span>
+<span class="code-comment"># Nom: "Sales Analytics Pipeline"</span>
+
+<span class="code-comment"># ÉTAPE 2 : Assigner Workspaces</span>
+<span class="code-comment"># DEV Stage   → Assign "Sales Analytics - DEV" workspace</span>
+<span class="code-comment"># TEST Stage  → Assign "Sales Analytics - TEST" workspace</span>
+<span class="code-comment"># PROD Stage  → Assign "Sales Analytics - PROD" workspace</span>
+
+<span class="code-comment"># ÉTAPE 3 : Configurer Deployment Rules</span>
+<span class="code-comment"># Dataset > Deployment rules:</span>
+
+<span class="code-comment">// Rule 1: Server Name par environnement</span>
+Parameter: <span class="code-string">"ServerName"</span>
+DEV:  <span class="code-string">"sql-dev.database.windows.net"</span>
+TEST: <span class="code-string">"sql-test.database.windows.net"</span>
+PROD: <span class="code-string">"sql-prod.database.windows.net"</span>
+
+<span class="code-comment">// Rule 2: Database Name</span>
+Parameter: <span class="code-string">"DatabaseName"</span>
+DEV:  <span class="code-string">"SalesDB_Dev"</span>
+TEST: <span class="code-string">"SalesDB_Test"</span>
+PROD: <span class="code-string">"SalesDB_Prod"</span>
+
+<span class="code-comment"># ÉTAPE 4 : Déployer</span>
+<span class="code-comment"># DEV → TEST : Click "Deploy to test"</span>
+<span class="code-comment"># TEST → PROD : Click "Deploy to prod" (après tests OK)</span>
+
+<span class="code-comment"># Paramètres remplacés automatiquement !</span>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">💡 Avantages Deployment Pipelines</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>Interface graphique</strong> : Pas besoin code YAML</li>
+                    <li>✅ <strong>Paramètres auto</strong> : Remplace connexions par environnement</li>
+                    <li>✅ <strong>Comparaison</strong> : Voir différences avant déploiement</li>
+                    <li>✅ <strong>Rollback</strong> : Retour arrière facile</li>
+                    <li>❌ <strong>Limitation</strong> : Moins flexible que CI/CD custom</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- BEST PRACTICES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">✅</span>
+                <h2 class="section-title">Best Practices DevOps</h2>
+            </div>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">1. Branch Protection</div>
+                    <div class="option-description">Main/Develop protégés, require PR + review</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">2. Automated Tests</div>
+                    <div class="option-description">Best Practice Analyzer dans pipeline</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">3. Manual Approval PROD</div>
+                    <div class="option-description">Toujours requérir approbation pour production</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">4. Secrets Management</div>
+                    <div class="option-description">Jamais de credentials en clair dans code</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">5. Versioning Sémantique</div>
+                    <div class="option-description">v1.0.0 → v1.1.0 → v2.0.0</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">6. Release Notes</div>
+                    <div class="option-description">Documenter chaque release</div>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="best-practices-project.html">Best Practices Projet</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
