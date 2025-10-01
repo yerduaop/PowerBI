@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Reference - Power BI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --info: #9b59b6;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background: #ecf0f1;
+            font-size: 14px;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        header p {
+            text-align: center;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .back-nav {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .back-nav a {
+            color: var(--secondary);
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            background: white;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-weight: 600;
+        }
+        
+        .back-nav a:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .search-box {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .search-box input {
+            width: 100%;
+            max-width: 600px;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            transition: border-color 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+        
+        .decision-tree {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .decision-tree h2 {
+            color: var(--primary);
+            border-bottom: 3px solid var(--secondary);
+            padding-bottom: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .decision-item {
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 4px solid var(--secondary);
+            align-items: center;
+            transition: all 0.3s;
+        }
+        
+        .decision-item:hover {
+            background: #f0f7ff;
+            transform: translateX(5px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .decision-question {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .decision-visual {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.1rem;
+        }
+        
+        .decision-alternative {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .visual-quick-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-left: 4px solid var(--info);
+            transition: transform 0.3s;
+        }
+        
+        .visual-quick-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        
+        .visual-quick-card h3 {
+            color: var(--info);
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .visual-quick-card .use-case {
+            background: #f0f0f0;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .visual-quick-card .when {
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 0.5rem;
+            display: block;
+        }
+        
+        .visual-quick-card .avoid {
+            color: var(--danger);
+            font-weight: 600;
+            margin-top: 0.3rem;
+            display: block;
+        }
+        
+        .comparison-table {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            overflow-x: auto;
+        }
+        
+        .comparison-table h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        
+        th {
+            background: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background: #f5f9ff;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        
+        .badge-easy {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .badge-medium {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge-hard {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .badge-fast {
+            background: #cce5ff;
+            color: #004085;
+        }
+        
+        .badge-slow {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .shortcut-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .shortcut-section h2 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .shortcut-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+        
+        .shortcut-item {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 6px;
+            border-left: 3px solid var(--warning);
+        }
+        
+        .shortcut-item strong {
+            color: var(--warning);
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        
+        @media (max-width: 768px) {
+            .decision-item {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            table {
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 0.5rem;
+            }
+        }
+        
+        @media print {
+            header {
+                position: relative;
+            }
+            
+            .back-nav, .search-box {
+                display: none;
+            }
+            
+            body {
+                font-size: 10pt;
+            }
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>⚡ Quick Reference</h1>
+            <p>Cheat Sheet - Choisir le bon visuel en 3 secondes</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="back-nav">
+            <a href="index.html">← Retour à l'accueil</a>
+        </div>
+        
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 Rechercher un visuel, une question, un cas d'usage..." onkeyup="filterContent()">
+        </div>
+        
+        <div class="decision-tree" id="decisionTree">
+            <h2>🎯 Arbre de Décision Rapide</h2>
+            <p style="margin-bottom: 1.5rem; color: #666;">Partez de votre question business pour trouver le visuel idéal</p>
+            
+            <div class="decision-item">
+                <div class="decision-question">Quelle est la valeur actuelle ?</div>
+                <div class="decision-visual">→ Card / KPI Visual</div>
+                <div class="decision-alternative">Avec contexte (vs période/objectif)</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Comment ça évolue dans le temps ?</div>
+                <div class="decision-visual">→ Line Chart</div>
+                <div class="decision-alternative">Area Chart si volume important</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Qui/Quoi est le plus grand ?</div>
+                <div class="decision-visual">→ Bar Chart</div>
+                <div class="decision-alternative">Trié par valeur décroissante</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Quelle est la composition ?</div>
+                <div class="decision-visual">→ Stacked Bar / Treemap</div>
+                <div class="decision-alternative">Stacked si < 10 cat, Treemap si 10-100</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Y a-t-il une corrélation ?</div>
+                <div class="decision-visual">→ Scatter Plot</div>
+                <div class="decision-alternative">Avec ligne de tendance</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Comment suis-je passé de A à B ?</div>
+                <div class="decision-visual">→ Waterfall Chart</div>
+                <div class="decision-alternative">Pour montrer contributions +/-</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Où perd-on des clients ?</div>
+                <div class="decision-visual">→ Funnel Chart</div>
+                <div class="decision-alternative">Pour processus séquentiel</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Où géographiquement ?</div>
+                <div class="decision-visual">→ Map / Filled Map</div>
+                <div class="decision-alternative">Ou Bar Chart si perf importante</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Comment les rankings évoluent ?</div>
+                <div class="decision-visual">→ Ribbon Chart</div>
+                <div class="decision-alternative">Top N uniquement (5-10 max)</div>
+            </div>
+            
+            <div class="decision-item">
+                <div class="decision-question">Besoin de valeurs précises ?</div>
+                <div class="decision-visual">→ Table / Matrix</div>
+                <div class="decision-alternative">Avec Conditional Formatting !</div>
+            </div>
+        </div>
+        
+        <div class="comparison-table">
+            <h2>📊 Comparaison Rapide des Visuels</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Visuel</th>
+                        <th>Usage Principal</th>
+                        <th>Complexité</th>
+                        <th>Performance</th>
+                        <th>Limite Recommandée</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Card</strong></td>
+                        <td>Une métrique clé</td>
+                        <td><span class="badge badge-easy">Facile</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>5 cards max/page</td>
+                    </tr>
+                    <tr>
+                        <td><strong>KPI Visual</strong></td>
+                        <td>Métrique avec objectif et trend</td>
+                        <td><span class="badge badge-easy">Facile</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>3-6 KPI/dashboard</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bar Chart</strong></td>
+                        <td>Comparer catégories</td>
+                        <td><span class="badge badge-easy">Facile</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>< 20 catégories</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Line Chart</strong></td>
+                        <td>Tendances temporelles</td>
+                        <td><span class="badge badge-easy">Facile</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>< 5 séries</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Pie Chart</strong></td>
+                        <td>Parts simples</td>
+                        <td><span class="badge badge-easy">Facile</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>2-5 segments MAX</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Table</strong></td>
+                        <td>Valeurs précises</td>
+                        <td><span class="badge badge-easy">Facile</span></td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td>Top N (50-100 lignes)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Matrix</strong></td>
+                        <td>Tableau croisé avec drill</td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td>< 4 niveaux hiérarchie</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Scatter Plot</strong></td>
+                        <td>Corrélations</td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td>< 10K points</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Waterfall</strong></td>
+                        <td>Variance analysis</td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>< 15 étapes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Funnel</strong></td>
+                        <td>Conversions</td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td><span class="badge badge-fast">Rapide</span></td>
+                        <td>3-7 étapes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Treemap</strong></td>
+                        <td>Composition hiérarchique</td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td>10-100 items</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ribbon</strong></td>
+                        <td>Évolution rankings</td>
+                        <td><span class="badge badge-hard">Difficile</span></td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td>Top 5-10 uniquement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Map</strong></td>
+                        <td>Distribution géographique</td>
+                        <td><span class="badge badge-medium">Moyen</span></td>
+                        <td><span class="badge badge-slow">Lent</span></td>
+                        <td>< 5K points</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <h2 style="color: var(--primary); text-align: center; margin: 3rem 0 2rem;">📋 Fiches Visuels Express</h2>
+        
+        <div class="quick-grid" id="visualCards">
+            <div class="visual-quick-card">
+                <h3>Bar Chart</h3>
+                <div class="use-case">📊 Top 10 produits, Ventes par région, Rankings</div>
+                <span class="when">✓ Quand : Comparer 3-20 catégories</span>
+                <span class="avoid">✗ Éviter : Évolutions temporelles, > 20 items sans scroll</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Line Chart</h3>
+                <div class="use-case">📈 Ventes dans le temps, KPIs mensuels, Tendances</div>
+                <span class="when">✓ Quand : Série temporelle, nombreuses périodes</span>
+                <span class="avoid">✗ Éviter : Catégories discrètes, trop de lignes (> 5)</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Scatter Plot</h3>
+                <div class="use-case">🎯 Prix vs Qualité, Coût vs ROI, Segmentation clients</div>
+                <span class="when">✓ Quand : Chercher corrélations, identifier outliers</span>
+                <span class="avoid">✗ Éviter : Pas de relation attendue, > 10K points</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Table + Conditional Formatting</h3>
+                <div class="use-case">📋 Top performers avec heatmap, Détails précis</div>
+                <span class="when">✓ Quand : Valeurs exactes nécessaires + patterns visuels</span>
+                <span class="avoid">✗ Éviter : Comme visuel principal sans formatting</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Matrix</h3>
+                <div class="use-case">🔢 Ventes par Région ET Produit, Tableaux croisés</div>
+                <span class="when">✓ Quand : 2 dimensions avec hiérarchies</span>
+                <span class="avoid">✗ Éviter : Comparaisons simples, trop de niveaux (> 4)</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>KPI Visual</h3>
+                <div class="use-case">🎯 Revenus vs Objectif, Performance metrics</div>
+                <span class="when">✓ Quand : Métrique avec target et trend historique</span>
+                <span class="avoid">✗ Éviter : Sans objectifs définis</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Waterfall</h3>
+                <div class="use-case">💰 P&L, Budget variance, Cash flow</div>
+                <span class="when">✓ Quand : Expliquer passage de A à B avec contributions</span>
+                <span class="avoid">✗ Éviter : Comparaisons simples, ordre non séquentiel</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Funnel</h3>
+                <div class="use-case">🔽 Sales pipeline, E-commerce conversion, Recrutement</div>
+                <span class="when">✓ Quand : Processus à étapes avec drop-off</span>
+                <span class="avoid">✗ Éviter : Étapes non séquentielles, pas de diminution</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Treemap</h3>
+                <div class="use-case">🗂️ Portfolio produits, Budget allocation, Market share</div>
+                <span class="when">✓ Quand : Hiérarchie avec 10-100 items</span>
+                <span class="avoid">✗ Éviter : Comparaisons précises, items similaires en taille</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Filled Map</h3>
+                <div class="use-case">🗺️ Ventes par pays/région, Heatmap géographique</div>
+                <span class="when">✓ Quand : Localisation est l'insight principal</span>
+                <span class="avoid">✗ Éviter : Géo pas pertinente, performance critique</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Ribbon Chart</h3>
+                <div class="use-case">🏆 Top 10 produits mois/mois, Rankings évolutifs</div>
+                <span class="when">✓ Quand : Suivre changements de positions</span>
+                <span class="avoid">✗ Éviter : Rankings stables, > 10 catégories</span>
+            </div>
+            
+            <div class="visual-quick-card">
+                <h3>Area Chart</h3>
+                <div class="use-case">📊 Volume cumulé, Composition dans le temps</div>
+                <span class="when">✓ Quand : Magnitude du changement importante</span>
+                <span class="avoid">✗ Éviter : Besoin de précision, > 5 séries empilées</span>
+            </div>
+        </div>
+        
+        <div class="shortcut-section">
+            <h2>⚡ Raccourcis & Tips Essentiels</h2>
+            <div class="shortcut-grid">
+                <div class="shortcut-item">
+                    <strong>Règle des 3 secondes</strong>
+                    Si insight pas clair en 3 sec → Simplifier ou changer visuel
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Moins = Plus</strong>
+                    5-7 visuels max par page. Plus = confusion
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Conditional Formatting</strong>
+                    Toujours sur tables ! Transforme données plates en insights
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Hiérarchie Dashboard</strong>
+                    Haut : KPI cards | Centre : Graphiques clés | Bas : Détails
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Couleurs cohérentes</strong>
+                    Vert = Positif, Rouge = Négatif, partout
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Bar > Pie</strong>
+                    Toujours préférer Bar pour comparaisons (plus précis)
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Mesures > Colonnes Calc</strong>
+                    90% du temps, utiliser Mesures (plus performant)
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Star Schema</strong>
+                    Toujours modéliser en Fact + Dimensions
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>DimDate obligatoire</strong>
+                    Créer table dates dédiée pour Time Intelligence
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>RLS Testing</strong>
+                    TOUJOURS tester avec "View as" avant publish
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Performance Analyzer</strong>
+                    View > Performance Analyzer pour diagnostiquer lenteurs
+                </div>
+                
+                <div class="shortcut-item">
+                    <strong>Top N Filter</strong>
+                    Limiter données affichées (perf + clarté)
+                </div>
+            </div>
+        </div>
+        
+        <div class="comparison-table">
+            <h2>🎨 Quand Utiliser Conditional Formatting vs Graphique Séparé</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Situation</th>
+                        <th>✓ Conditional Formatting</th>
+                        <th>✓ Graphique Séparé</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Voir patterns ET valeurs exactes</td>
+                        <td>✓ Table avec heatmap</td>
+                        <td>Non nécessaire</td>
+                    </tr>
+                    <tr>
+                        <td>Comparer de nombreuses métriques</td>
+                        <td>✓ Table avec data bars + icons</td>
+                        <td>Surchargé avec multiples graphiques</td>
+                    </tr>
+                    <tr>
+                        <td>Identifier rapidement Top/Bottom</td>
+                        <td>✓ Couleurs conditionnelles</td>
+                        <td>Bar chart si top N seulement</td>
+                    </tr>
+                    <tr>
+                        <td>Tendance temporelle</td>
+                        <td>Sparklines possibles</td>
+                        <td>✓ Line chart (plus clair)</td>
+                    </tr>
+                    <tr>
+                        <td>Proportion/Composition</td>
+                        <td>Data bars possibles</td>
+                        <td>✓ Stacked bar (plus visuel)</td>
+                    </tr>
+                    <tr>
+                        <td>Espace limité</td>
+                        <td>✓ Compact et efficient</td>
+                        <td>Prend plus de place</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <script>
+        function filterContent() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            // Filter decision items
+            const decisionItems = document.querySelectorAll('.decision-item');
+            decisionItems.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    item.style.display = 'grid';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+            
+            // Filter visual cards
+            const visualCards = document.querySelectorAll('.visual-quick-card');
+            visualCards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
