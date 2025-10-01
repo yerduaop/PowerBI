@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossaire Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">📖 Glossaire Power BI</h1>
+            <p class="page-subtitle">Tous les termes expliqués simplement</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Glossaire</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="section">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">A - C</h2>
+            
+            <div class="info-box info-box-definition">
+                <h4>Aggregation</h4>
+                <p>Calcul qui résume plusieurs valeurs en une seule (somme, moyenne, compte...).</p>
+                <p><strong>Exemple :</strong> SUM(Sales[Amount]) agrège toutes les ventes en un total.</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Calculated Column (Colonne Calculée)</h4>
+                <p>Colonne ajoutée à une table via formule DAX. Calculée au refresh et stockée.</p>
+                <p><strong>Usage :</strong> Calculs ligne par ligne (ex: Full Name = FirstName & " " & LastName)</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Conditional Formatting</h4>
+                <p>Mise en forme visuelle basée sur les valeurs (couleurs, barres, icônes).</p>
+                <p><strong>Puissant pour :</strong> Transformer tables plates en heatmaps visuelles.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">D - F</h2>
+            
+            <div class="info-box info-box-definition">
+                <h4>DAX (Data Analysis Expressions)</h4>
+                <p>Langage de formules Power BI pour créer mesures et colonnes calculées.</p>
+                <p><strong>Exemple :</strong> Total Sales = SUM(Sales[Amount])</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>DirectQuery</h4>
+                <p>Mode de connexion où données restent dans la source. Queries en temps réel.</p>
+                <p><strong>vs Import :</strong> Plus lent mais toujours à jour.</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Drill Down/Up</h4>
+                <p>Navigation dans hiérarchies (Année > Trimestre > Mois).</p>
+                <p><strong>Usage :</strong> Explorer progressivement les détails.</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Filter Context</h4>
+                <p>Ensemble des filtres actifs qui influencent un calcul DAX.</p>
+                <p><strong>Important pour :</strong> Comprendre comment les mesures réagissent aux slicers.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">G - M</h2>
+            
+            <div class="info-box info-box-definition">
+                <h4>KPI (Key Performance Indicator)</h4>
+                <p>Indicateur clé de performance mesurant succès vs objectif.</p>
+                <p><strong>Composants :</strong> Valeur actuelle + Objectif + Tendance.</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Measure (Mesure)</h4>
+                <p>Calcul DAX évalué dynamiquement selon contexte. Non stocké.</p>
+                <p><strong>Préférer aux colonnes :</strong> Plus performant, réagit aux filtres.</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Matrix (Tableau Croisé)</h4>
+                <p>Visuel avec dimensions en lignes ET colonnes. Équivalent du TCD Excel.</p>
+                <p><strong>Usage :</strong> Croiser 2 dimensions avec drill-down.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">R - T</h2>
+            
+            <div class="info-box info-box-definition">
+                <h4>RLS (Row-Level Security)</h4>
+                <p>Sécurité filtrant données par utilisateur.</p>
+                <p><strong>Exemple :</strong> Managers voient seulement leur région.</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Star Schema</h4>
+                <p>Architecture avec table de faits centrale et dimensions autour.</p>
+                <p><strong>Standard :</strong> FactSales + DimProduct, DimCustomer, DimDate...</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Time Intelligence</h4>
+                <p>Fonctions DAX pour calculs temporels (YTD, YoY, MTD...).</p>
+                <p><strong>Requis :</strong> Table dates marquée comme "Date Table".</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">V - Z</h2>
+            
+            <div class="info-box info-box-definition">
+                <h4>Visual (Visuel)</h4>
+                <p>Graphique, table ou autre représentation des données.</p>
+                <p><strong>Types :</strong> Bar, Line, Table, Matrix, Card, KPI...</p>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <h4>Workspace</h4>
+                <p>Espace collaboratif dans Power BI Service pour partager rapports.</p>
+                <p><strong>Permissions :</strong> Admin, Member, Contributor, Viewer.</p>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="quick-reference.html">Quick Reference</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
