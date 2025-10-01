@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAX Avancé - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🚀 DAX Avancé</h1>
+            <p class="page-subtitle">Patterns complexes, optimisation et techniques d'expert</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>DAX Avancé</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-expert">
+            🔴 Niveau Expert • ⏱️ 90 min de lecture
+        </div>
+        
+        <!-- FILTER CONTEXT -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Filter Context & Row Context</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Les 2 Contexts en DAX</div>
+                <p><strong>Filter Context</strong> : Ensemble de filtres actifs sur le modèle (slicers, filtres visuels...)</p>
+                <p><strong>Row Context</strong> : Contexte d'une ligne spécifique lors d'itération</p>
+                <p style="margin-top: 1rem;"><strong>Comprendre ces concepts = 80% de la maîtrise DAX</strong></p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// FILTER CONTEXT
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Exemple : Mesure simple affectée par filtres</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(Sales[<span class="code-string">Amount</span>])
+
+<span class="code-comment">// Si filtre sur Product = "Laptop" → retourne somme uniquement Laptops
+// Si filtre sur Year = 2024 → retourne somme uniquement 2024
+// Les filtres se combinent automatiquement !</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// CALCULATE : Modifier le Filter Context
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Sales All Products</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">ALL</span>(Product)  <span class="code-comment">// Ignore filtres sur Product</span>
+)
+
+<span class="code-keyword">Sales Laptops Only</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    Product[<span class="code-string">Category</span>] = <span class="code-string">"Laptop"</span>  <span class="code-comment">// Force filtre Laptop</span>
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ROW CONTEXT
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Créé par : SUMX, FILTER, ADDCOLUMNS, colonnes calculées</span>
+
+<span class="code-keyword">Total Sales SUMX</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,                           <span class="code-comment">// Itère sur chaque ligne</span>
+    Sales[<span class="code-string">Quantity</span>] * Sales[<span class="code-string">Price</span>]  <span class="code-comment">// Row context actif</span>
+)
+
+<span class="code-comment">// ⚠️ ERREUR COMMUNE : Mesures dans Row Context</span>
+<span class="code-keyword">Wrong Total</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    [<span class="code-string">Total Sales</span>]  <span class="code-comment">// ❌ Mesure sans filter context !</span>
+)
+
+<span class="code-comment">// ✅ CORRECT : Convertir Row Context en Filter Context</span>
+<span class="code-keyword">Correct Total</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-function">CALCULATE</span>([<span class="code-string">Total Sales</span>])  <span class="code-comment">// CALCULATE convertit contexte</span>
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// CONTEXT TRANSITION
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// CALCULATE dans Row Context = Context Transition</span>
+<span class="code-keyword">Sales with Tax</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-keyword">VAR</span> CurrentSale = <span class="code-function">CALCULATE</span>([<span class="code-string">Total Sales</span>])  <span class="code-comment">// Ligne actuelle devient filtre</span>
+    <span class="code-keyword">RETURN</span>
+        CurrentSale * <span class="code-string">1.20</span>
+)
+            </div>
+        </section>
+        
+        <!-- VARIABLES AVANCÉES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📦</span>
+                <h2 class="section-title">Variables Avancées</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// POURQUOI UTILISER VARIABLES ?
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// 1. PERFORMANCE : Calcul une seule fois</span>
+<span class="code-keyword">Sales Growth</span> = 
+<span class="code-keyword">VAR</span> CurrentSales = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> PreviousSales = [<span class="code-string">Sales LY</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(CurrentSales - PreviousSales, PreviousSales)
+    
+<span class="code-comment">// Sans variables : [Total Sales] et [Sales LY] calculés 2x chacun !</span>
+
+<span class="code-comment">// 2. LISIBILITÉ : Code auto-documenté</span>
+<span class="code-keyword">Customer Lifetime Value</span> = 
+<span class="code-keyword">VAR</span> TotalRevenue = <span class="code-function">CALCULATE</span>(
+    <span class="code-function">SUM</span>(Sales[<span class="code-string">Amount</span>]),
+    <span class="code-function">ALLEXCEPT</span>(Sales, Sales[<span class="code-string">CustomerID</span>])
+)
+<span class="code-keyword">VAR</span> AcquisitionCost = <span class="code-string">50</span>  <span class="code-comment">// Coût d'acquisition moyen</span>
+<span class="code-keyword">VAR</span> RetentionRate = <span class="code-string">0.85</span>
+<span class="code-keyword">VAR</span> DiscountRate = <span class="code-string">0.10</span>
+<span class="code-keyword">VAR</span> AverageMargin = <span class="code-string">0.30</span>
+<span class="code-keyword">RETURN</span>
+    (TotalRevenue * AverageMargin * RetentionRate) / (<span class="code-string">1</span> + DiscountRate) - AcquisitionCost
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// VARIABLES AVEC TABLES
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Top 5 Products Sales</span> = 
+<span class="code-keyword">VAR</span> TopProducts = 
+    <span class="code-function">TOPN</span>(
+        <span class="code-string">5</span>,
+        <span class="code-function">SUMMARIZE</span>(
+            Sales,
+            Product[<span class="code-string">ProductName</span>],
+            <span class="code-string">"ProductSales"</span>, [<span class="code-string">Total Sales</span>]
+        ),
+        [<span class="code-string">ProductSales</span>],
+        <span class="code-function">DESC</span>
+    )
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">SUMX</span>(TopProducts, [<span class="code-string">ProductSales</span>])
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// VARIABLES MULTIPLES : Waterfall Analysis
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Revenue Bridge</span> = 
+<span class="code-keyword">VAR</span> CurrentRevenue = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> PriorRevenue = [<span class="code-string">Sales LY</span>]
+<span class="code-keyword">VAR</span> VolumeDelta = 
+    <span class="code-function">SUMX</span>(
+        Sales,
+        (Sales[<span class="code-string">Quantity</span>] - Sales[<span class="code-string">Quantity LY</span>]) * Sales[<span class="code-string">Price LY</span>]
+    )
+<span class="code-keyword">VAR</span> PriceDelta = 
+    <span class="code-function">SUMX</span>(
+        Sales,
+        (Sales[<span class="code-string">Price</span>] - Sales[<span class="code-string">Price LY</span>]) * Sales[<span class="code-string">Quantity</span>]
+    )
+<span class="code-keyword">VAR</span> MixDelta = CurrentRevenue - PriorRevenue - VolumeDelta - PriceDelta
+<span class="code-keyword">RETURN</span>
+    <span class="code-comment">// Retourner selon contexte</span>
+    <span class="code-function">SWITCH</span>(
+        <span class="code-function">SELECTEDVALUE</span>(Bridge[<span class="code-string">Component</span>]),
+        <span class="code-string">"Prior Year"</span>, PriorRevenue,
+        <span class="code-string">"Volume"</span>, VolumeDelta,
+        <span class="code-string">"Price"</span>, PriceDelta,
+        <span class="code-string">"Mix"</span>, MixDelta,
+        <span class="code-string">"Current Year"</span>, CurrentRevenue,
+        <span class="code-function">BLANK</span>()
+    )
+            </div>
+        </section>
+        
+        <!-- ITERATEURS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔄</span>
+                <h2 class="section-title">Fonctions Itératives (X)</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// SUMX : Itération avec calcul par ligne
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Cas 1 : Calcul simple ligne par ligne</span>
+<span class="code-keyword">Sales Amount</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    Sales[<span class="code-string">Quantity</span>] * Sales[<span class="code-string">Price</span>]
+)
+
+<span class="code-comment">// Cas 2 : Avec logique conditionnelle</span>
+<span class="code-keyword">Discounted Sales</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-keyword">VAR</span> Discount = <span class="code-function">IF</span>(Sales[<span class="code-string">Quantity</span>] > <span class="code-string">10</span>, <span class="code-string">0.10</span>, <span class="code-string">0</span>)
+    <span class="code-keyword">RETURN</span>
+        Sales[<span class="code-string">Quantity</span>] * Sales[<span class="code-string">Price</span>] * (<span class="code-string">1</span> - Discount)
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// AUTRES ITÉRATEURS
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// AVERAGEX : Moyenne avec calcul custom</span>
+<span class="code-keyword">Average Margin %</span> = 
+<span class="code-function">AVERAGEX</span>(
+    Sales,
+    <span class="code-function">DIVIDE</span>(
+        Sales[<span class="code-string">Amount</span>] - Sales[<span class="code-string">Cost</span>],
+        Sales[<span class="code-string">Amount</span>]
+    )
+)
+
+<span class="code-comment">// MINX / MAXX : Min/Max avec calcul</span>
+<span class="code-keyword">Highest Daily Sales</span> = 
+<span class="code-function">MAXX</span>(
+    <span class="code-function">SUMMARIZE</span>(
+        Sales,
+        Calendar[<span class="code-string">Date</span>],
+        <span class="code-string">"DailySales"</span>, [<span class="code-string">Total Sales</span>]
+    ),
+    [<span class="code-string">DailySales</span>]
+)
+
+<span class="code-comment">// COUNTX : Comptage conditionnel</span>
+<span class="code-keyword">Orders Over 1000</span> = 
+<span class="code-function">COUNTX</span>(
+    <span class="code-function">FILTER</span>(
+        Sales,
+        Sales[<span class="code-string">Amount</span>] > <span class="code-string">1000</span>
+    ),
+    Sales[<span class="code-string">OrderID</span>]
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PATTERN AVANCÉ : Weighted Average
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Weighted Avg Price</span> = 
+<span class="code-function">DIVIDE</span>(
+    <span class="code-function">SUMX</span>(Sales, Sales[<span class="code-string">Price</span>] * Sales[<span class="code-string">Quantity</span>]),
+    <span class="code-function">SUM</span>(Sales[<span class="code-string">Quantity</span>])
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PERFORMANCE : Éviter itérations inutiles
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// ❌ LENT : Double itération</span>
+<span class="code-keyword">Bad Practice</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-function">SUMX</span>(
+        <span class="code-function">FILTER</span>(Products, Products[<span class="code-string">ID</span>] = Sales[<span class="code-string">ProductID</span>]),
+        Products[<span class="code-string">Cost</span>]
+    )
+)
+
+<span class="code-comment">// ✅ RAPIDE : Utiliser relation</span>
+<span class="code-keyword">Good Practice</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-function">RELATED</span>(Products[<span class="code-string">Cost</span>])
+)
+            </code-block>
+        </section>
+        
+        <!-- CALCULATE AVANCÉ -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎛️</span>
+                <h2 class="section-title">CALCULATE : Patterns Avancés</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// CALCULATE : Modificateurs de filtre
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// ALL : Ignore TOUS les filtres</span>
+<span class="code-keyword">% of Grand Total</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">CALCULATE</span>([<span class="code-string">Total Sales</span>], <span class="code-function">ALL</span>(Sales))
+)
+
+<span class="code-comment">// ALLEXCEPT : Ignore filtres SAUF colonnes spécifiées</span>
+<span class="code-keyword">Sales by Product All Regions</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">ALLEXCEPT</span>(Sales, Product[<span class="code-string">ProductName</span>])
+)
+
+<span class="code-comment">// ALLSELECTED : Respecte filtres visuels externes</span>
+<span class="code-keyword">% of Visual Total</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">CALCULATE</span>([<span class="code-string">Total Sales</span>], <span class="code-function">ALLSELECTED</span>())
+)
+
+<span class="code-comment">// VALUES vs ALL</span>
+<span class="code-keyword">Sales Current Selection</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">VALUES</span>(Product[<span class="code-string">Category</span>])  <span class="code-comment">// Garde filtres actuels</span>
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// KEEPFILTERS : Additionner filtres au lieu de remplacer
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Sans KEEPFILTERS (remplace)</span>
+<span class="code-keyword">Sales Laptops</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    Product[<span class="code-string">Category</span>] = <span class="code-string">"Laptop"</span>  <span class="code-comment">// Remplace filtre Category</span>
+)
+
+<span class="code-comment">// Avec KEEPFILTERS (additionne)</span>
+<span class="code-keyword">Sales Laptops Additional</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">KEEPFILTERS</span>(Product[<span class="code-string">Category</span>] = <span class="code-string">"Laptop"</span>)  <span class="code-comment">// Additionne au filtre existant</span>
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// REMOVEFILTERS : Enlever filtres spécifiques
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Sales All Dates</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">REMOVEFILTERS</span>(Calendar)  <span class="code-comment">// Enlève filtres sur dates uniquement</span>
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PATTERN : Cumul avec CALCULATE
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Running Total</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">FILTER</span>(
+        <span class="code-function">ALL</span>(Calendar[<span class="code-string">Date</span>]),
+        Calendar[<span class="code-string">Date</span>] <= <span class="code-function">MAX</span>(Calendar[<span class="code-string">Date</span>])
+    )
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PATTERN : Same Store Sales
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Same Store Sales</span> = 
+<span class="code-keyword">VAR</span> StoresThisYear = <span class="code-function">VALUES</span>(Store[<span class="code-string">StoreID</span>])
+<span class="code-keyword">VAR</span> StoresLastYear = 
+    <span class="code-function">CALCULATETABLE</span>(
+        <span class="code-function">VALUES</span>(Store[<span class="code-string">StoreID</span>]),
+        <span class="code-function">DATEADD</span>(Calendar[<span class="code-string">Date</span>], <span class="code-string">-1</span>, <span class="code-string">YEAR</span>)
+    )
+<span class="code-keyword">VAR</span> SameStores = <span class="code-function">INTERSECT</span>(StoresThisYear, StoresLastYear)
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">CALCULATE</span>(
+        [<span class="code-string">Total Sales</span>],
+        <span class="code-function">KEEPFILTERS</span>(SameStores)
+    )
+            </div>
+        </section>
+        
+        <!-- TIME INTELLIGENCE AVANCÉ -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⏰</span>
+                <h2 class="section-title">Time Intelligence Avancé</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PÉRIODES MOBILES (Rolling)
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Derniers 3 mois</span>
+<span class="code-keyword">Sales L3M</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATESINPERIOD</span>(
+        Calendar[<span class="code-string">Date</span>],
+        <span class="code-function">LASTDATE</span>(Calendar[<span class="code-string">Date</span>]),
+        <span class="code-string">-3</span>,
+        <span class="code-string">MONTH</span>
+    )
+)
+
+<span class="code-comment">// Moyenne mobile 7 jours</span>
+<span class="code-keyword">Sales 7-Day MA</span> = 
+<span class="code-keyword">VAR</span> CurrentDate = <span class="code-function">MAX</span>(Calendar[<span class="code-string">Date</span>])
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">CALCULATE</span>(
+        <span class="code-function">AVERAGEX</span>(
+            <span class="code-function">DATESINPERIOD</span>(
+                Calendar[<span class="code-string">Date</span>],
+                CurrentDate,
+                <span class="code-string">-7</span>,
+                <span class="code-string">DAY</span>
+            ),
+            [<span class="code-string">Total Sales</span>]
+        )
+    )
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PÉRIODES PARALLÈLES (Parallel Period)
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Même période il y a 2 ans</span>
+<span class="code-keyword">Sales 2 Years Ago</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">PARALLELPERIOD</span>(Calendar[<span class="code-string">Date</span>], <span class="code-string">-2</span>, <span class="code-string">YEAR</span>)
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ANNÉE FISCALE (Fiscal Year)
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Si année fiscale = Avril à Mars</span>
+<span class="code-keyword">Sales FYTD</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATESYTD</span>(
+        Calendar[<span class="code-string">Date</span>],
+        <span class="code-string">"3/31"</span>  <span class="code-comment">// Fin année fiscale = 31 mars</span>
+    )
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PÉRIODES À CE JOUR vs PÉRIODE COMPLÈTE
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Sales MTD vs Full Month</span> = 
+<span class="code-keyword">VAR</span> CurrentDate = <span class="code-function">MAX</span>(Calendar[<span class="code-string">Date</span>])
+<span class="code-keyword">VAR</span> IsFullMonth = CurrentDate = <span class="code-function">EOMONTH</span>(CurrentDate, <span class="code-string">0</span>)
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">IF</span>(
+        IsFullMonth,
+        [<span class="code-string">Total Sales</span>],  <span class="code-comment">// Mois complet</span>
+        [<span class="code-string">Sales MTD</span>]      <span class="code-comment">// Mois en cours</span>
+    )
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PATTERN : Year-over-Year avec prévision
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">YoY Growth Forecast</span> = 
+<span class="code-keyword">VAR</span> CurrentPeriodDays = <span class="code-function">COUNTROWS</span>(Calendar)
+<span class="code-keyword">VAR</span> CurrentSales = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> PriorSales = [<span class="code-string">Sales LY</span>]
+<span class="code-keyword">VAR</span> DaysInMonth = <span class="code-function">DAY</span>(<span class="code-function">EOMONTH</span>(<span class="code-function">MAX</span>(Calendar[<span class="code-string">Date</span>]), <span class="code-string">0</span>))
+<span class="code-keyword">VAR</span> ForecastSales = 
+    <span class="code-function">DIVIDE</span>(CurrentSales, CurrentPeriodDays) * DaysInMonth
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(ForecastSales - PriorSales, PriorSales)
+            </div>
+        </section>
+        
+        <!-- RELATIONSHIP FUNCTIONS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔗</span>
+                <h2 class="section-title">Gestion Relations Avancée</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// USERELATIONSHIP : Relations inactives
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Sales a 2 dates : OrderDate (active) et ShipDate (inactive)</span>
+<span class="code-keyword">Sales by Order Date</span> = [<span class="code-string">Total Sales</span>]  <span class="code-comment">// Utilise relation active</span>
+
+<span class="code-keyword">Sales by Ship Date</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">USERELATIONSHIP</span>(Calendar[<span class="code-string">DateKey</span>], Sales[<span class="code-string">ShipDateKey</span>])
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// CROSSFILTER : Modifier direction filtrage
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Products Sold</span> = 
+<span class="code-function">CALCULATE</span>(
+    <span class="code-function">DISTINCTCOUNT</span>(Sales[<span class="code-string">ProductID</span>]),
+    <span class="code-function">CROSSFILTER</span>(
+        Sales[<span class="code-string">CustomerID</span>],
+        Customer[<span class="code-string">CustomerID</span>],
+        <span class="code-string">BOTH</span>  <span class="code-comment">// Activer filtrage bidirectionnel temporairement</span>
+    )
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// TREATAS : Relation virtuelle
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Pas de relation physique entre Table1 et Table2</span>
+<span class="code-keyword">Sales with Virtual Relation</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">TREATAS</span>(
+        <span class="code-function">VALUES</span>(Table1[<span class="code-string">Category</span>]),  <span class="code-comment">// Valeurs source</span>
+        Table2[<span class="code-string">Category</span>]           <span class="code-comment">// Colonne destination</span>
+    )
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PATTERN : Many-to-Many sans relation
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Sales by Custom Group</span> = 
+<span class="code-keyword">VAR</span> SelectedProducts = <span class="code-function">VALUES</span>(ProductGroups[<span class="code-string">ProductID</span>])
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">CALCULATE</span>(
+        [<span class="code-string">Total Sales</span>],
+        <span class="code-function">TREATAS</span>(SelectedProducts, Sales[<span class="code-string">ProductID</span>])
+    )
+            </div>
+        </section>
+        
+        <!-- OPTIMISATION PERFORMANCE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⚡</span>
+                <h2 class="section-title">Optimisation Performance DAX</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🚀 Règles d'Or Performance</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>Variables</strong> : Calculer une fois, réutiliser</li>
+                    <li>✅ <strong>Éviter itérations</strong> : Préférer agrégations natives</li>
+                    <li>✅ <strong>RELATED vs LOOKUP</strong> : RELATED 100x plus rapide</li>
+                    <li>✅ <strong>FILTER last</strong> : Filtrer après agrégations si possible</li>
+                    <li>❌ <strong>Éviter calculs colonnes</strong> : Préférer mesures</li>
+                </ul>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// OPTIMISATION 1 : Variables pour calculs répétés
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// ❌ LENT : [Total Sales] calculé 3 fois</span>
+<span class="code-keyword">Bad Performance</span> = 
+<span class="code-function">IF</span>(
+    [<span class="code-string">Total Sales</span>] > <span class="code-string">1000000</span>,
+    [<span class="code-string">Total Sales</span>] * <span class="code-string">0.10</span>,
+    [<span class="code-string">Total Sales</span>] * <span class="code-string">0.05</span>
+)
+
+<span class="code-comment">// ✅ RAPIDE : Calculé une fois</span>
+<span class="code-keyword">Good Performance</span> = 
+<span class="code-keyword">VAR</span> Sales = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">IF</span>(Sales > <span class="code-string">1000000</span>, Sales * <span class="code-string">0.10</span>, Sales * <span class="code-string">0.05</span>)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// OPTIMISATION 2 : RELATED vs LOOKUPVALUE
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// ❌ LENT : Scan complet table à chaque ligne</span>
+<span class="code-keyword">Slow Lookup</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-function">LOOKUPVALUE</span>(
+        Product[<span class="code-string">Cost</span>],
+        Product[<span class="code-string">ProductID</span>], Sales[<span class="code-string">ProductID</span>]
+    )
+)
+
+<span class="code-comment">// ✅ RAPIDE : Utilise relation directe</span>
+<span class="code-keyword">Fast Lookup</span> = 
+<span class="code-function">SUMX</span>(
+    Sales,
+    <span class="code-function">RELATED</span>(Product[<span class="code-string">Cost</span>])
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// OPTIMISATION 3 : Éviter itérations dans itérations
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// ❌ TRÈS LENT : Nested SUMX</span>
+<span class="code-keyword">Terrible Performance</span> = 
+<span class="code-function">SUMX</span>(
+    Customer,
+    <span class="code-function">SUMX</span>(
+        <span class="code-function">FILTER</span>(Sales, Sales[<span class="code-string">CustomerID</span>] = Customer[<span class="code-string">CustomerID</span>]),
+        Sales[<span class="code-string">Amount</span>]
+    )
+)
+
+<span class="code-comment">// ✅ RAPIDE : Une seule itération</span>
+<span class="code-keyword">Better Performance</span> = <span class="code-function">SUM</span>(Sales[<span class="code-string">Amount</span>])
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// OPTIMISATION 4 : Materialized mesures
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Si calcul très coûteux ET rarement change
+// → Créer colonne calculée (une fois au refresh)
+// Puis mesure simple sur colonne</span>
+
+<span class="code-comment">// Colonne calculée (dans Sales)</span>
+CustomerSegment = 
+<span class="code-function">VAR</span> TotalSpent = 
+    <span class="code-function">CALCULATE</span>(
+        <span class="code-function">SUM</span>(Sales[<span class="code-string">Amount</span>]),
+        <span class="code-function">ALLEXCEPT</span>(Sales, Sales[<span class="code-string">CustomerID</span>])
+    )
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">SWITCH</span>(
+        <span class="code-keyword">TRUE</span>(),
+        TotalSpent > <span class="code-string">10000</span>, <span class="code-string">"VIP"</span>,
+        TotalSpent > <span class="code-string">5000</span>, <span class="code-string">"Gold"</span>,
+        <span class="code-string">"Standard"</span>
+    )
+
+<span class="code-comment">// Mesure rapide</span>
+<span class="code-keyword">VIP Customers</span> = 
+<span class="code-function">CALCULATE</span>(
+    <span class="code-function">DISTINCTCOUNT</span>(Sales[<span class="code-string">CustomerID</span>]),
+    Sales[<span class="code-string">CustomerSegment</span>] = <span class="code-string">"VIP"</span>
+)
+            </div>
+        </section>
+        
+        <!-- ERROR HANDLING -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🛡️</span>
+                <h2 class="section-title">Gestion des Erreurs</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// IFERROR : Gérer erreurs
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Safe Division</span> = 
+<span class="code-function">IFERROR</span>(
+    [<span class="code-string">Total Sales</span>] / [<span class="code-string">Total Orders</span>],
+    <span class="code-string">0</span>  <span class="code-comment">// Valeur par défaut si erreur</span>
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ISBLANK vs ISEMPTY
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">Handle Blanks</span> = 
+<span class="code-function">IF</span>(
+    <span class="code-function">ISBLANK</span>([<span class="code-string">Total Sales</span>]),
+    <span class="code-string">"No Data"</span>,
+    <span class="code-function">FORMAT</span>([<span class="code-string">Total Sales</span>], <span class="code-string">"$#,##0"</span>)
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// COALESCE : Première valeur non-blank
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">First Available Value</span> = 
+<span class="code-function">COALESCE</span>(
+    [<span class="code-string">Actual Sales</span>],
+    [<span class="code-string">Forecast Sales</span>],
+    [<span class="code-string">Budget Sales</span>],
+    <span class="code-string">0</span>
+)
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="dax-library.html">Bibliothèque DAX</a></li>
+                    <li><a href="data-modeling.html">Modélisation</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
