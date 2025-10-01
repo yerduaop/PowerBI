@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modélisation de Données - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🗄️ Modélisation de Données</h1>
+            <p class="page-subtitle">Star Schema, Snowflake et optimisation du modèle</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Modélisation de Données</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-expert">
+            🔴 Niveau Expert • ⏱️ 30 min de lecture
+        </div>
+        
+        <!-- INTRODUCTION -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📚</span>
+                <h2 class="section-title">Principes Fondamentaux</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Pourquoi la Modélisation est Critique ?</div>
+                <p>Un bon modèle de données = <strong>90% du succès</strong> d'un projet Power BI</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>⚡ <strong>Performance</strong> : 10x plus rapide avec bon modèle</li>
+                    <li>🎯 <strong>Maintenabilité</strong> : Facile à modifier et étendre</li>
+                    <li>✅ <strong>Précision</strong> : Évite erreurs de calcul</li>
+                    <li>🔒 <strong>Sécurité</strong> : RLS plus simple à implémenter</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- STAR SCHEMA -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⭐</span>
+                <h2 class="section-title">Star Schema (Schéma en Étoile)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">⭐ Qu'est-ce que le Star Schema ?</div>
+                <p>Architecture avec une table de FAITS centrale connectée à des tables de DIMENSIONS autour (comme une étoile ⭐)</p>
+                <p style="margin-top: 1rem;"><strong>Structure :</strong></p>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>1 Table de Faits</strong> : Contient mesures et clés étrangères</li>
+                    <li><strong>N Tables de Dimensions</strong> : Contiennent attributs descriptifs</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Exemple Complet</h3>
+            
+            <div class="code-block">
+<span class="code-comment">/*
+═══════════════════════════════════════════════════════════
+                    STAR SCHEMA : E-COMMERCE
+═══════════════════════════════════════════════════════════
+
+                    DimCustomer
+                        │
+                        │ CustomerKey
+                        ↓
+    DimProduct ──→ FactSales ←── DimDate
+                        ↑
+                        │ StoreKey
+                        │
+                    DimStore
+                        
+═══════════════════════════════════════════════════════════
+*/</span>
+
+<span class="code-comment">// TABLE DE FAITS (Centre de l'étoile)</span>
+<span class="code-keyword">FactSales</span>
+├── SalesKey (PK)          <span class="code-comment">// Clé primaire unique</span>
+├── DateKey (FK)           <span class="code-comment">// → DimDate</span>
+├── ProductKey (FK)        <span class="code-comment">// → DimProduct</span>
+├── CustomerKey (FK)       <span class="code-comment">// → DimCustomer</span>
+├── StoreKey (FK)          <span class="code-comment">// → DimStore</span>
+├── <span class="code-string">Quantity</span>              <span class="code-comment">// MESURE</span>
+├── <span class="code-string">UnitPrice</span>            <span class="code-comment">// MESURE</span>
+├── <span class="code-string">Amount</span>               <span class="code-comment">// MESURE</span>
+├── <span class="code-string">Cost</span>                 <span class="code-comment">// MESURE</span>
+└── <span class="code-string">Discount</span>             <span class="code-comment">// MESURE</span>
+
+<span class="code-comment">// TABLES DE DIMENSIONS (Branches de l'étoile)</span>
+
+<span class="code-keyword">DimDate</span>
+├── DateKey (PK)
+├── Date
+├── Year
+├── Quarter
+├── Month
+├── MonthName
+├── Week
+├── DayOfWeek
+├── DayOfWeekName
+├── IsWeekend
+└── FiscalYear
+
+<span class="code-keyword">DimProduct</span>
+├── ProductKey (PK)
+├── ProductName
+├── Category
+├── SubCategory
+├── Brand
+├── Color
+├── Size
+└── UnitCost
+
+<span class="code-keyword">DimCustomer</span>
+├── CustomerKey (PK)
+├── CustomerName
+├── Email
+├── City
+├── State
+├── Country
+├── Segment
+└── FirstPurchaseDate
+
+<span class="code-keyword">DimStore</span>
+├── StoreKey (PK)
+├── StoreName
+├── StoreType
+├── City
+├── State
+├── Country
+└── OpeningDate
+            </div>
+            
+            <div class="info-box info-box-tip" style="margin-top: 2rem;">
+                <div class="info-box-title">✅ Avantages du Star Schema</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>⚡ <strong>Performance optimale</strong> : Queries rapides</li>
+                    <li>🎯 <strong>Intuitive</strong> : Facile à comprendre et naviguer</li>
+                    <li>🔧 <strong>Flexible</strong> : Ajout de dimensions facile</li>
+                    <li>📊 <strong>BI-friendly</strong> : Parfait pour analyses et drill-down</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Règles d'Or du Star Schema</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">1. Une Fact Table = Un Processus Business</div>
+                    <div class="option-description">Ne pas mélanger ventes et inventaire dans même table</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">2. Dimensions Dénormalisées</div>
+                    <div class="option-description">Accepter redondance dans dimensions pour performance</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">3. Clés Surrogates (Entiers)</div>
+                    <div class="option-description">Utiliser INT au lieu de VARCHAR pour clés</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">4. Granularité Cohérente</div>
+                    <div class="option-description">Tous faits au même niveau (ligne de commande, transaction...)</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">5. Dimensions Conformes</div>
+                    <div class="option-description">Réutiliser mêmes dimensions entre facts (DimDate unique)</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">6. Relations 1:N Uniquement</div>
+                    <div class="option-description">Dimension (1) vers Fact (*), jamais l'inverse</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SNOWFLAKE SCHEMA -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">❄️</span>
+                <h2 class="section-title">Snowflake Schema (Flocon de Neige)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">❄️ Qu'est-ce que le Snowflake Schema ?</div>
+                <p>Variante du Star Schema où les dimensions sont <strong>normalisées</strong> (décomposées en sous-tables)</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// EXEMPLE : Dimension Product normalisée</span>
+
+<span class="code-comment">// STAR (Dénormalisé)</span>
+<span class="code-keyword">DimProduct</span>
+├── ProductKey
+├── ProductName
+├── <span class="code-string">Category</span>        <span class="code-comment">// Redondance (répété pour chaque produit)</span>
+└── <span class="code-string">SubCategory</span>    <span class="code-comment">// Redondance</span>
+
+<span class="code-comment">// SNOWFLAKE (Normalisé)</span>
+<span class="code-keyword">DimProduct</span>
+├── ProductKey (PK)
+├── ProductName
+└── SubCategoryKey (FK) ──→ <span class="code-keyword">DimSubCategory</span>
+                                ├── SubCategoryKey (PK)
+                                ├── SubCategoryName
+                                └── CategoryKey (FK) ──→ <span class="code-keyword">DimCategory</span>
+                                                            ├── CategoryKey (PK)
+                                                            └── CategoryName
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Star vs Snowflake : Comparaison</h3>
+            
+            <div class="comparison-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                <div style="background: #e8f5e9; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: var(--success);">⭐ STAR SCHEMA</h4>
+                    <p style="margin-top: 1rem;"><strong>Avantages :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>✅ Plus rapide (moins de joins)</li>
+                        <li>✅ Plus simple à comprendre</li>
+                        <li>✅ Queries plus simples</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Inconvénients :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>❌ Plus de redondance</li>
+                        <li>❌ Taille légèrement plus grande</li>
+                    </ul>
+                </div>
+                
+                <div style="background: #e3f2fd; padding: 1.5rem; border-radius: 8px;">
+                    <h4 style="color: var(--info);">❄️ SNOWFLAKE SCHEMA</h4>
+                    <p style="margin-top: 1rem;"><strong>Avantages :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>✅ Moins de redondance</li>
+                        <li>✅ Intégrité des données</li>
+                        <li>✅ Maintenance hiérarchies</li>
+                    </ul>
+                    <p style="margin-top: 1rem;"><strong>Inconvénients :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>❌ Plus lent (joins multiples)</li>
+                        <li>❌ Plus complexe</li>
+                        <li>❌ Queries DAX compliquées</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-box info-box-warning" style="margin-top: 2rem;">
+                <div class="info-box-title">⚠️ Recommandation Power BI</div>
+                <p><strong>Préférez TOUJOURS Star Schema pour Power BI !</strong></p>
+                <p style="margin-top: 0.5rem;">Power BI compresse extrêmement bien → redondance n'est pas un problème</p>
+                <p>Performance > Normalisation pour BI</p>
+            </div>
+        </section>
+        
+        <!-- GALAXY SCHEMA -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🌌</span>
+                <h2 class="section-title">Galaxy Schema (Multiple Facts)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">🌌 Qu'est-ce que le Galaxy Schema ?</div>
+                <p>Plusieurs tables de faits partageant des dimensions communes (constellation de star schemas)</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">/*
+═══════════════════════════════════════════════════════════
+                    GALAXY SCHEMA : RETAIL
+═══════════════════════════════════════════════════════════
+
+                    DimCustomer ──┐
+                        ↑          │
+                        │          ↓
+    FactSales ←── DimProduct    FactInventory
+        ↑               ↑          ↑
+        │               │          │
+        └──── DimDate ──┴──────────┘
+        
+═══════════════════════════════════════════════════════════
+*/</span>
+
+<span class="code-keyword">FactSales</span>          <span class="code-comment">// Processus : Ventes</span>
+├── DateKey (FK)
+├── ProductKey (FK)
+├── CustomerKey (FK)
+└── Amount
+
+<span class="code-keyword">FactInventory</span>      <span class="code-comment">// Processus : Stock</span>
+├── DateKey (FK)
+├── ProductKey (FK)
+├── StoreKey (FK)
+└── QuantityOnHand
+
+<span class="code-keyword">FactPurchases</span>      <span class="code-comment">// Processus : Achats fournisseurs</span>
+├── DateKey (FK)
+├── ProductKey (FK)
+├── SupplierKey (FK)
+└── PurchaseCost
+
+<span class="code-comment">// Dimensions partagées</span>
+<span class="code-keyword">DimDate</span>       <span class="code-comment">// Utilisée par les 3 facts</span>
+<span class="code-keyword">DimProduct</span>    <span class="code-comment">// Utilisée par les 3 facts</span>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">💡 Quand utiliser Galaxy Schema ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ Plusieurs processus business différents</li>
+                    <li>✅ Granularités différentes (ventes = ligne, inventory = jour)</li>
+                    <li>✅ Sources différentes mais dimensions communes</li>
+                    <li>⚠️ <strong>Attention :</strong> Complexifie relations et calculs</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- RELATIONS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔗</span>
+                <h2 class="section-title">Gestion des Relations</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Types de Relations</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">One-to-Many (1:*) ⭐</div>
+                    <div class="option-description"><strong>STANDARD</strong> : Dimension (1) → Fact (*)</div>
+                    <div class="option-relevance">→ 99% des relations doivent être 1:*</div>
+                    <span class="option-level level-beginner">🟢 Standard</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Many-to-Many (*:*) ⚠️</div>
+                    <div class="option-description">Relations bidirectionnelles complexes</div>
+                    <div class="option-relevance">→ À éviter ! Utiliser table de liaison si nécessaire</div>
+                    <span class="option-level level-expert">🔴 Avancé</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">One-to-One (1:1)</div>
+                    <div class="option-description">Relation 1:1 entre tables</div>
+                    <div class="option-relevance">→ Rare : souvent indique qu'il faut fusionner les tables</div>
+                    <span class="option-level level-intermediate">🟡 Rare</span>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Direction de Filtrage (Cross-Filter)</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// SINGLE DIRECTION (Standard) ⭐</span>
+DimProduct (1) ───[Single]──→ (*) FactSales
+
+<span class="code-comment">// Filtres vont de Dimension → Fact uniquement</span>
+<span class="code-comment">// ✅ Sélectionner un produit filtre les ventes</span>
+<span class="code-comment">// ❌ Sélectionner une vente ne filtre PAS les produits</span>
+
+<span class="code-comment">// BOTH DIRECTIONS (Bidirectionnel) ⚠️</span>
+DimProduct (1) ←──[Both]──→ (*) FactSales
+
+<span class="code-comment">// Filtres vont dans les 2 sens</span>
+<span class="code-comment">// ⚠️ DANGER : Peut créer ambiguïté et lenteurs</span>
+<span class="code-comment">// ⚠️ Éviter sauf cas spécifiques (Many-to-Many)</span>
+            </div>
+            
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">⚠️ Règles des Relations</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>TOUJOURS Single direction</strong> sauf exception</li>
+                    <li>✅ <strong>De Dimension vers Fact</strong> (1 → *)</li>
+                    <li>❌ <strong>Jamais de relations circulaires</strong></li>
+                    <li>❌ <strong>Both direction</strong> uniquement si vraiment nécessaire</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Relations Inactives</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// EXEMPLE : Table Sales avec 2 dates</span>
+<span class="code-keyword">FactSales</span>
+├── OrderDate      <span class="code-comment">// Date commande</span>
+└── ShipDate       <span class="code-comment">// Date expédition</span>
+
+<span class="code-comment">// Problème : Power BI n'accepte qu'UNE relation active entre 2 tables</span>
+DimDate (1) ──[Active]──→ (*) FactSales[OrderDate]
+DimDate (1) ──[Inactive]─→ (*) FactSales[ShipDate]
+
+<span class="code-comment">// Solution : Utiliser USERELATIONSHIP dans DAX</span>
+<span class="code-keyword">Sales by Ship Date</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">USERELATIONSHIP</span>(DimDate[<span class="code-string">DateKey</span>], FactSales[<span class="code-string">ShipDateKey</span>])
+)
+            </div>
+        </section>
+        
+        <!-- ROLE-PLAYING DIMENSIONS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎭</span>
+                <h2 class="section-title">Role-Playing Dimensions</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">🎭 Qu'est-ce qu'une Role-Playing Dimension ?</div>
+                <p>Dimension utilisée plusieurs fois dans contextes différents (DimDate comme OrderDate, ShipDate, DueDate)</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// SOLUTION 1 : Relations Multiples (1 active + N inactives) ⭐</span>
+<span class="code-keyword">DimDate</span> ──[Active]──→ FactSales[OrderDateKey]
+<span class="code-keyword">DimDate</span> ──[Inactive]→ FactSales[ShipDateKey]
+<span class="code-keyword">DimDate</span> ──[Inactive]→ FactSales[DueDateKey]
+
+<span class="code-comment">// DAX avec USERELATIONSHIP</span>
+<span class="code-keyword">Sales by Ship Date</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">USERELATIONSHIP</span>(DimDate[<span class="code-string">DateKey</span>], FactSales[<span class="code-string">ShipDateKey</span>])
+)
+
+<span class="code-comment">// SOLUTION 2 : Vues dupliquées (non recommandé, mais parfois plus simple pour utilisateurs)</span>
+<span class="code-keyword">DimOrderDate</span> ──→ FactSales[OrderDateKey]
+<span class="code-keyword">DimShipDate</span> ──→ FactSales[ShipDateKey]
+<span class="code-keyword">DimDueDate</span> ──→ FactSales[DueDateKey]
+
+<span class="code-comment">// Les 3 sont des COPIES de DimDate (consomme plus de mémoire)</span>
+            </div>
+        </section>
+        
+        <!-- OPTIMISATION -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⚡</span>
+                <h2 class="section-title">Optimisation du Modèle</h2>
+            </div>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">1. Supprimer Colonnes Inutilisées</div>
+                    <div class="option-description">Chaque colonne consomme mémoire, même vide</div>
+                    <div class="option-relevance">→ Power Query : Supprimer dès la source</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">2. Types de Données Optimaux</div>
+                    <div class="option-description">Int32 < Int64 < Decimal < Text</div>
+                    <div class="option-relevance">→ Utiliser type le plus petit possible</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">3. Éviter Colonnes Calculées</div>
+                    <div class="option-description">Stockées en mémoire, privilégier mesures</div>
+                    <div class="option-relevance">→ Mesures calculées à la volée = 0 stockage</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">4. Désactiver Auto Date/Time</div>
+                    <div class="option-description">Crée tables cachées volumineuses</div>
+                    <div class="option-relevance">→ Options > Data Load > décocher</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">5. Réduire Cardinalité</div>
+                    <div class="option-description">Moins de valeurs uniques = meilleure compression</div>
+                    <div class="option-relevance">→ Regrouper catégories si possible</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">6. Bi-Directional Filtres</div>
+                    <div class="option-description">Éviter Both directions sauf nécessaire</div>
+                    <div class="option-relevance">→ Single direction = plus rapide</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CHECKLIST -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">✅</span>
+                <h2 class="section-title">Checklist Modèle Parfait</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <h4 style="color: var(--primary); margin-bottom: 1rem;">Votre modèle est-il optimal ?</h4>
+                
+                <h5 style="color: var(--secondary); margin: 1rem 0 0.5rem;">📐 Structure</h5>
+                <ul style="margin-left: 1.5rem;">
+                    <li>☑️ Star Schema (1 Fact + N Dimensions)</li>
+                    <li>☑️ Relations 1:* de Dimension vers Fact</li>
+                    <li>☑️ Single direction sur toutes relations (sauf exception)</li>
+                    <li>☑️ Pas de relations circulaires</li>
+                    <li>☑️ Table DimDate dédiée et marquée comme Date Table</li>
+                </ul>
+                
+                <h5 style="color: var(--secondary); margin: 1.5rem 0 0.5rem;">⚡ Performance</h5>
+                <ul style="margin-left: 1.5rem;">
+                    <li>☑️ Colonnes inutilisées supprimées</li>
+                    <li>☑️ Types de données optimaux (Int plutôt que Text si possible)</li>
+                    <li>☑️ Auto date/time hierarchy désactivé</li>
+                    <li>☑️ Moins de 10 colonnes calculées (préférer mesures)</li>
+                    <li>☑️ Taille modèle < 1 GB (idéal < 500 MB)</li>
+                </ul>
+                
+                <h5 style="color: var(--secondary); margin: 1.5rem 0 0.5rem;">🏷️ Conventions</h5>
+                <ul style="margin-left: 1.5rem;">
+                    <li>☑️ Tables nommées : Fact[Nom] ou Dim[Nom]</li>
+                    <li>☑️ Clés nommées : [NomTable]Key</li>
+                    <li>☑️ Mesures regroupées dans table dédiée (_Measures)</li>
+                    <li>☑️ Display folders pour organiser mesures</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="dax-library.html">Bibliothèque DAX</a></li>
+                    <li><a href="power-query-m.html">Power Query M</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #475569;">
+            <p style="color: #94a3b8;">Dernière mise à jour : Janvier 2025 • Licence MIT</p>
+        </div>
+    </footer>
+</body>
+</html>
