@@ -4,497 +4,635 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KPI & Métriques - Guide Power BI</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        header h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .back-nav {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .back-nav a {
-            color: #f5576c;
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            background: white;
-            border-radius: 5px;
-            display: inline-block;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .back-nav a:hover {
-            background: #f5576c;
-            color: white;
-        }
-        
-        .visual-card {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-left: 4px solid #f5576c;
-        }
-        
-        .visual-card h2 {
-            color: #f5576c;
-            margin-bottom: 1rem;
-        }
-        
-        .usage-info {
-            background: #fff3e0;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-        
-        .usage-info h3 {
-            color: #e65100;
-            margin-bottom: 0.5rem;
-        }
-        
-        .options-list {
-            background: #f3e5f5;
-            padding: 1rem;
-            border-radius: 5px;
-        }
-        
-        .options-list h3 {
-            color: #6a1b9a;
-            margin-bottom: 1rem;
-        }
-        
-        .option-item {
-            margin-bottom: 1rem;
-            padding-left: 1rem;
-            border-left: 2px solid #ab47bc;
-        }
-        
-        .option-item strong {
-            color: #6a1b9a;
-        }
-        
-        .relevance {
-            font-style: italic;
-            color: #666;
-            margin-top: 0.3rem;
-        }
-        
-        .avoid {
-            background: #ffebee;
-            padding: 0.8rem;
-            border-radius: 5px;
-            margin-top: 1rem;
-            border-left: 4px solid #f44336;
-        }
-        
-        .pro-tip {
-            background: #e1f5fe;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-top: 1rem;
-            border-left: 4px solid #0288d1;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>🎯 KPI & Métriques</h1>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🎯 KPI & Métriques</h1>
+            <p class="page-subtitle">Créez des indicateurs de performance impactants</p>
         </div>
     </header>
     
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>KPI & Métriques</span>
+        </div>
+    </nav>
+    
     <div class="container">
-        <div class="back-nav">
-            <a href="index.html">← Retour à l'accueil</a>
+        <div class="level-badge level-beginner">
+            🟢 Accessible aux débutants • ⏱️ 12 min de lecture
         </div>
         
-        <div class="visual-card">
-            <h2>Card (Carte - Valeur Unique)</h2>
+        <div class="quick-actions">
+            <a href="#card" class="action-btn btn-primary">📇 Card</a>
+            <a href="#kpi" class="action-btn btn-primary">🎯 KPI Visual</a>
+            <a href="#gauge" class="action-btn btn-secondary">📊 Gauge</a>
+            <a href="#dax" class="action-btn btn-secondary">💻 Code DAX</a>
+        </div>
+        
+        <!-- INTRODUCTION -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📚</span>
+                <h2 class="section-title">Introduction aux KPI</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
             
-            <div class="usage-info">
-                <h3>Quand utiliser :</h3>
-                <ul>
-                    <li>Chiffre le plus important</li>
-                    <li>Métrique phare du dashboard</li>
-                    <li><strong>Type de données :</strong> Valeur agrégée unique</li>
-                    <li><strong>Idéal pour :</strong> Mettre en avant métriques clés en haut du tableau de bord</li>
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'un KPI ?</div>
+                <p><strong>KPI (Key Performance Indicator)</strong> = Indicateur Clé de Performance. C'est une métrique qui mesure le succès d'une activité par rapport à un objectif.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Les chiffres les plus importants de votre business.</p>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎯 Anatomie d'un Bon KPI</div>
+                <p>Un KPI efficace comprend :</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>✅ <strong>Valeur actuelle</strong> : Le chiffre principal</li>
+                    <li>✅ <strong>Contexte</strong> : Comparaison (vs période, vs objectif)</li>
+                    <li>✅ <strong>Tendance</strong> : Est-ce que ça monte ou descend ?</li>
+                    <li>✅ <strong>Statut visuel</strong> : Couleur (vert/rouge) pour impact immédiat</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- SECTION CARD -->
+        <section class="section" id="card">
+            <div class="section-header">
+                <span class="section-icon">📇</span>
+                <h2 class="section-title">Card (Carte Simple)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'une Card ?</div>
+                <p>Une <strong>Card</strong> affiche une seule valeur numérique en grande taille. C'est le visuel le plus simple pour mettre en avant UNE métrique importante.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Pour afficher LE chiffre le plus important.</p>
+            </div>
+            
+            <div class="info-box info-box-when">
+                <div class="info-box-title">✅ Quand utiliser une Card ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Métrique phare</strong> : Le chiffre #1 du dashboard</li>
+                    <li><strong>Zone supérieure</strong> : 3-5 cards en haut pour vue d'ensemble</li>
+                    <li><strong>Avec contexte</strong> : Toujours ajouter comparaison ou tendance</li>
                 </ul>
             </div>
             
-            <div class="options-list">
-                <h3>Options et Pertinence :</h3>
-                
-                <div class="option-item">
-                    <strong>Category Label (Libellé de catégorie)</strong><br>
-                    Titre de la métrique
-                    <div class="relevance">→ ⭐ OBLIGATOIRE - sans contexte, le chiffre ne veut rien dire</div>
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Options Principales</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">Category Label</div>
+                    <div class="option-description">Titre de la métrique</div>
+                    <div class="option-relevance">→ ⭐⭐⭐ OBLIGATOIRE : Sans titre, le chiffre ne veut rien dire</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Data Label Format (Format)</strong><br>
-                    Devise, pourcentage, nombre
-                    <div class="relevance">→ Adapter : € pour argent, % pour taux, K/M pour grands nombres</div>
+                <div class="option-card">
+                    <div class="option-name">Data Label Format</div>
+                    <div class="option-description">Format d'affichage</div>
+                    <div class="option-relevance">→ € pour argent, % pour taux, K/M pour grands nombres</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Conditional Formatting</strong><br>
-                    Couleur selon valeur
-                    <div class="relevance">→ Couleur fond/texte selon objectif (rouge si sous target)</div>
+                <div class="option-card">
+                    <div class="option-name">Conditional Formatting</div>
+                    <div class="option-description">Couleur selon valeur/objectif</div>
+                    <div class="option-relevance">→ ⭐⭐ IMPORTANT : Rouge si sous objectif, vert si atteint</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Text Size (Taille police)</strong><br>
-                    Dimensionnement
-                    <div class="relevance">→ Grande et lisible - fait pour être vu rapidement</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Alignment (Alignement)</strong><br>
-                    Gauche/Centre/Droite
-                    <div class="relevance">→ Centré généralement, gauche pour alignement avec autres éléments</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Background Image</strong><br>
-                    Image d'arrière-plan
-                    <div class="relevance">→ Peut ajouter contexte visuel mais ne pas surcharger</div>
+                <div class="option-card">
+                    <div class="option-name">Text Size</div>
+                    <div class="option-description">Taille de police</div>
+                    <div class="option-relevance">→ Grande et visible, c'est fait pour être vu rapidement</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
             </div>
             
-            <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Placer 3-5 Cards en haut du dashboard pour les métriques les plus critiques. Plus de 5 dilue l'attention. Utiliser conditional formatting pour attirer l'œil sur les problèmes.
+            <div class="info-box info-box-warning" style="margin-top: 2rem;">
+                <div class="info-box-title">⚠️ Erreur Courante</div>
+                <p><strong>❌ Ne JAMAIS afficher une valeur seule sans contexte</strong></p>
+                <p style="margin-top: 0.5rem;">Mauvais : "25 000 €"</p>
+                <p style="color: var(--success); margin-top: 0.5rem;">✅ Bon : "25 000 € (↑15% vs mois dernier)"</p>
             </div>
-            
-            <div class="avoid">
-                <strong>⚠️ Éviter :</strong> Trop de cartes (dilue attention), valeurs sans contexte (ajouter comparaison période précédente)
-            </div>
-        </div>
+        </section>
         
-        <div class="visual-card">
-            <h2>Multi-row Card (Carte Multi-Lignes)</h2>
+        <!-- SECTION KPI VISUAL -->
+        <section class="section" id="kpi">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">KPI Visual (Le Plus Complet)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
             
-            <div class="usage-info">
-                <h3>Quand utiliser :</h3>
-                <ul>
-                    <li>Plusieurs métriques liées sans comparaison</li>
-                    <li><strong>Type de données :</strong> Plusieurs valeurs agrégées</li>
-                    <li><strong>Idéal pour :</strong> Ensemble de métriques importantes côte à côte</li>
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'un KPI Visual ?</div>
+                <p>Le <strong>KPI Visual</strong> est le visuel le plus riche pour afficher un indicateur : il combine valeur actuelle, objectif, écart, ET tendance historique dans un seul visuel compact.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Card + Objectif + Tendance = KPI Visual</p>
+            </div>
+            
+            <div class="info-box info-box-when">
+                <div class="info-box-title">✅ Quand utiliser un KPI Visual ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Avec objectifs définis</strong> : Vous avez des targets à atteindre</li>
+                    <li><strong>Suivi dans le temps</strong> : L'historique est pertinent</li>
+                    <li><strong>Dashboards exécutifs</strong> : Vue d'ensemble rapide</li>
+                    <li><strong>3-6 KPI max</strong> : Pas plus pour garder l'impact</li>
                 </ul>
             </div>
             
-            <div class="options-list">
-                <h3>Options et Pertinence :</h3>
-                
-                <div class="option-item">
-                    <strong>Multiple Fields (Champs multiples)</strong><br>
-                    Plusieurs métriques par carte
-                    <div class="relevance">→ Grouper métriques connexes (ventes + marge + volume)</div>
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Configuration Complète</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">Indicator</div>
+                    <div class="option-description">Valeur actuelle (métrique principale)</div>
+                    <div class="option-relevance">→ ⭐ ESSENTIEL : Le chiffre à suivre</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Category Labels (Étiquettes)</strong><br>
-                    Libellés pour chaque métrique
-                    <div class="relevance">→ ⭐ ESSENTIEL pour identifier chaque valeur</div>
+                <div class="option-card">
+                    <div class="option-name">Trend Axis</div>
+                    <div class="option-description">Dimension temporelle pour historique</div>
+                    <div class="option-relevance">→ ⭐ IMPORTANT : Dates pour voir évolution</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Data Labels Format</strong><br>
-                    Format différent par métrique
-                    <div class="relevance">→ Personnaliser (€, %, unités) selon type</div>
+                <div class="option-card">
+                    <div class="option-name">Target Goals</div>
+                    <div class="option-description">Objectif à atteindre</div>
+                    <div class="option-relevance">→ ⭐⭐⭐ CRITIQUE : Donne contexte de performance</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Spacing (Espacement)</strong><br>
-                    Entre cartes et champs
-                    <div class="relevance">→ Ajuster selon densité souhaitée</div>
+                <div class="option-card">
+                    <div class="option-name">Direction</div>
+                    <div class="option-description">Bon/mauvais selon hausse/baisse</div>
+                    <div class="option-relevance">→ Inverser si diminution = positif (ex: taux d'erreur)</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Borders & Shadow (Bordures/Ombres)</strong><br>
-                    Séparation visuelle
-                    <div class="relevance">→ Séparer visuellement les cartes</div>
+                <div class="option-card">
+                    <div class="option-name">Indicator Colors</div>
+                    <div class="option-description">Couleurs selon atteinte objectif</div>
+                    <div class="option-relevance">→ Convention : Vert = atteint, Rouge = non atteint</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Font Size by Field</strong><br>
-                    Taille variable
-                    <div class="relevance">→ Varier pour hiérarchie (valeur > label)</div>
+                <div class="option-card">
+                    <div class="option-name">Trend Line</div>
+                    <div class="option-description">Mini-graphique d'évolution</div>
+                    <div class="option-relevance">→ ⭐ TRÈS UTILE : Contexte historique en un coup d'œil</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
             </div>
             
-            <div class="avoid">
-                <strong>⚠️ Éviter :</strong> Métriques non liées ensemble, besoin de comparaison directe (utiliser graphique)
-            </div>
-        </div>
-        
-        <div class="visual-card">
-            <h2>KPI Visual (Indicateur KPI)</h2>
-            
-            <div class="usage-info">
-                <h3>Quand utiliser :</h3>
-                <ul>
-                    <li>Suivi par rapport à objectifs</li>
-                    <li>Indicateurs de tendance</li>
-                    <li><strong>Type de données :</strong> Valeur réelle, valeur cible, données de tendance</li>
-                    <li><strong>Idéal pour :</strong> Métriques avec objectifs spécifiques à suivre</li>
-                </ul>
-            </div>
-            
-            <div class="options-list">
-                <h3>Options et Pertinence :</h3>
-                
-                <div class="option-item">
-                    <strong>Indicator (Indicateur)</strong><br>
-                    Valeur actuelle
-                    <div class="relevance">→ Chiffre principal à suivre</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Trend Axis (Axe de tendance)</strong><br>
-                    Période pour trend
-                    <div class="relevance">→ Typiquement chronologique pour voir progression</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Target Goals (Objectif)</strong><br>
-                    Valeur cible
-                    <div class="relevance">→ ⭐ CRITIQUE - donne contexte de performance</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Direction (Sens)</strong><br>
-                    Bon/mauvais selon augmentation/diminution
-                    <div class="relevance">→ Inverser si diminution = positif (ex: taux d'erreur)</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Indicator Colors (Couleurs)</strong><br>
-                    Selon atteinte objectif
-                    <div class="relevance">→ Convention : vert = atteint, rouge = non atteint, jaune = proche</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Distance from Goal (Écart)</strong><br>
-                    Afficher écart ou %
-                    <div class="relevance">→ Les deux utiles : "- 5K" ET "95% de l'objectif"</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Trend Line (Ligne de tendance)</strong><br>
-                    Spark line historique
-                    <div class="relevance">→ ⭐ Très utile pour contexte historique</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Transparency (Transparence)</strong><br>
-                    Opacité du trend
-                    <div class="relevance">→ Ajuster pour ne pas surcharger visuellement</div>
-                </div>
-            </div>
-            
-            <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Le KPI Visual est excellent pour tableaux de bord exécutifs. En un coup d'œil : valeur actuelle, objectif, écart, et tendance. Limiter à 3-6 KPI pour garder l'impact.
-            </div>
-            
-            <div class="avoid">
-                <strong>⚠️ Éviter :</strong> Sans objectifs significatifs, métriques où la cible n'a pas de sens
-            </div>
-        </div>
-        
-        <div class="visual-card">
-            <h2>Gauge (Jauge)</h2>
-            
-            <div class="usage-info">
-                <h3>Quand utiliser :</h3>
-                <ul>
-                    <li>Progression vers objectif unique</li>
-                    <li><strong>Type de données :</strong> Valeur actuelle avec min, max, et cible</li>
-                    <li><strong>Idéal pour :</strong> Montrer progression vers but (utiliser avec parcimonie)</li>
-                </ul>
-            </div>
-            
-            <div class="options-list">
-                <h3>Options et Pertinence :</h3>
-                
-                <div class="option-item">
-                    <strong>Minimum Value (Valeur minimum)</strong><br>
-                    Point de départ
-                    <div class="relevance">→ Généralement 0, mais ajuster selon contexte</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Maximum Value (Valeur maximum)</strong><br>
-                    Limite échelle
-                    <div class="relevance">→ Peut être objectif ou valeur réaliste maximale</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Target Value (Valeur cible)</strong><br>
-                    Objectif à atteindre
-                    <div class="relevance">→ Marqueur visuel du but</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Gauge Type (Type)</strong><br>
-                    Arc, cercle complet
-                    <div class="relevance">→ Arc plus compact, cercle plus esthétique</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Start/End Angle (Angles)</strong><br>
-                    Orientation de l'arc
-                    <div class="relevance">→ Personnaliser selon design</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Range Colors (Couleurs zones)</strong><br>
-                    Zones de performance
-                    <div class="relevance">→ Rouge (mauvais) → Jaune (moyen) → Vert (bon)</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Needle (Aiguille)</strong><br>
-                    Style et couleur
-                    <div class="relevance">→ Contraste fort pour visibilité</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Data Labels</strong><br>
-                    Valeur actuelle et/ou %
-                    <div class="relevance">→ Afficher pour précision</div>
-                </div>
-            </div>
-            
-            <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Les Gauges prennent beaucoup d'espace pour une seule métrique. Préférer KPI Visual qui donne plus d'infos dans moins d'espace. Utiliser Gauge uniquement pour LA métrique la plus importante.
-            </div>
-            
-            <div class="avoid">
-                <strong>⚠️ Éviter :</strong> Jauges multiples (difficile comparer), quand barre de progression suffirait
-            </div>
-        </div>
-        
-        <div class="visual-card">
-            <h2>📐 Guide de Conception de Dashboard KPI</h2>
-            
-            <div class="usage-info">
-                <h3>Structure Recommandée :</h3>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>Zone Supérieure (Hero Section)</strong>
-                    <ul>
-                        <li>3-5 Cards avec métriques les plus critiques</li>
-                        <li>Grandes polices, bien espacées</li>
-                        <li>Conditional formatting pour alertes</li>
-                    </ul>
-                    <div class="relevance">→ Ce que l'utilisateur doit voir en premier</div>
-                </div>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>Zone Centrale (Analyse)</strong>
-                    <ul>
-                        <li>2-4 KPI Visuals avec tendances</li>
-                        <li>Graphiques de performance temporelle</li>
-                        <li>Comparaisons vs objectifs</li>
-                    </ul>
-                    <div class="relevance">→ Comprendre la performance et les tendances</div>
-                </div>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>Zone Inférieure (Détails)</strong>
-                    <ul>
-                        <li>Multi-row Cards pour métriques secondaires</li>
-                        <li>Tables avec conditional formatting</li>
-                        <li>Boutons drill-through vers détails</li>
-                    </ul>
-                    <div class="relevance">→ Exploration et analyse approfondie</div>
-                </div>
-            </div>
-            
-            <div class="pro-tip">
-                <strong>💡 Règles d'Or Dashboard KPI :</strong>
-                <ol>
-                    <li><strong>Règle des 5 secondes :</strong> Utilisateur doit comprendre statut global en 5 sec</li>
-                    <li><strong>Pyramide inversée :</strong> Plus important en haut, détails en bas</li>
-                    <li><strong>Couleurs cohérentes :</strong> Rouge = problème, Vert = succès, partout</li>
-                    <li><strong>Contexte obligatoire :</strong> Jamais de chiffre sans comparaison (vs objectif, vs période précédente)</li>
-                    <li><strong>White space :</strong> Ne pas surcharger, laisser respirer</li>
+            <div class="info-box info-box-tip" style="margin-top: 2rem;">
+                <div class="info-box-title">💡 Configuration Optimale</div>
+                <p><strong>Pour un KPI Visual parfait :</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>✓ Indicator : Votre métrique principale</li>
+                    <li>✓ Trend Axis : Date (mois, semaines...)</li>
+                    <li>✓ Target : Objectif fixe ou calculé dynamiquement</li>
+                    <li>✓ Activer Trend Line pour voir l'évolution</li>
+                    <li>✓ Afficher écart en % ET en valeur absolue</li>
                 </ol>
             </div>
-        </div>
+        </section>
         
-        <div class="visual-card">
-            <h2>⚡ Formules DAX Utiles pour KPI</h2>
+        <!-- SECTION GAUGE -->
+        <section class="section" id="gauge">
+            <div class="section-header">
+                <span class="section-icon">📊</span>
+                <h2 class="section-title">Gauge (Jauge)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
             
-            <div class="options-list">
-                <h3>Mesures Essentielles :</h3>
-                
-                <div class="option-item">
-                    <strong>Variance vs Target</strong><br>
-                    <code>Variance = [Actual] - [Target]</code>
-                    <div class="relevance">→ Écart absolu par rapport à l'objectif</div>
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'une Gauge ?</div>
+                <p>Une <strong>Gauge</strong> (jauge) affiche la progression vers un objectif avec une aiguille sur un cadran circulaire, comme un compteur de vitesse.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Pour montrer visuellement "où on en est".</p>
+            </div>
+            
+            <div class="info-box info-box-when">
+                <div class="info-box-title">✅ Quand utiliser une Gauge ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Progression claire</strong> : De 0% à 100% d'un objectif</li>
+                    <li><strong>UN seul KPI très important</strong> : Prend beaucoup d'espace</li>
+                    <li><strong>Impact visuel</strong> : Quand on veut "waouh" effect</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">⚠️ Limitations</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>❌ <strong>Prend beaucoup d'espace</strong> → Préférer KPI Visual (plus d'infos, moins d'espace)</li>
+                    <li>❌ <strong>Jauges multiples</strong> → Difficile de comparer plusieurs jauges</li>
+                    <li>❌ <strong>Précision</strong> → Difficile de lire valeur exacte</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-tip" style="margin-top: 1.5rem;">
+                <div class="info-box-title">💡 Pro Tip : Gauge vs KPI Visual</div>
+                <p><strong>Question à se poser :</strong> "Ai-je vraiment besoin d'une jauge ?"</p>
+                <p style="margin-top: 0.5rem;">🎯 Dans 80% des cas, un <strong>KPI Visual est meilleur</strong> car il affiche plus d'informations dans moins d'espace.</p>
+                <p style="margin-top: 0.5rem;">📊 Utiliser Gauge uniquement pour LE KPI le plus critique du dashboard, pour effet visuel fort.</p>
+            </div>
+        </section>
+        
+        <!-- SECTION MULTI-ROW CARD -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📇</span>
+                <h2 class="section-title">Multi-row Card</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'une Multi-row Card ?</div>
+                <p>Une <strong>Multi-row Card</strong> affiche plusieurs métriques groupées dans une seule carte, côte à côte ou empilées.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Pour grouper des métriques connexes.</p>
+            </div>
+            
+            <div class="info-box info-box-when">
+                <div class="info-box-title">✅ Quand utiliser ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Métriques liées</strong> : Ventes + Marge + Volume ensemble</li>
+                    <li><strong>Comparaisons</strong> : Cette année vs année dernière</li>
+                    <li><strong>Économie d'espace</strong> : Plusieurs chiffres groupés</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- SECTION DAX -->
+        <section class="section" id="dax">
+            <div class="section-header">
+                <span class="section-icon">💻</span>
+                <h2 class="section-title">Mesures DAX pour KPI</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <p style="margin-bottom: 1.5rem;">Voici les mesures DAX essentielles pour créer vos KPI :</p>
+            
+            <h3 style="color: var(--primary); margin-bottom: 1rem;">1️⃣ Mesures de Base</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// Mesure simple</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// Comptage</span>
+<span class="code-keyword">Order Count</span> = <span class="code-function">COUNTROWS</span>(<span class="code-string">Sales</span>)
+
+<span class="code-comment">// Comptage distinct</span>
+<span class="code-keyword">Customer Count</span> = <span class="code-function">DISTINCTCOUNT</span>(<span class="code-string">Sales[CustomerID]</span>)
+
+<span class="code-comment">// Moyenne</span>
+<span class="code-keyword">Average Order Value</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    [<span class="code-string">Order Count</span>],
+    <span class="code-string">0</span>
+)
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">2️⃣ Comparaisons Temporelles</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// Année précédente (Year-over-Year)</span>
+<span class="code-keyword">Sales LY</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">SAMEPERIODLASTYEAR</span>(Calendar[<span class="code-string">Date</span>])
+)
+
+<span class="code-comment">// Mois précédent (Month-over-Month)</span>
+<span class="code-keyword">Sales PM</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATEADD</span>(Calendar[<span class="code-string">Date</span>], <span class="code-string">-1</span>, <span class="code-string">MONTH</span>)
+)
+
+<span class="code-comment">// Croissance YoY en %</span>
+<span class="code-keyword">YoY Growth %</span> = 
+<span class="code-keyword">VAR</span> _Current = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _LastYear = [<span class="code-string">Sales LY</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(
+        _Current - _LastYear,
+        _LastYear,
+        <span class="code-string">0</span>
+    )
+
+<span class="code-comment">// Croissance MoM en %</span>
+<span class="code-keyword">MoM Growth %</span> = 
+<span class="code-keyword">VAR</span> _Current = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _PrevMonth = [<span class="code-string">Sales PM</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(
+        _Current - _PrevMonth,
+        _PrevMonth,
+        <span class="code-string">0</span>
+    )
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">3️⃣ Objectifs & Variance</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// Objectif (peut venir d'une table ou être fixe)</span>
+<span class="code-keyword">Sales Target</span> = <span class="code-function">SUM</span>(<span class="code-string">Targets[TargetAmount]</span>)
+
+<span class="code-comment">// Variance en valeur absolue</span>
+<span class="code-keyword">Variance</span> = [<span class="code-string">Total Sales</span>] - [<span class="code-string">Sales Target</span>]
+
+<span class="code-comment">// % d'atteinte de l'objectif</span>
+<span class="code-keyword">Achievement %</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    [<span class="code-string">Sales Target</span>],
+    <span class="code-string">0</span>
+)
+
+<span class="code-comment">// Variance en %</span>
+<span class="code-keyword">Variance %</span> = 
+<span class="code-keyword">VAR</span> _Actual = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _Target = [<span class="code-string">Sales Target</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(
+        _Actual - _Target,
+        _Target,
+        <span class="code-string">0</span>
+    )
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">4️⃣ Statuts pour Conditional Formatting</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// Statut textuel (pour tooltips ou labels)</span>
+<span class="code-keyword">Performance Status</span> = 
+<span class="code-function">SWITCH</span>(
+    <span class="code-keyword">TRUE</span>(),
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">1.1</span>, <span class="code-string">"🟢 Excellent"</span>,
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">1</span>, <span class="code-string">"🟢 On Target"</span>,
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">0.9</span>, <span class="code-string">"🟡 At Risk"</span>,
+    <span class="code-string">"🔴 Below Target"</span>
+)
+
+<span class="code-comment">// Couleur pour conditional formatting (retourne code couleur)</span>
+<span class="code-keyword">Status Color</span> = 
+<span class="code-function">SWITCH</span>(
+    <span class="code-keyword">TRUE</span>(),
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">1</span>, <span class="code-string">"#10b981"</span>,    <span class="code-comment">// Vert</span>
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">0.9</span>, <span class="code-string">"#f59e0b"</span>,  <span class="code-comment">// Orange</span>
+    <span class="code-string">"#ef4444"</span>                                <span class="code-comment">// Rouge</span>
+)
+
+<span class="code-comment">// Icône selon tendance</span>
+<span class="code-keyword">Trend Icon</span> = 
+<span class="code-function">SWITCH</span>(
+    <span class="code-keyword">TRUE</span>(),
+    [<span class="code-string">YoY Growth %</span>] > <span class="code-string">0.05</span>, <span class="code-string">"↑"</span>,
+    [<span class="code-string">YoY Growth %</span>] < <span class="code-string">-0.05</span>, <span class="code-string">"↓"</span>,
+    <span class="code-string">"→"</span>
+)
+            </div>
+        </section>
+        
+        <!-- SECTION EXEMPLES -->
+        <section class="section" id="exemples">
+            <div class="section-header">
+                <span class="section-icon">📝</span>
+                <h2 class="section-title">Exemples Progressifs</h2>
+            </div>
+            
+            <div class="examples-container">
+                <div class="example example-beginner">
+                    <div class="example-header">
+                        <div class="example-title">🟢 Exemple 1 : Card Simple avec Croissance</div>
+                        <span class="example-badge level-beginner">Débutant</span>
+                    </div>
+                    
+                    <p><strong>Objectif :</strong> Afficher ventes du mois avec % croissance vs mois dernier</p>
+                    
+                    <div class="code-block">
+<span class="code-comment">// 1. Mesures nécessaires</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-keyword">Sales PM</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATEADD</span>(Calendar[<span class="code-string">Date</span>], <span class="code-string">-1</span>, <span class="code-string">MONTH</span>)
+)
+
+<span class="code-keyword">MoM Growth %</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>] - [<span class="code-string">Sales PM</span>],
+    [<span class="code-string">Sales PM</span>],
+    <span class="code-string">0</span>
+)
+
+<span class="code-comment">// 2. Mesure combinée pour affichage</span>
+<span class="code-keyword">Sales with Growth</span> = 
+[<span class="code-string">Total Sales</span>] & <span class="code-string">" ("</span> & 
+<span class="code-function">FORMAT</span>([<span class="code-string">MoM Growth %</span>], <span class="code-string">"+0.0%;-0.0%"</span>) & 
+<span class="code-string">" vs mois dernier)"</span>
+
+<span class="code-comment">// 3. Dans Card : Utiliser [Sales with Growth]</span>
+                    </div>
+                    
+                    <div class="info-box info-box-when">
+                        <strong>✅ Résultat :</strong> "125 450 € (+12.5% vs mois dernier)"
+                    </div>
                 </div>
                 
-                <div class="option-item">
-                    <strong>% Achievement</strong><br>
-                    <code>Achievement % = DIVIDE([Actual], [Target], 0)</code>
-                    <div class="relevance">→ Pourcentage d'atteinte de l'objectif</div>
+                <div class="example example-intermediate">
+                    <div class="example-header">
+                        <div class="example-title">🟡 Exemple 2 : KPI Visual Complet</div>
+                        <span class="example-badge level-intermediate">Intermédiaire</span>
+                    </div>
+                    
+                    <p><strong>Objectif :</strong> KPI Visual avec ventes, objectif, et tendance sur 12 mois</p>
+                    
+                    <div class="code-block">
+<span class="code-comment">// Configuration KPI Visual:</span>
+<span class="code-comment">// ─────────────────────────────────────</span>
+<span class="code-comment">// Indicator   : [Total Sales]</span>
+<span class="code-comment">// Trend Axis  : Calendar[Month]</span>
+<span class="code-comment">// Target Goals: [Sales Target]</span>
+
+<span class="code-comment">// Mesures</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-keyword">Sales Target</span> = 
+<span class="code-comment">// Option 1: Table de targets</span>
+<span class="code-function">SUM</span>(<span class="code-string">Targets[MonthlyTarget]</span>)
+
+<span class="code-comment">// Option 2: Calcul dynamique (ex: +10% vs année dernière)</span>
+<span class="code-comment">// CALCULATE([Total Sales], SAMEPERIODLASTYEAR(...)) * 1.1</span>
+
+<span class="code-comment">// Configuration avancée:</span>
+<span class="code-comment">// ─────────────────────</span>
+<span class="code-comment">// Direction: Good when increasing</span>
+<span class="code-comment">// Trend Line: Activé</span>
+<span class="code-comment">// Colors: Vert si >= 100%, Rouge sinon</span>
+<span class="code-comment">// Distance: Afficher en % ET valeur</span>
+                    </div>
                 </div>
                 
-                <div class="option-item">
-                    <strong>YoY Growth</strong><br>
-                    <code>YoY Growth % = DIVIDE([This Year] - [Last Year], [Last Year], 0)</code>
-                    <div class="relevance">→ Croissance année sur année</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>MoM Growth</strong><br>
-                    <code>MoM Growth % = DIVIDE([This Month] - [Last Month], [Last Month], 0)</code>
-                    <div class="relevance">→ Croissance mois sur mois</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Status Indicator</strong><br>
-                    <code>Status = SWITCH(TRUE(),<br>
-                    &nbsp;&nbsp;[Achievement %] >= 1, "✓ On Track",<br>
-                    &nbsp;&nbsp;[Achievement %] >= 0.9, "⚠ At Risk",<br>
-                    &nbsp;&nbsp;"✗ Off Track")</code>
-                    <div class="relevance">→ Statut catégorique pour conditional formatting</div>
+                <div class="example example-expert">
+                    <div class="example-header">
+                        <div class="example-title">🔴 Exemple 3 : Dashboard KPI Complet</div>
+                        <span class="example-badge level-expert">Expert</span>
+                    </div>
+                    
+                    <p><strong>Objectif :</strong> Zone supérieure avec 5 KPI cards synchronisés avec conditional formatting</p>
+                    
+                    <div class="code-block">
+<span class="code-comment">// STRUCTURE DASHBOARD
+// ═══════════════════════════════════════════
+// Zone Supérieure (Hero): 5 KPI Cards
+// ───────────────────────────────────────────
+// │ Revenus  │ Marge % │ Clients │ Orders │ AOV │
+// ───────────────────────────────────────────</span>
+
+<span class="code-comment">// 1. Mesures principales</span>
+<span class="code-keyword">Total Revenue</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+<span class="code-keyword">Total Cost</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Cost]</span>)
+
+<span class="code-keyword">Margin %</span> = 
+<span class="code-keyword">VAR</span> _Revenue = [<span class="code-string">Total Revenue</span>]
+<span class="code-keyword">VAR</span> _Cost = [<span class="code-string">Total Cost</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(_Revenue - _Cost, _Revenue, <span class="code-string">0</span>)
+
+<span class="code-keyword">Customer Count</span> = <span class="code-function">DISTINCTCOUNT</span>(<span class="code-string">Sales[CustomerID]</span>)
+<span class="code-keyword">Order Count</span> = <span class="code-function">COUNTROWS</span>(<span class="code-string">Sales</span>)
+
+<span class="code-keyword">Average Order Value</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Revenue</span>],
+    [<span class="code-string">Order Count</span>],
+    <span class="code-string">0</span>
+)
+
+<span class="code-comment">// 2. Comparaisons (pour chaque métrique)</span>
+<span class="code-keyword">Revenue LY</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Revenue</span>],
+    <span class="code-function">SAMEPERIODLASTYEAR</span>(Calendar[<span class="code-string">Date</span>])
+)
+
+<span class="code-keyword">Revenue YoY %</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Revenue</span>] - [<span class="code-string">Revenue LY</span>],
+    [<span class="code-string">Revenue LY</span>],
+    <span class="code-string">0</span>
+)
+
+<span class="code-comment">// (Répéter pour Margin %, Customer Count, etc.)</span>
+
+<span class="code-comment">// 3. Mesures d'affichage pour Cards</span>
+<span class="code-keyword">Revenue Display</span> = 
+[<span class="code-string">Total Revenue</span>] & 
+<span class="code-function">UNICHAR</span>(<span class="code-string">10</span>) &                        <span class="code-comment">// Saut de ligne</span>
+<span class="code-function">IF</span>(
+    [<span class="code-string">Revenue YoY %</span>] > <span class="code-string">0</span>,
+    <span class="code-string">"↑ "</span>,
+    <span class="code-string">"↓ "</span>
+) &
+<span class="code-function">FORMAT</span>(<span class="code-function">ABS</span>([<span class="code-string">Revenue YoY %</span>]), <span class="code-string">"0.0%"</span>) &
+<span class="code-string">" YoY"</span>
+
+<span class="code-comment">// 4. Conditional Formatting (pour background de Card)</span>
+<span class="code-keyword">Revenue Status Color</span> = 
+<span class="code-function">IF</span>(
+    [<span class="code-string">Revenue YoY %</span>] >= <span class="code-string">0.1</span>,  <span class="code-comment">// +10% = Excellent</span>
+    <span class="code-string">"#10b981"</span>,                 <span class="code-comment">// Vert</span>
+    <span class="code-function">IF</span>(
+        [<span class="code-string">Revenue YoY %</span>] >= <span class="code-string">0</span>,   <span class="code-comment">// Positif = OK</span>
+        <span class="code-string">"#f59e0b"</span>,             <span class="code-comment">// Orange</span>
+        <span class="code-string">"#ef4444"</span>              <span class="code-comment">// Rouge</span>
+    )
+)
+                    </div>
+                    
+                    <div class="info-box info-box-tip">
+                        <strong>💡 Configuration des Cards :</strong>
+                        <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Créer 5 Cards côte à côte</li>
+                            <li>Utiliser mesures Display pour afficher valeur + croissance</li>
+                            <li>Conditional Formatting > Background color > Field value > [Status Color]</li>
+                            <li>Ajuster tailles pour équilibre visuel</li>
+                            <li>Grouper les 5 cards pour mouvement synchronisé</li>
+                        </ol>
+                    </div>
                 </div>
             </div>
-        </div>
+        </section>
+        
+        <!-- SECTION VOIR AUSSI -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔗</span>
+                <h2 class="section-title">Voir Aussi</h2>
+            </div>
+            
+            <div class="options-grid">
+                <a href="tables-matrix.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">📋 Tables & Matrix</div>
+                    <div class="option-description">Ajouter conditional formatting pour KPI dans tables</div>
+                </a>
+                
+                <a href="best-practices-dashboards.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">💡 Best Practices Dashboards</div>
+                    <div class="option-description">Comment structurer la zone KPI de votre dashboard</div>
+                </a>
+                
+                <a href="dax-library.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">💻 Bibliothèque DAX</div>
+                    <div class="option-description">Plus de mesures Time Intelligence</div>
+                </a>
+            </div>
+        </section>
     </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="quick-reference.html">Quick Reference</a></li>
+                    <li><a href="glossaire.html">Glossaire</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>🎓 Par Niveau</h4>
+                <ul class="footer-links">
+                    <li><a href="beginner-path.html">🟢 Débutant</a></li>
+                    <li><a href="intermediate-path.html">🟡 Intermédiaire</a></li>
+                    <li><a href="expert-path.html">🔴 Expert</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>📊 Visuels</h4>
+                <ul class="footer-links">
+                    <li><a href="tables-matrix.html">Tables & Matrix</a></li>
+                    <li><a href="advanced-visuals.html">Visuels Avancés</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #475569;">
+            <p style="color: #94a3b8;">Dernière mise à jour : Janvier 2025 • Licence MIT • Fait avec ❤️ pour la communauté Power BI</p>
+        </div>
+    </footer>
 </body>
 </html>
