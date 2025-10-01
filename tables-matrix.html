@@ -3,373 +3,512 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tables - Guide Power BI</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f5f5f5;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        header h1 {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-        }
-        
-        .back-nav {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        
-        .back-nav a {
-            color: #667eea;
-            text-decoration: none;
-            padding: 0.5rem 1.5rem;
-            background: white;
-            border-radius: 5px;
-            display: inline-block;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .back-nav a:hover {
-            background: #667eea;
-            color: white;
-        }
-        
-        .visual-card {
-            background: white;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-left: 4px solid #667eea;
-        }
-        
-        .visual-card h2 {
-            color: #764ba2;
-            margin-bottom: 1rem;
-        }
-        
-        .usage-info {
-            background: #e3f2fd;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-        }
-        
-        .usage-info h3 {
-            color: #1976d2;
-            margin-bottom: 0.5rem;
-        }
-        
-        .options-list {
-            background: #fff3e0;
-            padding: 1rem;
-            border-radius: 5px;
-        }
-        
-        .options-list h3 {
-            color: #e65100;
-            margin-bottom: 1rem;
-        }
-        
-        .option-item {
-            margin-bottom: 1rem;
-            padding-left: 1rem;
-            border-left: 2px solid #ff9800;
-        }
-        
-        .option-item strong {
-            color: #e65100;
-        }
-        
-        .relevance {
-            font-style: italic;
-            color: #666;
-            margin-top: 0.3rem;
-        }
-        
-        .avoid {
-            background: #ffebee;
-            padding: 0.8rem;
-            border-radius: 5px;
-            margin-top: 1rem;
-            border-left: 4px solid #f44336;
-        }
-        
-        .pro-tip {
-            background: #e8f5e9;
-            padding: 1rem;
-            border-radius: 5px;
-            margin-top: 1rem;
-            border-left: 4px solid #4caf50;
-        }
-    </style>
+    <title>Tables & Matrix - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>📋 Tables & Matrix</h1>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">📋 Tables & Matrix</h1>
+            <p class="page-subtitle">Maîtrisez les tableaux et la mise en forme conditionnelle</p>
         </div>
     </header>
     
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Tables & Matrix</span>
+        </div>
+    </nav>
+    
     <div class="container">
-        <div class="back-nav">
-            <a href="index.html">← Retour à l'accueil</a>
+        <div class="level-badge level-beginner">
+            🟢 Accessible aux débutants • ⏱️ 15 min de lecture
         </div>
         
-        <div class="visual-card">
-            <h2>Table (Tableau)</h2>
+        <div class="quick-actions">
+            <a href="#table" class="action-btn btn-primary">📊 Table Simple</a>
+            <a href="#matrix" class="action-btn btn-primary">🔢 Matrix</a>
+            <a href="#conditional" class="action-btn btn-secondary">🎨 Conditional Formatting</a>
+            <a href="#exemples" class="action-btn btn-secondary">📝 Exemples</a>
+        </div>
+        
+        <!-- SECTION TABLE -->
+        <section class="section" id="table">
+            <div class="section-header">
+                <span class="section-icon">📊</span>
+                <h2 class="section-title">Table (Tableau Simple)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
             
-            <div class="usage-info">
-                <h3>Quand utiliser :</h3>
-                <ul>
-                    <li>Consultation détaillée de données</li>
-                    <li>Valeurs précises nécessaires</li>
-                    <li>Données de support</li>
-                    <li><strong>Type de données :</strong> Toute donnée structurée</li>
-                    <li><strong>Idéal pour :</strong> Voir nombres exacts, rechercher/filtrer, exporter</li>
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'une Table ?</div>
+                <p>Une <strong>Table</strong> dans Power BI affiche des données en lignes et colonnes, comme dans Excel. C'est le visuel le plus simple pour consulter des valeurs précises.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Idéale pour voir les détails exacts ligne par ligne.</p>
+            </div>
+            
+            <div class="info-box info-box-when">
+                <div class="info-box-title">✅ Quand utiliser une Table ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Consultation de détails</strong> : Voir les valeurs exactes de chaque ligne</li>
+                    <li><strong>Recherche et filtrage</strong> : Trouver une information spécifique</li>
+                    <li><strong>Export de données</strong> : Préparer données pour Excel</li>
+                    <li><strong>Données de support</strong> : Complément à des graphiques</li>
                 </ul>
             </div>
             
-            <div class="options-list">
-                <h3>Options et Pertinence :</h3>
-                
-                <div class="option-item">
-                    <strong>Totals (Totaux)</strong><br>
-                    Ligne de totaux
-                    <div class="relevance">→ Activer pour agrégations, désactiver si déjà agrégé</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Conditional Formatting (Mise en forme conditionnelle)</strong><br>
-                    Barres de données, couleurs, icônes
-                    <div class="relevance">→ ⭐ ESSENTIEL - transforme tableau ennuyeux en insight visuel</div>
-                    <ul style="margin-top: 0.5rem; margin-left: 1rem;">
-                        <li><strong>Background Color:</strong> Échelles de couleurs (heatmap)</li>
-                        <li><strong>Data Bars:</strong> Barres de données (magnitude)</li>
-                        <li><strong>Icons:</strong> Icônes (KPI, tendances)</li>
-                        <li><strong>Font Color:</strong> Couleur de texte selon valeur</li>
-                    </ul>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Interactive Sorting (Tri interactif)</strong><br>
-                    Tri par colonne
-                    <div class="relevance">→ TOUJOURS activer pour exploration</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Style</strong><br>
-                    Lignes alternées, grille, bordures
-                    <div class="relevance">→ Lignes alternées améliorent lisibilité</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Text Size (Taille texte)</strong><br>
-                    Automatique vs fixe
-                    <div class="relevance">→ Automatique pour s'adapter, fixe si espace contrôlé</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Column Headers (En-têtes)</strong><br>
-                    Renommer colonnes
-                    <div class="relevance">→ Noms conviviaux, pas techniques</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Column Width (Largeur colonnes)</strong><br>
-                    Auto vs manuelle
-                    <div class="relevance">→ Manuelle pour contrôle précis</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Web URL</strong><br>
-                    Hyperliens cliquables
-                    <div class="relevance">→ Activer pour liens vers détails</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Word Wrap (Retour à la ligne)</strong><br>
-                    Texte sur plusieurs lignes
-                    <div class="relevance">→ Utile pour descriptions longues</div>
-                </div>
-            </div>
-            
-            <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> La mise en forme conditionnelle est la clé ! Un tableau avec Data Bars + Background Color devient un outil d'analyse puissant où les patterns sautent aux yeux.
-            </div>
-            
-            <div class="avoid">
-                <strong>⚠️ Éviter :</strong> Comme visualisation principale (patterns invisibles), trop de colonnes (> 10)
-            </div>
-        </div>
-        
-        <div class="visual-card">
-            <h2>Matrix (Matrice / Tableau croisé dynamique)</h2>
-            
-            <div class="usage-info">
-                <h3>Quand utiliser :</h3>
-                <ul>
-                    <li>Tableaux croisés dynamiques</li>
-                    <li>Données hiérarchiques avec drill-down</li>
-                    <li><strong>Type de données :</strong> Hiérarchies en lignes ET colonnes</li>
-                    <li><strong>Idéal pour :</strong> Données à deux dimensions (ex: ventes par région ET catégorie)</li>
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">⚠️ Limitations</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>❌ <strong>Comme visuel principal</strong> → Difficile de voir les patterns sans formatage</li>
+                    <li>❌ <strong>Trop de colonnes (> 10)</strong> → Difficile à lire, fragmenter les données</li>
+                    <li>❌ <strong>Sans conditional formatting</strong> → Table "plate" peu informative</li>
                 </ul>
             </div>
             
-            <div class="options-list">
-                <h3>Options et Pertinence :</h3>
-                
-                <div class="option-item">
-                    <strong>Drill Down/Up (Navigation hiérarchique)</strong><br>
-                    Explorer les niveaux
-                    <div class="relevance">→ ⭐ FONCTIONNALITÉ CLÉ - exploration progressive</div>
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Options de Configuration</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">Values (Colonnes)</div>
+                    <div class="option-description">Les champs à afficher dans les colonnes</div>
+                    <div class="option-relevance">→ ⭐ ESSENTIEL : Sélectionner uniquement les colonnes nécessaires</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Expand/Collapse (Développer/Réduire)</strong><br>
-                    Tous les niveaux visibles
-                    <div class="relevance">→ Commencer réduit pour vue d'ensemble</div>
+                <div class="option-card">
+                    <div class="option-name">Totals (Totaux)</div>
+                    <div class="option-description">Ligne de totaux en bas</div>
+                    <div class="option-relevance">→ Activer pour agrégations, désactiver si données déjà agrégées</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Row/Column Subtotals (Sous-totaux)</strong><br>
-                    Lignes et colonnes
-                    <div class="relevance">→ Activer pour contexte, positionner en haut pour visibilité</div>
+                <div class="option-card">
+                    <div class="option-name">Conditional Formatting</div>
+                    <div class="option-description">Couleurs, barres, icônes selon valeurs</div>
+                    <div class="option-relevance">→ ⭐⭐⭐ ESSENTIEL : Transforme table ennuyeuse en outil d'analyse</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Grand Totals (Totaux généraux)</strong><br>
-                    Ligne/colonne finale
-                    <div class="relevance">→ Indispensable pour comprendre le tout</div>
+                <div class="option-card">
+                    <div class="option-name">Interactive Sorting</div>
+                    <div class="option-description">Tri par clic sur colonnes</div>
+                    <div class="option-relevance">→ ⭐ TOUJOURS activer pour exploration</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Conditional Formatting (Mise en forme)</strong><br>
-                    Par valeurs ou hiérarchie
-                    <div class="relevance">→ Heatmap sur valeurs pour patterns rapides</div>
+                <div class="option-card">
+                    <div class="option-name">Style & Grid</div>
+                    <div class="option-description">Lignes alternées, bordures, grille</div>
+                    <div class="option-relevance">→ Lignes alternées améliorent lisibilité</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Stepped Layout (Lignes décalées)</strong><br>
-                    Indentation visuelle
-                    <div class="relevance">→ Améliore compréhension hiérarchie</div>
+                <div class="option-card">
+                    <div class="option-name">Column Headers</div>
+                    <div class="option-description">Renommer et formater en-têtes</div>
+                    <div class="option-relevance">→ Utiliser noms conviviaux, pas codes techniques</div>
+                    <span class="option-level level-beginner">🟢 Débutant</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Grid (Grille)</strong><br>
-                    Lignes horizontales/verticales
-                    <div class="relevance">→ Désactiver pour moderne, activer pour lisibilité</div>
+                <div class="option-card">
+                    <div class="option-name">Column Width</div>
+                    <div class="option-description">Ajuster largeur automatique ou manuelle</div>
+                    <div class="option-relevance">→ Manuelle pour contrôle précis de l'espace</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
                 
-                <div class="option-item">
-                    <strong>Row Headers (En-têtes répétés)</strong><br>
-                    Répéter en-têtes de lignes
-                    <div class="relevance">→ Utile si matrice large avec défilement horizontal</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>Column Subtotals Position</strong><br>
-                    Haut ou bas
-                    <div class="relevance">→ En haut pour voir totaux avant détails</div>
-                </div>
-                
-                <div class="option-item">
-                    <strong>+/- Icons (Icônes expansion)</strong><br>
-                    Personnalisation
-                    <div class="relevance">→ Style selon design global</div>
+                <div class="option-card">
+                    <div class="option-name">Web URL</div>
+                    <div class="option-description">Activer liens cliquables</div>
+                    <div class="option-relevance">→ Utile pour liens vers détails ou documents externes</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
                 </div>
             </div>
             
-            <div class="pro-tip">
-                <strong>💡 Pro Tip:</strong> Matrice + Conditional Formatting + Drill-down = outil d'analyse ultra-puissant. Permet d'aller du général au particulier tout en gardant le contexte visuel.
+            <div class="info-box info-box-tip" style="margin-top: 2rem;">
+                <div class="info-box-title">💡 Pro Tip : Configuration Optimale</div>
+                <p><strong>Pour une Table parfaite :</strong></p>
+                <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>✓ Limiter à 5-8 colonnes visibles</li>
+                    <li>✓ Activer lignes alternées pour lisibilité</li>
+                    <li>✓ TOUJOURS utiliser Conditional Formatting (au moins une colonne)</li>
+                    <li>✓ Activer tri interactif</li>
+                    <li>✓ Utiliser Top N filter si > 50 lignes</li>
+                </ol>
             </div>
-            
-            <div class="avoid">
-                <strong>⚠️ Éviter :</strong> Trop de niveaux hiérarchiques (> 4 devient confus), comparaisons simples (utiliser table)
-            </div>
-        </div>
+        </section>
         
-        <div class="visual-card">
-            <h2>🎨 Techniques de Mise en Forme Conditionnelle</h2>
-            
-            <div class="usage-info">
-                <h3>Types disponibles :</h3>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>1. Background Color (Couleur d'arrière-plan)</strong>
-                    <ul>
-                        <li>Gradient: dégradé de couleurs selon valeurs</li>
-                        <li>Rules: couleurs selon conditions (> 100 = vert)</li>
-                        <li>Field Value: couleur définie par un champ</li>
-                    </ul>
-                    <div class="relevance">→ Idéal pour heatmaps, identifier rapidement hauts/bas</div>
-                </div>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>2. Font Color (Couleur de police)</strong>
-                    <ul>
-                        <li>Similaire à Background mais pour le texte</li>
-                        <li>Attention au contraste !</li>
-                    </ul>
-                    <div class="relevance">→ Utiliser avec Background pour double encodage</div>
-                </div>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>3. Data Bars (Barres de données)</strong>
-                    <ul>
-                        <li>Barres proportionnelles dans cellules</li>
-                        <li>Positive/négative avec couleurs différentes</li>
-                        <li>Option pour afficher uniquement barre (sans valeur)</li>
-                    </ul>
-                    <div class="relevance">→ Excellent pour voir magnitudes sans graphique séparé</div>
-                </div>
-                
-                <div style="margin-top: 1rem;">
-                    <strong>4. Icons (Icônes)</strong>
-                    <ul>
-                        <li>Drapeaux (vert/jaune/rouge)</li>
-                        <li>Flèches (↑↓)</li>
-                        <li>Formes (●▲■)</li>
-                        <li>Notation (★)</li>
-                    </ul>
-                    <div class="relevance">→ Parfait pour KPI, statuts, tendances</div>
-                </div>
+        <!-- SECTION MATRIX -->
+        <section class="section" id="matrix">
+            <div class="section-header">
+                <span class="section-icon">🔢</span>
+                <h2 class="section-title">Matrix (Tableau Croisé)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
             </div>
             
-            <div class="pro-tip">
-                <strong>💡 Best Practice:</strong>
-                <ul>
-                    <li>Ne pas combiner Background + Font Color + Data Bars + Icons (trop chargé)</li>
-                    <li>Max 2 types de formatting par colonne</li>
-                    <li>Utiliser échelles cohérentes (même min/max pour colonnes similaires)</li>
-                    <li>Penser accessibilité : ne pas utiliser uniquement la couleur (ajouter icônes/barres)</li>
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce qu'une Matrix ?</div>
+                <p>Une <strong>Matrix</strong> est l'équivalent d'un tableau croisé dynamique Excel dans Power BI. Elle permet de croiser deux dimensions (lignes ET colonnes) avec des hiérarchies et drill-down.</p>
+                <p style="margin-top: 1rem;"><strong>En un mot :</strong> Pour analyser données à deux dimensions avec exploration hiérarchique.</p>
+            </div>
+            
+            <div class="info-box info-box-when">
+                <div class="info-box-title">✅ Quand utiliser une Matrix ?</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li><strong>Tableaux croisés</strong> : Ventes par Région ET Produit</li>
+                    <li><strong>Hiérarchies</strong> : Année > Trimestre > Mois</li>
+                    <li><strong>Drill-down</strong> : Explorer progressivement les niveaux</li>
+                    <li><strong>Sous-totaux</strong> : Besoin de totaux intermédiaires</li>
                 </ul>
             </div>
-        </div>
+            
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Options Clés de la Matrix</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">Rows & Columns</div>
+                    <div class="option-description">Dimensions en lignes et colonnes</div>
+                    <div class="option-relevance">→ ⭐ ESSENTIEL : Permet le croisement de deux dimensions</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Drill Down/Up</div>
+                    <div class="option-description">Navigation dans hiérarchies</div>
+                    <div class="option-relevance">→ ⭐⭐ FONCTIONNALITÉ CLÉ : Exploration progressive des données</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Expand/Collapse All</div>
+                    <div class="option-description">Développer tous les niveaux</div>
+                    <div class="option-relevance">→ Commencer réduit pour vue d'ensemble, puis expand au besoin</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Subtotals (Row & Column)</div>
+                    <div class="option-description">Sous-totaux lignes et colonnes</div>
+                    <div class="option-relevance">→ ⭐ IMPORTANT : Donne contexte aux valeurs détaillées</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Grand Totals</div>
+                    <div class="option-description">Totaux généraux</div>
+                    <div class="option-relevance">→ Indispensable pour comprendre le total global</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Stepped Layout</div>
+                    <div class="option-description">Indentation visuelle des hiérarchies</div>
+                    <div class="option-relevance">→ Améliore compréhension des niveaux</div>
+                    <span class="option-level level-intermediate">🟡 Intermédiaire</span>
+                </div>
+            </div>
+            
+            <div class="info-box info-box-tip" style="margin-top: 2rem;">
+                <div class="info-box-title">💡 Pro Tip : Matrix + Conditional Formatting</div>
+                <p>La combinaison Matrix + Conditional Formatting + Drill-down est <strong>extrêmement puissante</strong>. Elle permet :</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>✓ Vue d'ensemble avec heatmap au niveau agrégé</li>
+                    <li>✓ Drill-down pour explorer les détails</li>
+                    <li>✓ Patterns visuels immédiats grâce aux couleurs</li>
+                    <li>✓ Contexte avec sous-totaux à chaque niveau</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- SECTION CONDITIONAL FORMATTING -->
+        <section class="section" id="conditional">
+            <div class="section-header">
+                <span class="section-icon">🎨</span>
+                <h2 class="section-title">Conditional Formatting (Le Secret)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">⚡ Pourquoi c'est LE secret ?</div>
+                <p><strong>Le Conditional Formatting transforme une table plate en outil d'analyse visuelle puissant.</strong></p>
+                <p style="margin-top: 0.5rem;">Une table sans formatting = 📋 liste de chiffres</p>
+                <p>Une table avec formatting = 🔥 heatmap interactive révélant tous les patterns !</p>
+            </div>
+            
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Types de Conditional Formatting</h3>
+            
+            <div class="examples-container">
+                <div class="example example-beginner">
+                    <div class="example-header">
+                        <div class="example-title">🟢 1. Background Color (Couleur de fond)</div>
+                        <span class="example-badge level-beginner">Débutant</span>
+                    </div>
+                    
+                    <p><strong>Utilisation :</strong> Créer des heatmaps pour identifier rapidement les valeurs hautes/basses</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Méthodes :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li><strong>Gradient :</strong> Dégradé de couleurs (rouge → jaune → vert)</li>
+                        <li><strong>Rules :</strong> Couleurs selon conditions (> 100 = vert, < 50 = rouge)</li>
+                        <li><strong>Field Value :</strong> Couleur définie par une autre colonne</li>
+                    </ul>
+                    
+                    <div class="info-box info-box-tip" style="margin-top: 1rem;">
+                        <strong>💡 Best Practice :</strong> Utiliser gradient pour métriques continues (ventes, quantités), rules pour statuts ou seuils
+                    </div>
+                </div>
+                
+                <div class="example example-beginner">
+                    <div class="example-header">
+                        <div class="example-title">🟢 2. Data Bars (Barres de données)</div>
+                        <span class="example-badge level-beginner">Débutant</span>
+                    </div>
+                    
+                    <p><strong>Utilisation :</strong> Montrer magnitude visuellement dans la cellule même</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Avantages :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>✓ Voir magnitudes relatives instantanément</li>
+                        <li>✓ Garder les valeurs numériques visibles</li>
+                        <li>✓ Supporte valeurs positives ET négatives (barres bidirectionnelles)</li>
+                    </ul>
+                    
+                    <div class="code-block">
+<span class="code-comment">// Configuration Data Bars</span>
+<span class="code-comment">// 1. Clic droit sur colonne > Conditional formatting > Data bars</span>
+<span class="code-comment">// 2. Choisir couleurs positive (vert) et négative (rouge)</span>
+<span class="code-comment">// 3. Option "Show bar only" pour graphique pur sans chiffres</span>
+                    </div>
+                </div>
+                
+                <div class="example example-intermediate">
+                    <div class="example-header">
+                        <div class="example-title">🟡 3. Icons (Icônes)</div>
+                        <span class="example-badge level-intermediate">Intermédiaire</span>
+                    </div>
+                    
+                    <p><strong>Utilisation :</strong> KPI, statuts, tendances</p>
+                    
+                    <p style="margin-top: 1rem;"><strong>Types d'icônes disponibles :</strong></p>
+                    <ul style="margin-left: 1.5rem;">
+                        <li>🟢🟡🔴 <strong>Drapeaux/Cercles :</strong> Statuts (bon/moyen/mauvais)</li>
+                        <li>↑→↓ <strong>Flèches :</strong> Tendances (hausse/stable/baisse)</li>
+                        <li>●▲■ <strong>Formes :</strong> Niveaux ou priorités</li>
+                        <li>★☆ <strong>Étoiles :</strong> Notations</li>
+                    </ul>
+                    
+                    <div class="info-box info-box-tip" style="margin-top: 1rem;">
+                        <strong>💡 Combiner :</strong> Icons pour statut + Background color pour magnitude = double encodage puissant
+                    </div>
+                </div>
+                
+                <div class="example example-intermediate">
+                    <div class="example-header">
+                        <div class="example-title">🟡 4. Font Color (Couleur de police)</div>
+                        <span class="example-badge level-intermediate">Intermédiaire</span>
+                    </div>
+                    
+                    <p><strong>Utilisation :</strong> Mettre en évidence des valeurs spécifiques</p>
+                    
+                    <div class="info-box info-box-warning">
+                        <strong>⚠️ Attention au contraste !</strong> Si vous utilisez Background Color + Font Color, assurez-vous que le texte reste lisible (contraste minimum 4.5:1)
+                    </div>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--primary); margin-top: 2rem; margin-bottom: 1rem;">Combinaisons Puissantes</h3>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎯 Patterns Recommandés</div>
+                <ol style="margin-left: 1.5rem;">
+                    <li><strong>Heatmap + Data Bars :</strong> Background color pour valeur principale, Data bars pour métrique secondaire</li>
+                    <li><strong>Icons + Background :</strong> Icônes pour statut, couleur pour magnitude</li>
+                    <li><strong>Rules-based Highlighting :</strong> Mettre en évidence uniquement valeurs au-dessus/en-dessous d'un seuil</li>
+                </ol>
+                
+                <p style="margin-top: 1rem;"><strong>⚠️ Ne PAS faire :</strong></p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>❌ Combiner Background + Font + Data Bars + Icons (trop chargé)</li>
+                    <li>❌ Maximum 2 types de formatting par colonne</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- SECTION EXEMPLES -->
+        <section class="section" id="exemples">
+            <div class="section-header">
+                <span class="section-icon">📝</span>
+                <h2 class="section-title">Exemples Progressifs</h2>
+            </div>
+            
+            <div class="examples-container">
+                <div class="example example-beginner">
+                    <div class="example-header">
+                        <div class="example-title">🟢 Exemple 1 : Table Simple avec Heatmap</div>
+                        <span class="example-badge level-beginner">Débutant</span>
+                    </div>
+                    
+                    <p><strong>Objectif :</strong> Créer une table des ventes par produit avec heatmap</p>
+                    
+                    <div class="code-block">
+<span class="code-comment">// 1. Créer la table</span>
+<span class="code-comment">//    Colonnes : ProductName, TotalSales</span>
+
+<span class="code-comment">// 2. Mesure</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// 3. Conditional Formatting sur TotalSales:</span>
+<span class="code-comment">//    - Background color > Gradient</span>
+<span class="code-comment">//    - Minimum = Rouge (valeur la plus basse)</span>
+<span class="code-comment">//    - Maximum = Vert (valeur la plus haute)</span>
+                    </div>
+                    
+                    <div class="info-box info-box-when">
+                        <strong>✅ Résultat :</strong> Les produits les plus vendus apparaissent en vert, les moins vendus en rouge. Pattern instantanément visible !
+                    </div>
+                </div>
+                
+                <div class="example example-intermediate">
+                    <div class="example-header">
+                        <div class="example-title">🟡 Exemple 2 : Table avec Multiple Formatting</div>
+                        <span class="example-badge level-intermediate">Intermédiaire</span>
+                    </div>
+                    
+                    <p><strong>Objectif :</strong> Table avec ventes, marge, et croissance - chacune avec son formatage</p>
+                    
+                    <div class="code-block">
+<span class="code-comment">// Mesures</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-keyword">Margin %</span> = 
+<span class="code-keyword">VAR</span> _Revenue = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _Cost = <span class="code-function">SUM</span>(<span class="code-string">Sales[Cost]</span>)
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(_Revenue - _Cost, _Revenue, <span class="code-string">0</span>)
+
+<span class="code-keyword">YoY Growth %</span> = 
+<span class="code-keyword">VAR</span> _Current = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _LastYear = <span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">SAMEPERIODLASTYEAR</span>(Calendar[<span class="code-string">Date</span>])
+)
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(_Current - _LastYear, _LastYear, <span class="code-string">0</span>)
+
+<span class="code-comment">// Configuration Formatting:</span>
+<span class="code-comment">// Total Sales → Data Bars (bleu)</span>
+<span class="code-comment">// Margin % → Background gradient (rouge-vert)</span>
+<span class="code-comment">// YoY Growth % → Icons (↓ rouge, → orange, ↑ vert)</span>
+                    </div>
+                </div>
+                
+                <div class="example example-expert">
+                    <div class="example-header">
+                        <div class="example-title">🔴 Exemple 3 : Matrix avec Drill-down et Formatting</div>
+                        <span class="example-badge level-expert">Expert</span>
+                    </div>
+                    
+                    <p><strong>Objectif :</strong> Matrix Région > Ville avec ventes et variance vs objectif</p>
+                    
+                    <div class="code-block">
+<span class="code-comment">// Mesures avancées</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-keyword">Sales Target</span> = <span class="code-function">SUM</span>(<span class="code-string">Targets[Amount]</span>)
+
+<span class="code-keyword">Variance %</span> = 
+<span class="code-keyword">VAR</span> _Actual = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _Target = [<span class="code-string">Sales Target</span>]
+<span class="code-keyword">VAR</span> _Variance = <span class="code-function">DIVIDE</span>(_Actual - _Target, _Target, <span class="code-string">0</span>)
+<span class="code-keyword">RETURN</span>
+    _Variance
+
+<span class="code-comment">// Configuration Matrix:</span>
+<span class="code-comment">// Rows: Geography[Region] > Geography[City]</span>
+<span class="code-comment">// Columns: Calendar[Year] > Calendar[Quarter]</span>
+<span class="code-comment">// Values: [Total Sales], [Variance %]</span>
+
+<span class="code-comment">// Formatting:</span>
+<span class="code-comment">// Total Sales → Data Bars</span>
+<span class="code-comment">// Variance % → Rules:</span>
+<span class="code-comment">//   > 10% = Vert foncé</span>
+<span class="code-comment">//   0-10% = Vert clair</span>
+<span class="code-comment"//   -10-0% = Orange</span>
+<span class="code-comment">//   < -10% = Rouge</span>
+                    </div>
+                    
+                    <div class="info-box info-box-tip">
+                        <strong>💡 Usage :</strong> 
+                        <ol style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                            <li>Vue d'ensemble : Voir toutes régions avec heatmap de performance</li>
+                            <li>Drill-down : Cliquer sur région pour voir détail par ville</li>
+                            <li>Drill-across : Cliquer sur année pour voir détail par trimestre</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- SECTION VOIR AUSSI -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔗</span>
+                <h2 class="section-title">Voir Aussi</h2>
+            </div>
+            
+            <div class="options-grid">
+                <a href="kpi-metrics.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🎯 KPI & Métriques</div>
+                    <div class="option-description">Pour afficher métriques clés avec objectifs</div>
+                </a>
+                
+                <a href="dax-basics.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">💻 DAX pour Débutants</div>
+                    <div class="option-description">Apprendre à créer vos premières mesures</div>
+                </a>
+                
+                <a href="best-practices-dashboards.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">💡 Best Practices Dashboards</div>
+                    <div class="option-description">Comment structurer un dashboard efficace</div>
+                </a>
+            </div>
+        </section>
     </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="quick-reference.html">Quick Reference</a></li>
+                    <li><a href="glossaire.html">Glossaire</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>🎓 Par Niveau</h4>
+                <ul class="footer-links">
+                    <li><a href="beginner-path.html">🟢 Débutant</a></li>
+                    <li><a href="intermediate-path.html">🟡 Intermédiaire</a></li>
+                    <li><a href="expert-path.html">🔴 Expert</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h4>📊 Visuels</h4>
+                <ul class="footer-links">
+                    <li><a href="kpi-metrics.html">KPI & Métriques</a></li>
+                    <li><a href="advanced-visuals.html">Visuels Avancés</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #475569;">
+            <p style="color: #94a3b8;">Dernière mise à jour : Janvier 2025 • Licence MIT • Fait avec ❤️ pour la communauté Power BI</p>
+        </div>
+    </footer>
 </body>
 </html>
