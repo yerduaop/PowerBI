@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Query M - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🔄 Power Query M</h1>
+            <p class="page-subtitle">Maîtrisez le langage M pour transformer vos données</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Power Query M</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-expert">
+            🔴 Niveau Expert • ⏱️ 45 min de lecture
+        </div>
+        
+        <!-- INTRODUCTION -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📚</span>
+                <h2 class="section-title">Introduction au Langage M</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce que le Langage M ?</div>
+                <p><strong>M (Mashup)</strong> est le langage fonctionnel de Power Query pour extraire, transformer et charger (ETL) les données.</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>🔄 <strong>Transformation</strong> : Nettoyer, filtrer, pivoter données</li>
+                    <li>🔗 <strong>Connexion</strong> : Se connecter à toutes sources</li>
+                    <li>⚙️ <strong>Automatisation</strong> : Scripts réutilisables et paramétrables</li>
+                    <li>🚀 <strong>Performance</strong> : Query folding vers la source</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎯 Power Query UI vs M Code</div>
+                <p><strong>Chaque action dans l'interface génère du code M automatiquement</strong></p>
+                <p style="margin-top: 0.5rem;">Mais connaître M permet :</p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ Opérations impossibles via UI</li>
+                    <li>✅ Performances optimisées</li>
+                    <li>✅ Requêtes dynamiques et paramétrables</li>
+                    <li>✅ Réutilisation de code (fonctions)</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- SYNTAXE DE BASE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📝</span>
+                <h2 class="section-title">Syntaxe de Base</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Structure d'une Query M</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// STRUCTURE GÉNÉRALE</span>
+<span class="code-keyword">let</span>
+    <span class="code-comment">// Étape 1 : Définir variables et transformations</span>
+    Source = Excel.Workbook(File.Contents(<span class="code-string">"C:\Data.xlsx"</span>)),
+    Sheet1 = Source{[<span class="code-string">Name</span>=<span class="code-string">"Sheet1"</span>]}[<span class="code-string">Data</span>],
+    PromotedHeaders = Table.PromoteHeaders(Sheet1),
+    FilteredRows = Table.SelectRows(PromotedHeaders, <span class="code-keyword">each</span> [<span class="code-string">Amount</span>] > <span class="code-string">100</span>)
+<span class="code-keyword">in</span>
+    <span class="code-comment">// Étape 2 : Retourner le résultat final</span>
+    FilteredRows
+
+<span class="code-comment">/*
+═══════════════════════════════════════════════════════════
+RÈGLES SYNTAXE M :
+═══════════════════════════════════════════════════════════
+1. Structure : let ... in
+2. Chaque ligne = étape (référence précédente)
+3. Sensible à la casse
+4. Virgule entre étapes (pas après dernière)
+5. Pas de point-virgule en fin de ligne
+═══════════════════════════════════════════════════════════
+*/</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Types de Données</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// TYPES PRIMITIFS</span>
+<span class="code-keyword">let</span>
+    TextValue = <span class="code-string">"Hello World"</span>,                <span class="code-comment">// Text</span>
+    NumberValue = <span class="code-string">42</span>,                          <span class="code-comment">// Number</span>
+    DecimalValue = <span class="code-string">3.14</span>,                       <span class="code-comment">// Number (decimal)</span>
+    BoolValue = <span class="code-keyword">true</span>,                         <span class="code-comment">// Logical</span>
+    DateValue = <span class="code-function">#date</span>(<span class="code-string">2025</span>, <span class="code-string">1</span>, <span class="code-string">15</span>),         <span class="code-comment">// Date</span>
+    TimeValue = <span class="code-function">#time</span>(<span class="code-string">14</span>, <span class="code-string">30</span>, <span class="code-string">0</span>),             <span class="code-comment">// Time</span>
+    DateTimeValue = <span class="code-function">#datetime</span>(<span class="code-string">2025</span>, <span class="code-string">1</span>, <span class="code-string">15</span>, <span class="code-string">14</span>, <span class="code-string">30</span>, <span class="code-string">0</span>), <span class="code-comment">// DateTime</span>
+    DurationValue = <span class="code-function">#duration</span>(<span class="code-string">1</span>, <span class="code-string">2</span>, <span class="code-string">30</span>, <span class="code-string">0</span>),  <span class="code-comment">// Duration (1 jour 2h 30min)</span>
+    NullValue = <span class="code-keyword">null</span>                          <span class="code-comment">// Null</span>
+<span class="code-keyword">in</span>
+    TextValue
+
+<span class="code-comment">// TYPES STRUCTURÉS</span>
+<span class="code-keyword">let</span>
+    <span class="code-comment">// Liste (array)</span>
+    MyList = {<span class="code-string">1</span>, <span class="code-string">2</span>, <span class="code-string">3</span>, <span class="code-string">4</span>, <span class="code-string">5</span>},
+    
+    <span class="code-comment">// Record (objet clé-valeur)</span>
+    MyRecord = [
+        <span class="code-string">Name</span> = <span class="code-string">"John"</span>,
+        <span class="code-string">Age</span> = <span class="code-string">30</span>,
+        <span class="code-string">City</span> = <span class="code-string">"Paris"</span>
+    ],
+    
+    <span class="code-comment">// Table</span>
+    MyTable = <span class="code-function">#table</span>(
+        {<span class="code-string">"Name"</span>, <span class="code-string">"Age"</span>},              <span class="code-comment">// Colonnes</span>
+        {
+            {<span class="code-string">"Alice"</span>, <span class="code-string">25</span>},           <span class="code-comment">// Ligne 1</span>
+            {<span class="code-string">"Bob"</span>, <span class="code-string">30</span>}              <span class="code-comment">// Ligne 2</span>
+        }
+    )
+<span class="code-keyword">in</span>
+    MyTable
+            </div>
+        </section>
+        
+        <!-- CONNEXIONS SOURCES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔗</span>
+                <h2 class="section-title">Connexions aux Sources</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// FICHIERS
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Excel</span>
+<span class="code-keyword">let</span>
+    Source = Excel.Workbook(File.Contents(<span class="code-string">"C:\Data\Sales.xlsx"</span>)),
+    Sheet = Source{[<span class="code-string">Item</span>=<span class="code-string">"Sales"</span>, <span class="code-string">Kind</span>=<span class="code-string">"Sheet"</span>]}[<span class="code-string">Data</span>]
+<span class="code-keyword">in</span>
+    Sheet
+
+<span class="code-comment">// CSV</span>
+<span class="code-keyword">let</span>
+    Source = Csv.Document(
+        File.Contents(<span class="code-string">"C:\Data\Sales.csv"</span>),
+        [<span class="code-string">Delimiter</span>=<span class="code-string">","</span>, <span class="code-string">Encoding</span>=<span class="code-string">65001</span>]  <span class="code-comment">// UTF-8</span>
+    ),
+    PromotedHeaders = Table.PromoteHeaders(Source)
+<span class="code-keyword">in</span>
+    PromotedHeaders
+
+<span class="code-comment">// Dossier (tous fichiers)</span>
+<span class="code-keyword">let</span>
+    Source = Folder.Files(<span class="code-string">"C:\Data\Monthly"</span>),
+    FilteredFiles = Table.SelectRows(Source, 
+        <span class="code-keyword">each</span> Text.EndsWith([<span class="code-string">Name</span>], <span class="code-string">".csv"</span>)
+    ),
+    CombinedFiles = Table.Combine(
+        List.Transform(
+            FilteredFiles[<span class="code-string">Content</span>],
+            <span class="code-keyword">each</span> Csv.Document(_)
+        )
+    )
+<span class="code-keyword">in</span>
+    CombinedFiles
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// BASES DE DONNÉES
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// SQL Server</span>
+<span class="code-keyword">let</span>
+    Source = Sql.Database(
+        <span class="code-string">"server-name.database.windows.net"</span>,  <span class="code-comment">// Serveur</span>
+        <span class="code-string">"DatabaseName"</span>                        <span class="code-comment">// Base</span>
+    ),
+    dbo_Sales = Source{[<span class="code-string">Schema</span>=<span class="code-string">"dbo"</span>, <span class="code-string">Item</span>=<span class="code-string">"Sales"</span>]}[<span class="code-string">Data</span>]
+<span class="code-keyword">in</span>
+    dbo_Sales
+
+<span class="code-comment">// SQL Query personnalisée</span>
+<span class="code-keyword">let</span>
+    Source = Sql.Database(<span class="code-string">"server-name"</span>, <span class="code-string">"DB"</span>),
+    CustomSQL = Value.NativeQuery(
+        Source,
+        <span class="code-string">"SELECT 
+            ProductID,
+            SUM(Amount) as TotalSales
+        FROM Sales
+        WHERE OrderDate >= '2024-01-01'
+        GROUP BY ProductID"</span>
+    )
+<span class="code-keyword">in</span>
+    CustomSQL
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// WEB & API
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// REST API avec authentification</span>
+<span class="code-keyword">let</span>
+    url = <span class="code-string">"https://api.example.com/data"</span>,
+    headers = [
+        <span class="code-string">Authorization</span> = <span class="code-string">"Bearer "</span> & <span class="code-function">ApiToken</span>,
+        <span class="code-string">Content-Type</span> = <span class="code-string">"application/json"</span>
+    ],
+    Source = Json.Document(
+        Web.Contents(url, [<span class="code-string">Headers</span>=headers])
+    ),
+    ConvertToTable = Table.FromList(
+        Source, 
+        Splitter.SplitByNothing()
+    ),
+    ExpandedRecords = Table.ExpandRecordColumn(
+        ConvertToTable,
+        <span class="code-string">"Column1"</span>,
+        {<span class="code-string">"id"</span>, <span class="code-string">"name"</span>, <span class="code-string">"value"</span>}
+    )
+<span class="code-keyword">in</span>
+    ExpandedRecords
+
+<span class="code-comment">// Web scraping HTML</span>
+<span class="code-keyword">let</span>
+    Source = Web.Page(
+        Web.Contents(<span class="code-string">"https://example.com/table.html"</span>)
+    ),
+    Tables = Source{<span class="code-string">0</span>}[<span class="code-string">Data</span>]  <span class="code-comment">// Premier tableau trouvé</span>
+<span class="code-keyword">in</span>
+    Tables
+            </div>
+        </section>
+        
+        <!-- TRANSFORMATIONS TABLE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔄</span>
+                <h2 class="section-title">Transformations Table</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// COLONNES
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Renommer colonnes</span>
+Table.RenameColumns(
+    Source,
+    {
+        {<span class="code-string">"OldName1"</span>, <span class="code-string">"NewName1"</span>},
+        {<span class="code-string">"OldName2"</span>, <span class="code-string">"NewName2"</span>}
+    }
+)
+
+<span class="code-comment">// Sélectionner colonnes</span>
+Table.SelectColumns(Source, {<span class="code-string">"Name"</span>, <span class="code-string">"Amount"</span>, <span class="code-string">"Date"</span>})
+
+<span class="code-comment">// Supprimer colonnes</span>
+Table.RemoveColumns(Source, {<span class="code-string">"Column1"</span>, <span class="code-string">"Column2"</span>})
+
+<span class="code-comment">// Ajouter colonne personnalisée</span>
+Table.AddColumn(
+    Source,
+    <span class="code-string">"Full Name"</span>,
+    <span class="code-keyword">each</span> [<span class="code-string">FirstName</span>] & <span class="code-string">" "</span> & [<span class="code-string">LastName</span>],
+    <span class="code-keyword">type text</span>
+)
+
+<span class="code-comment">// Ajouter colonne conditionnelle</span>
+Table.AddColumn(
+    Source,
+    <span class="code-string">"Category"</span>,
+    <span class="code-keyword">each</span> <span class="code-keyword">if</span> [<span class="code-string">Amount</span>] > <span class="code-string">1000</span> <span class="code-keyword">then</span> <span class="code-string">"High"</span>
+         <span class="code-keyword">else if</span> [<span class="code-string">Amount</span>] > <span class="code-string">500</span> <span class="code-keyword">then</span> <span class="code-string">"Medium"</span>
+         <span class="code-keyword">else</span> <span class="code-string">"Low"</span>
+)
+
+<span class="code-comment">// Ajouter colonne index</span>
+Table.AddIndexColumn(Source, <span class="code-string">"Index"</span>, <span class="code-string">1</span>, <span class="code-string">1</span>)  <span class="code-comment">// Commence à 1, incrémente de 1</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// LIGNES
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Filtrer lignes</span>
+Table.SelectRows(
+    Source,
+    <span class="code-keyword">each</span> [<span class="code-string">Amount</span>] > <span class="code-string">100</span> <span class="code-keyword">and</span> [<span class="code-string">Country</span>] = <span class="code-string">"France"</span>
+)
+
+<span class="code-comment">// Supprimer lignes vides</span>
+Table.SelectRows(Source, <span class="code-keyword">each</span> <span class="code-keyword">not</span> List.IsEmpty(List.RemoveNulls(Record.FieldValues(_))))
+
+<span class="code-comment">// Supprimer doublons</span>
+Table.Distinct(Source, {<span class="code-string">"CustomerID"</span>})  <span class="code-comment">// Sur colonne spécifique</span>
+
+<span class="code-comment">// Garder Top N</span>
+Table.FirstN(Source, <span class="code-string">100</span>)
+
+<span class="code-comment">// Trier</span>
+Table.Sort(
+    Source,
+    {
+        {<span class="code-string">"Date"</span>, <span class="code-function">Order.Descending</span>},
+        {<span class="code-string">"Amount"</span>, <span class="code-function">Order.Ascending</span>}
+    }
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// AGRÉGATIONS & GROUPES
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Group By</span>
+Table.Group(
+    Source,
+    {<span class="code-string">"Country"</span>, <span class="code-string">"Product"</span>},  <span class="code-comment">// Colonnes de regroupement</span>
+    {
+        {<span class="code-string">"TotalSales"</span>, <span class="code-keyword">each</span> List.Sum([<span class="code-string">Amount</span>]), <span class="code-keyword">type number</span>},
+        {<span class="code-string">"OrderCount"</span>, <span class="code-keyword">each</span> Table.RowCount(_), <span class="code-keyword">type number</span>},
+        {<span class="code-string">"AvgAmount"</span>, <span class="code-keyword">each</span> List.Average([<span class="code-string">Amount</span>]), <span class="code-keyword">type number</span>}
+    }
+)
+
+<span class="code-comment">// Pivot (colonnes → lignes)</span>
+Table.Pivot(
+    Source,
+    List.Distinct(Source[<span class="code-string">Product</span>]),  <span class="code-comment">// Valeurs qui deviennent colonnes</span>
+    <span class="code-string">"Product"</span>,                         <span class="code-comment">// Colonne à pivoter</span>
+    <span class="code-string">"Amount"</span>,                          <span class="code-comment">// Valeurs</span>
+    <span class="code-function">List.Sum</span>                           <span class="code-comment">// Fonction d'agrégation</span>
+)
+
+<span class="code-comment">// Unpivot (lignes → colonnes)</span>
+Table.UnpivotOtherColumns(
+    Source,
+    {<span class="code-string">"ID"</span>, <span class="code-string">"Name"</span>},         <span class="code-comment">// Colonnes à garder fixes</span>
+    <span class="code-string">"Attribute"</span>,                <span class="code-comment">// Nom colonne pour attributs</span>
+    <span class="code-string">"Value"</span>                     <span class="code-comment">// Nom colonne pour valeurs</span>
+)
+            </div>
+        </section>
+        
+        <!-- FONCTIONS TEXTE ET DATE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">📝</span>
+                <h2 class="section-title">Fonctions Texte & Date</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// TEXTE
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Concaténation</span>
+Text.Combine({[<span class="code-string">FirstName</span>], <span class="code-string">" "</span>, [<span class="code-string">LastName</span>]})
+
+<span class="code-comment">// Majuscule/Minuscule</span>
+Text.Upper(<span class="code-string">"hello"</span>)      <span class="code-comment">// "HELLO"</span>
+Text.Lower(<span class="code-string">"HELLO"</span>)      <span class="code-comment">// "hello"</span>
+Text.Proper(<span class="code-string">"hello world"</span>) <span class="code-comment">// "Hello World"</span>
+
+<span class="code-comment">// Nettoyer espaces</span>
+Text.Trim(<span class="code-string">"  text  "</span>)    <span class="code-comment">// "text"</span>
+Text.Clean(text)          <span class="code-comment">// Supprime caractères non-imprimables</span>
+
+<span class="code-comment">// Extraire</span>
+Text.Start(<span class="code-string">"Hello"</span>, <span class="code-string">3</span>)   <span class="code-comment">// "Hel"</span>
+Text.End(<span class="code-string">"Hello"</span>, <span class="code-string">3</span>)     <span class="code-comment">// "llo"</span>
+Text.Middle(<span class="code-string">"Hello"</span>, <span class="code-string">1</span>, <span class="code-string">3</span>) <span class="code-comment">// "ell" (index 1, longueur 3)</span>
+
+<span class="code-comment">// Remplacer</span>
+Text.Replace(<span class="code-string">"Hello World"</span>, <span class="code-string">"World"</span>, <span class="code-string">"Power BI"</span>)
+
+<span class="code-comment">// Longueur</span>
+Text.Length(<span class="code-string">"Hello"</span>)      <span class="code-comment">// 5</span>
+
+<span class="code-comment">// Contient / Commence / Termine</span>
+Text.Contains(<span class="code-string">"Hello World"</span>, <span class="code-string">"World"</span>)     <span class="code-comment">// true</span>
+Text.StartsWith(<span class="code-string">"Hello"</span>, <span class="code-string">"He"</span>)           <span class="code-comment">// true</span>
+Text.EndsWith(<span class="code-string">"Hello"</span>, <span class="code-string">"lo"</span>)             <span class="code-comment">// true</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// DATES
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Extraire composants</span>
+Date.Year([<span class="code-string">Date</span>])
+Date.Month([<span class="code-string">Date</span>])
+Date.Day([<span class="code-string">Date</span>])
+Date.DayOfWeek([<span class="code-string">Date</span>])       <span class="code-comment">// 0=Dimanche, 1=Lundi...</span>
+Date.DayOfYear([<span class="code-string">Date</span>])
+Date.QuarterOfYear([<span class="code-string">Date</span>])    <span class="code-comment">// 1-4</span>
+
+<span class="code-comment">// Ajouter/Soustraire</span>
+Date.AddDays([<span class="code-string">Date</span>], <span class="code-string">7</span>)
+Date.AddMonths([<span class="code-string">Date</span>], <span class="code-string">1</span>)
+Date.AddYears([<span class="code-string">Date</span>], <span class="code-string">-1</span>)
+
+<span class="code-comment">// Début/Fin période</span>
+Date.StartOfMonth([<span class="code-string">Date</span>])
+Date.EndOfMonth([<span class="code-string">Date</span>])
+Date.StartOfQuarter([<span class="code-string">Date</span>])
+Date.EndOfYear([<span class="code-string">Date</span>])
+
+<span class="code-comment">// Différence entre dates</span>
+Duration.Days([<span class="code-string">EndDate</span>] - [<span class="code-string">StartDate</span>])
+Duration.TotalDays([<span class="code-string">EndDate</span>] - [<span class="code-string">StartDate</span>])  <span class="code-comment">// Avec décimales</span>
+
+<span class="code-comment">// Date actuelle</span>
+Date.From(DateTime.LocalNow())        <span class="code-comment">// Date du jour</span>
+DateTime.LocalNow()                   <span class="code-comment">// Date et heure actuelles</span>
+            </div>
+        </section>
+        
+        <!-- PARAMÈTRES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⚙️</span>
+                <h2 class="section-title">Paramètres & Requêtes Dynamiques</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">⚙️ Qu'est-ce qu'un Paramètre ?</div>
+                <p>Variable réutilisable dans plusieurs queries pour rendre transformations <strong>dynamiques et configurables</strong></p>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Créer et Utiliser Paramètres</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 1 : Créer Paramètre (Gérer Paramètres > Nouveau)
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Paramètre : ServerName</span>
+<span class="code-string">"sql-prod.database.windows.net"</span> <span class="code-keyword">meta</span> [IsParameterQuery=<span class="code-keyword">true</span>, Type=<span class="code-string">"Text"</span>]
+
+<span class="code-comment">// Paramètre : StartDate</span>
+<span class="code-function">#date</span>(<span class="code-string">2024</span>, <span class="code-string">1</span>, <span class="code-string">1</span>) <span class="code-keyword">meta</span> [IsParameterQuery=<span class="code-keyword">true</span>, Type=<span class="code-string">"Date"</span>]
+
+<span class="code-comment">// Paramètre : TopN</span>
+<span class="code-string">10</span> <span class="code-keyword">meta</span> [IsParameterQuery=<span class="code-keyword">true</span>, Type=<span class="code-string">"Number"</span>]
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 2 : Utiliser Paramètres dans Queries
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Connexion SQL dynamique</span>
+<span class="code-keyword">let</span>
+    Source = Sql.Database(
+        <span class="code-function">ServerName</span>,      <span class="code-comment">// Paramètre</span>
+        <span class="code-function">DatabaseName</span>     <span class="code-comment">// Paramètre</span>
+    ),
+    Table = Source{[<span class="code-string">Schema</span>=<span class="code-string">"dbo"</span>, <span class="code-string">Item</span>=<span class="code-function">TableName</span>]}[<span class="code-string">Data</span>]  <span class="code-comment">// Paramètre</span>
+<span class="code-keyword">in</span>
+    Table
+
+<span class="code-comment">// Filtre de date dynamique</span>
+<span class="code-keyword">let</span>
+    Source = ...,
+    FilteredRows = Table.SelectRows(
+        Source,
+        <span class="code-keyword">each</span> [<span class="code-string">OrderDate</span>] >= <span class="code-function">StartDate</span> <span class="code-keyword">and</span> [<span class="code-string">OrderDate</span>] <= <span class="code-function">EndDate</span>
+    )
+<span class="code-keyword">in</span>
+    FilteredRows
+
+<span class="code-comment">// Top N dynamique</span>
+<span class="code-keyword">let</span>
+    Source = ...,
+    Sorted = Table.Sort(Source, {{<span class="code-string">"Amount"</span>, <span class="code-function">Order.Descending</span>}}),
+    TopN = Table.FirstN(Sorted, <span class="code-function">TopN</span>)  <span class="code-comment">// Paramètre</span>
+<span class="code-keyword">in</span>
+    TopN
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// PARAMÈTRES ENVIRONNEMENT (DEV/TEST/PROD)
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Créer paramètres pour chaque environnement</span>
+<span class="code-keyword">Environment</span> = <span class="code-string">"PROD"</span>  <span class="code-comment">// Changer en "DEV", "TEST", "PROD"</span>
+
+<span class="code-keyword">ServerName</span> = 
+    <span class="code-keyword">if</span> <span class="code-function">Environment</span> = <span class="code-string">"DEV"</span> <span class="code-keyword">then</span> <span class="code-string">"sql-dev.db.com"</span>
+    <span class="code-keyword">else if</span> <span class="code-function">Environment</span> = <span class="code-string">"TEST"</span> <span class="code-keyword">then</span> <span class="code-string">"sql-test.db.com"</span>
+    <span class="code-keyword">else</span> <span class="code-string">"sql-prod.db.com"</span>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">💡 Avantages Paramètres</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>Réutilisabilité</strong> : Modifier une fois, appliqué partout</li>
+                    <li>✅ <strong>Maintenance</strong> : Changement serveur/table facile</li>
+                    <li>✅ <strong>Environnements</strong> : DEV/TEST/PROD avec mêmes queries</li>
+                    <li>✅ <strong>Sécurité</strong> : Credentials gérés séparément</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- FONCTIONS PERSONNALISÉES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔧</span>
+                <h2 class="section-title">Fonctions Personnalisées</h2>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// CRÉER FONCTION RÉUTILISABLE
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Fonction : Nettoyer texte</span>
+<span class="code-keyword">let</span>
+    CleanText = (inputText <span class="code-keyword">as text</span>) <span class="code-keyword">as text</span> =>
+        <span class="code-keyword">let</span>
+            Trimmed = Text.Trim(inputText),
+            Proper = Text.Proper(Trimmed),
+            NoExtraSpaces = Text.Combine(
+                Splitter.SplitTextByWhitespace()(Proper),
+                <span class="code-string">" "</span>
+            )
+        <span class="code-keyword">in</span>
+            NoExtraSpaces
+<span class="code-keyword">in</span>
+    CleanText
+
+<span class="code-comment">// Utilisation</span>
+Table.AddColumn(
+    Source,
+    <span class="code-string">"CleanedName"</span>,
+    <span class="code-keyword">each</span> <span class="code-function">CleanText</span>([<span class="code-string">Name</span>])
+)
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// FONCTION AVANCÉE : Récupérer données API paginées
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">let</span>
+    GetAllPages = (url <span class="code-keyword">as text</span>) <span class="code-keyword">as table</span> =>
+        <span class="code-keyword">let</span>
+            GetPage = (pageUrl) =>
+                <span class="code-keyword">let</span>
+                    Response = Json.Document(Web.Contents(pageUrl)),
+                    Data = Response[<span class="code-string">data</span>],
+                    NextPage = <span class="code-keyword">try</span> Response[<span class="code-string">next_page</span>] <span class="code-keyword">otherwise null</span>
+                <span class="code-keyword">in</span>
+                    {Data, NextPage},
+            
+            GeneratePages = <span class="code-function">List.Generate</span>(
+                () => GetPage(url),                      <span class="code-comment">// Initial</span>
+                <span class="code-keyword">each</span> _{<span class="code-string">1</span>} <> <span class="code-keyword">null</span>,                    <span class="code-comment">// Condition</span>
+                <span class="code-keyword">each</span> GetPage(_{<span class="code-string">1</span>}),                   <span class="code-comment">// Next</span>
+                <span class="code-keyword">each</span> _{<span class="code-string">0</span>}                            <span class="code-comment">// Résultat</span>
+            ),
+            
+            AllData = List.Combine(GeneratePages),
+            ToTable = Table.FromList(AllData, Splitter.SplitByNothing())
+        <span class="code-keyword">in</span>
+            ToTable
+<span class="code-keyword">in</span>
+    GetAllPages
+            </div>
+        </section>
+        
+        <!-- PERFORMANCE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⚡</span>
+                <h2 class="section-title">Optimisation Performance</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🚀 Query Folding</div>
+                <p><strong>Le Query Folding</strong> = Power Query transmet transformations à la source de données (SQL, etc.)</p>
+                <p style="margin-top: 0.5rem;">Au lieu de récupérer toutes données puis filtrer dans Power BI :</p>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ Filtres/Tris/Joins exécutés sur le serveur SQL</li>
+                    <li>✅ Seulement résultat final transféré</li>
+                    <li>✅ 10-100x plus rapide !</li>
+                </ul>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// OPÉRATIONS QUI SUPPORTENT QUERY FOLDING ✅
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Filtres</span>
+Table.SelectRows(Source, <span class="code-keyword">each</span> [<span class="code-string">Amount</span>] > <span class="code-string">100</span>)  <span class="code-comment">// ✅ Folding</span>
+
+<span class="code-comment">// Sélection colonnes</span>
+Table.SelectColumns(Source, {<span class="code-string">"ID"</span>, <span class="code-string">"Name"</span>})    <span class="code-comment">// ✅ Folding</span>
+
+<span class="code-comment">// Tri</span>
+Table.Sort(Source, {{<span class="code-string">"Date"</span>, <span class="code-function">Order.Descending</span>}})  <span class="code-comment">// ✅ Folding</span>
+
+<span class="code-comment">// Jointures</span>
+Table.NestedJoin(...)                          <span class="code-comment">// ✅ Folding</span>
+
+<span class="code-comment">// Group By</span>
+Table.Group(...)                                <span class="code-comment">// ✅ Folding</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// OPÉRATIONS QUI CASSENT QUERY FOLDING ❌
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Colonnes personnalisées M</span>
+Table.AddColumn(Source, <span class="code-string">"Custom"</span>, <span class="code-keyword">each</span> ...)  <span class="code-comment">// ❌ Casse folding</span>
+
+<span class="code-comment">// Merge queries complexes</span>
+Table.Combine(...)                             <span class="code-comment">// ❌ Parfois casse</span>
+
+<span class="code-comment">// Fonctions texte M spécifiques</span>
+Text.Proper([<span class="code-string">Name</span>])                         <span class="code-comment">// ❌ Casse folding</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// VÉRIFIER QUERY FOLDING
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Clic droit sur dernière étape > "View Native Query"
+// Si option grisée = Query Folding cassé !</span>
+            </div>
+            
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">⚠️ Optimisation Best Practices</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>Filtrer tôt</strong> : Filtres en début de query</li>
+                    <li>✅ <strong>Sélectionner colonnes</strong> : Ne garder que nécessaire</li>
+                    <li>✅ <strong>Préférer SQL natif</strong> : Pour transformations complexes</li>
+                    <li>✅ <strong>Éviter colonnes calculées M</strong> si possible (préférer SQL ou DAX)</li>
+                    <li>❌ <strong>Ne pas charger données inutiles</strong></li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="data-modeling.html">Modélisation Données</a></li>
+                    <li><a href="dax-library.html">Bibliothèque DAX</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
