@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visuels Avancés - Guide Power BI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-nav {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .back-nav a {
+            color: #fa709a;
+            text-decoration: none;
+            padding: 0.5rem 1.5rem;
+            background: white;
+            border-radius: 5px;
+            display: inline-block;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .back-nav a:hover {
+            background: #fa709a;
+            color: white;
+        }
+        
+        .visual-card {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-left: 4px solid #fa709a;
+        }
+        
+        .visual-card h2 {
+            color: #fa709a;
+            margin-bottom: 1rem;
+        }
+        
+        .usage-info {
+            background: #fff3e0;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+        
+        .usage-info h3 {
+            color: #e65100;
+            margin-bottom: 0.5rem;
+        }
+        
+        .options-list {
+            background: #f3e5f5;
+            padding: 1rem;
+            border-radius: 5px;
+        }
+        
+        .options-list h3 {
+            color: #6a1b9a;
+            margin-bottom: 1rem;
+        }
+        
+        .option-item {
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-left: 2px solid #ab47bc;
+        }
+        
+        .option-item strong {
+            color: #6a1b9a;
+        }
+        
+        .relevance {
+            font-style: italic;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+        
+        .avoid {
+            background: #ffebee;
+            padding: 0.8rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #f44336;
+        }
+        
+        .pro-tip {
+            background: #e1f5fe;
+            padding: 1rem;
+            border-radius: 5px;
+            margin-top: 1rem;
+            border-left: 4px solid #0288d1;
+        }
+        
+        .use-case {
+            background: #e8f5e9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>🚀 Visuels Avancés</h1>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="back-nav">
+            <a href="index.html">← Retour à l'accueil</a>
+        </div>
+        
+        <div class="visual-card">
+            <h2>Scatter Chart (Nuage de Points)</h2>
+            
+            <div class="usage-info">
+                <h3>Quand utiliser :</h3>
+                <ul>
+                    <li>Corrélation entre 2-3 variables</li>
+                    <li>Détection d'outliers</li>
+                    <li>Identification de clusters</li>
+                    <li><strong>Type de données :</strong> Numériques sur deux axes</li>
+                    <li><strong>Idéal pour :</strong> Analyser relations entre métriques</li>
+                </ul>
+            </div>
+            
+            <div class="use-case">
+                <strong>💡 Cas d'usage typiques :</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Prix vs Qualité des produits</li>
+                    <li>Coût d'acquisition vs Lifetime Value des clients</li>
+                    <li>Performance vs Expérience des employés</li>
+                    <li>Budget vs Résultats campagnes marketing</li>
+                </ul>
+            </div>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>X Axis & Y Axis (Axes X et Y)</strong><br>
+                    Variables à comparer
+                    <div class="relevance">→ Choisir métriques avec relation potentielle</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Size (Taille des bulles)</strong><br>
+                    3e dimension via taille
+                    <div class="relevance">→ ⭐ Ajoute profondeur d'analyse (ex: volume, population)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Legend (Légende / Catégories)</strong><br>
+                    Colorer par catégorie
+                    <div class="relevance">→ ⭐ TRÈS utile pour voir clusters et segments</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Marker Shape (Forme des marqueurs)</strong><br>
+                    Varier formes
+                    <div class="relevance">→ Double encodage (couleur + forme) améliore lisibilité</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Trend Line (Ligne de tendance)</strong><br>
+                    Régression linéaire
+                    <div class="relevance">→ ⭐ Excellente pour montrer corrélation générale</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Symmetry Shading (Axe symétrique)</strong><br>
+                    Même échelle X et Y
+                    <div class="relevance">→ Pour comparaisons 1:1 (budget vs réel, forecast vs actual)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Constant Lines (Lignes de référence)</strong><br>
+                    Moyennes, médianes, seuils
+                    <div class="relevance">→ Diviser en quadrants pour analyse (ex: high value/low cost)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Zoom Selection (Zoom)</strong><br>
+                    Sélection pour zoomer
+                    <div class="relevance">→ Utile pour nombreux points de données</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Play Axis (Animation)</strong><br>
+                    Variable temporelle
+                    <div class="relevance">→ ⭐ Puissante pour voir évolution des relations dans le temps</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Saturation (Saturation couleur)</strong><br>
+                    Intensité selon métrique
+                    <div class="relevance">→ 4e dimension (taille + couleur + saturation)</div>
+                </div>
+            </div>
+            
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Scatter plot avec quadrants (lignes de référence aux moyennes) permet d'identifier rapidement les opportunités (high value, low effort) et les problèmes (low value, high effort).
+            </div>
+            
+            <div class="avoid">
+                <strong>⚠️ Éviter :</strong> Pas de relation attendue entre variables, trop de points (> 10K devient confus), données catégorielles
+            </div>
+        </div>
+        
+        <div class="visual-card">
+            <h2>Waterfall Chart (Graphique en Cascade)</h2>
+            
+            <div class="usage-info">
+                <h3>Quand utiliser :</h3>
+                <ul>
+                    <li>Impact séquentiel sur valeur de départ</li>
+                    <li>Contributions positives/négatives</li>
+                    <li>Analyse de variance</li>
+                    <li><strong>Type de données :</strong> Transactions ou changements séquentiels</li>
+                    <li><strong>Idéal pour :</strong> Expliquer passage de A à B</li>
+                </ul>
+            </div>
+            
+            <div class="use-case">
+                <strong>💡 Cas d'usage typiques :</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>P&L Statement (Résultat Net = Revenus - Coûts - Taxes...)</li>
+                    <li>Budget vs Actual variance</li>
+                    <li>Cash flow (Solde début → transactions → Solde fin)</li>
+                    <li>Pipeline de ventes (Leads → Qualifiés → Opportunités → Closed)</li>
+                    <li>Inventory flow (Stock initial → Entrées → Sorties → Stock final)</li>
+                </ul>
+            </div>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>Category (Catégorie)</strong><br>
+                    Séquence d'étapes
+                    <div class="relevance">→ Ordre CRITIQUE - doit suivre logique narrative</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Y Axis (Valeur)</strong><br>
+                    Montant du changement
+                    <div class="relevance">→ Positif ou négatif selon contribution</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Breakdown (Ventilation)</strong><br>
+                    Sous-catégories
+                    <div class="relevance">→ Pour détailler une étape complexe</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Colors (Couleurs)</strong><br>
+                    Augmentation/Diminution/Total
+                    <div class="relevance">→ Convention : Vert (+), Rouge (-), Bleu (totaux)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Show Connector (Connecteurs)</strong><br>
+                    Lignes entre barres
+                    <div class="relevance">→ ⭐ ACTIVER - montre la continuité cumulative</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Sentiment (Sens)</strong><br>
+                    Inverser si diminution = positif
+                    <div class="relevance">→ Adapter au contexte (réduction coûts = positif)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Data Labels (Étiquettes)</strong><br>
+                    Valeurs sur barres
+                    <div class="relevance">→ Afficher pour comprendre contribution de chaque élément</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Show Total (Afficher totaux)</strong><br>
+                    Totaux intermédiaires
+                    <div class="relevance">→ Utile pour groupes logiques (sous-totaux trimestriels)</div>
+                </div>
+            </div>
+            
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Pour créer un waterfall, votre table doit avoir une colonne indiquant si c'est un "Début", "Augmentation", "Diminution", ou "Total". Utiliser DAX pour classifier correctement.
+            </div>
+            
+            <div class="avoid">
+                <strong>⚠️ Éviter :</strong> Comparaisons simples (utiliser bar chart), ordre non séquentiel, trop d'étapes (> 15)
+            </div>
+        </div>
+        
+        <div class="visual-card">
+            <h2>Funnel Chart (Graphique en Entonnoir)</h2>
+            
+            <div class="usage-info">
+                <h3>Quand utiliser :</h3>
+                <ul>
+                    <li>Processus séquentiels à valeurs décroissantes</li>
+                    <li>Tunnels de conversion</li>
+                    <li>Identification des points de friction</li>
+                    <li><strong>Type de données :</strong> Étapes de processus avec valeurs numériques</li>
+                    <li><strong>Idéal pour :</strong> Drop-off dans pipeline</li>
+                </ul>
+            </div>
+            
+            <div class="use-case">
+                <strong>💡 Cas d'usage typiques :</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Sales Pipeline (Leads → Qualified → Proposal → Negotiation → Closed)</li>
+                    <li>E-commerce Funnel (Visites → Paniers → Checkout → Paiement → Confirmation)</li>
+                    <li>Recrutement (Candidatures → CV retenus → Entretiens → Offres → Embauches)</li>
+                    <li>Customer Journey (Awareness → Consideration → Purchase → Retention)</li>
+                </ul>
+            </div>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>Category (Catégorie)</strong><br>
+                    Étapes du processus
+                    <div class="relevance">→ Ordre DOIT suivre le parcours réel (haut → bas)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Values (Valeurs)</strong><br>
+                    Quantité à chaque étape
+                    <div class="relevance">→ Généralement décroissante (sinon revoir le processus)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Data Labels (Étiquettes)</strong><br>
+                    Valeurs et/ou pourcentages
+                    <div class="relevance">→ ⭐ Afficher LES DEUX : valeur absolue ET % de conversion</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Colors (Couleurs)</strong><br>
+                    Par étape ou gradient
+                    <div class="relevance">→ Gradient pour fluidité, couleurs distinctes si étapes très différentes</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Conversion Rate (Taux de conversion)</strong><br>
+                    % entre étapes
+                    <div class="relevance">→ ⭐ ESSENTIEL - l'insight clé (où perd-on le plus ?)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Highlighting (Mise en évidence)</strong><br>
+                    Étape problématique
+                    <div class="relevance">→ Couleur différente pour étape avec plus forte perte</div>
+                </div>
+            </div>
+            
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Créer mesures DAX pour calculer automatiquement les taux de conversion entre chaque étape. Ajouter conditional formatting pour mettre en rouge les taux < seuil acceptable.
+            </div>
+            
+            <div class="avoid">
+                <strong>⚠️ Éviter :</strong> Étapes non séquentielles, processus qui n'a pas nécessairement de diminution, comparaisons entre périodes (utiliser bar chart)
+            </div>
+        </div>
+        
+        <div class="visual-card">
+            <h2>Treemap (Carte Arborescente)</h2>
+            
+            <div class="usage-info">
+                <h3>Quand utiliser :</h3>
+                <ul>
+                    <li>Partie-tout hiérarchique avec nombreuses catégories</li>
+                    <li>Tailles relatives visuelles</li>
+                    <li>Double encodage (taille + couleur)</li>
+                    <li><strong>Type de données :</strong> Catégorielles avec hiérarchies</li>
+                    <li><strong>Idéal pour :</strong> 10-100 catégories, proportions ET hiérarchie</li>
+                </ul>
+            </div>
+            
+            <div class="use-case">
+                <strong>💡 Cas d'usage typiques :</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Portefeuille de produits (Catégorie > Sous-catégorie > Produit)</li>
+                    <li>Budget allocation (Département > Équipe > Projet)</li>
+                    <li>Market share (Industrie > Entreprise > Marque)</li>
+                    <li>File system visualization (dossiers et fichiers)</li>
+                </ul>
+            </div>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>Group (Hiérarchie)</strong><br>
+                    Niveaux de regroupement
+                    <div class="relevance">→ 2-3 niveaux optimal (Catégorie > Sous-catégorie > Item)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Values (Valeurs)</strong><br>
+                    Taille des rectangles
+                    <div class="relevance">→ Métrique principale (revenus, volume, etc.)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Color Saturation (Saturation)</strong><br>
+                    Intensité selon métrique secondaire
+                    <div class="relevance">→ ⭐ Excellente pour double encodage (taille = ventes, couleur = marge)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Legend (Légende)</strong><br>
+                    Si couleurs par catégorie
+                    <div class="relevance">→ Nécessaire si couleurs catégorielles</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Data Labels (Étiquettes)</strong><br>
+                    Nom et valeur
+                    <div class="relevance">→ Afficher sur grands rectangles uniquement pour clarté</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Borders (Bordures)</strong><br>
+                    Entre rectangles
+                    <div class="relevance">→ Fines pour séparation sans surcharge</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Tooltips</strong><br>
+                    Détails au survol
+                    <div class="relevance">→ ⭐ IMPORTANT car étiquettes limitées sur petits rectangles</div>
+                </div>
+            </div>
+            
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Treemap est excellent pour montrer qui "possède" le plus d'espace dans votre business. Exemple: Taille = Revenus, Couleur = Profitabilité. On voit ainsi les "gros perdants" (grands rectangles rouges) vs les "petits gagnants" (petits rectangles verts).
+            </div>
+            
+            <div class="avoid">
+                <strong>⚠️ Éviter :</strong> Comparaisons précises (difficile comparer rectangles), catégories de tailles très similaires (devient uniforme), trop de niveaux (> 4)
+            </div>
+        </div>
+        
+        <div class="visual-card">
+            <h2>Map & Filled Map (Cartes Géographiques)</h2>
+            
+            <div class="usage-info">
+                <h3>Quand utiliser :</h3>
+                <ul>
+                    <li>Patterns géographiques</li>
+                    <li>Comparaisons régionales</li>
+                    <li>Distribution spatiale</li>
+                    <li><strong>Type de données :</strong> Localisation + métriques</li>
+                    <li><strong>Idéal pour :</strong> Dimension géographique clé de l'analyse</li>
+                </ul>
+            </div>
+            
+            <div class="use-case">
+                <strong>💡 Cas d'usage typiques :</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Ventes par région/pays</li>
+                    <li>Distribution de magasins/points de vente</li>
+                    <li>Heatmap de demande géographique</li>
+                    <li>Expansion market analysis</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: #fa709a; margin-top: 2rem; margin-bottom: 1rem;">Map (Carte à Bulles)</h3>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>Location (Localisation)</strong><br>
+                    Adresses, villes, coordonnées
+                    <div class="relevance">→ Plus précis = meilleur (latitude/longitude idéal)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Size (Taille bulles)</strong><br>
+                    Proportionnelle à métrique
+                    <div class="relevance">→ Voir magnitude par lieu</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Color Saturation (Couleur)</strong><br>
+                    Par catégorie ou valeur
+                    <div class="relevance">→ Double encodage : taille = ventes, couleur = marge</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Map Style (Style carte)</strong><br>
+                    Road, Aerial, Dark, Light
+                    <div class="relevance">→ Aerial pour contexte visuel, Road pour navigation, Dark pour élégance</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Auto Zoom (Zoom automatique)</strong><br>
+                    Cadrage initial
+                    <div class="relevance">→ Cadrer sur zone d'intérêt (pas monde entier si France uniquement)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Cluster (Regroupement)</strong><br>
+                    Regrouper bulles proches
+                    <div class="relevance">→ Utile si nombreux points rapprochés (magasins en ville)</div>
+                </div>
+            </div>
+            
+            <h3 style="color: #fa709a; margin-top: 2rem; margin-bottom: 1rem;">Filled Map (Carte Choroplèthe)</h3>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>Location (Localisation)</strong><br>
+                    Régions, pays, départements
+                    <div class="relevance">→ Niveau géographique agrégé (pas points individuels)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Color Saturation (Échelle couleurs)</strong><br>
+                    Gradient selon valeur
+                    <div class="relevance">→ Voir densité/intensité par région</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Data Colors (Niveaux couleur)</strong><br>
+                    Nombre de paliers
+                    <div class="relevance">→ 3-7 optimal pour distinguer niveaux</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Borders (Bordures)</strong><br>
+                    Épaisseur et couleur
+                    <div class="relevance">→ Claires pour délimiter régions</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Geographic Level (Niveau)</strong><br>
+                    Pays, région, département, ville
+                    <div class="relevance">→ Adapter à granularité des données</div>
+                </div>
+            </div>
+            
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Maps sont belles mais souvent lentes et peu précises pour comparaisons. Si la géographie n'est pas l'insight principal, privilégier un bar chart trié. Réserver les cartes quand la LOCALISATION est le message.
+            </div>
+            
+            <div class="avoid">
+                <strong>⚠️ Éviter :</strong> Géographie non pertinente pour l'analyse, données de localisation de mauvaise qualité (géolocalisation échoue), trop de points (> 10K ralentit)
+            </div>
+        </div>
+        
+        <div class="visual-card">
+            <h2>Ribbon Chart (Graphique en Ruban)</h2>
+            
+            <div class="usage-info">
+                <h3>Quand utiliser :</h3>
+                <ul>
+                    <li>Changements de classement dans le temps</li>
+                    <li>Évolution des positions relatives</li>
+                    <li><strong>Type de données :</strong> Rankings catégoriels à travers périodes</li>
+                    <li><strong>Idéal pour :</strong> Montrer comment les rangs évoluent</li>
+                </ul>
+            </div>
+            
+            <div class="use-case">
+                <strong>💡 Cas d'usage typiques :</strong>
+                <ul style="margin-top: 0.5rem;">
+                    <li>Top 10 produits mois par mois</li>
+                    <li>Classement des vendeurs dans le temps</li>
+                    <li>Market share evolution des concurrents</li>
+                    <li>Rankings sportifs ou académiques</li>
+                </ul>
+            </div>
+            
+            <div class="options-list">
+                <h3>Options et Pertinence :</h3>
+                
+                <div class="option-item">
+                    <strong>Axis (Axe)</strong><br>
+                    Dimension temporelle
+                    <div class="relevance">→ Mois, trimestres, années</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Legend (Légende)</strong><br>
+                    Catégories à classer
+                    <div class="relevance">→ Les items dont on suit le ranking</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Values (Valeurs)</strong><br>
+                    Métrique pour le classement
+                    <div class="relevance">→ Ce qui détermine le rang (ventes, score, etc.)</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Ribbon Width (Largeur rubans)</strong><br>
+                    Proportionnelle à valeur ou fixe
+                    <div class="relevance">→ Proportionnelle pour voir volume ET rang simultanément</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Colors (Couleurs)</strong><br>
+                    Par catégorie
+                    <div class="relevance">→ ⭐ Couleurs distinctes pour suivre chaque catégorie à travers le temps</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Data Labels (Étiquettes)</strong><br>
+                    Rang et/ou valeur
+                    <div class="relevance">→ Rang si c'est le focus, valeur si magnitude importante</div>
+                </div>
+                
+                <div class="option-item">
+                    <strong>Top N Filter</strong><br>
+                    Limiter nombre de rangs
+                    <div class="relevance">→ ⭐ ESSENTIEL - limiter à 5-10 pour lisibilité</div>
+                </div>
+            </div>
+            
+            <div class="pro-tip">
+                <strong>💡 Pro Tip:</strong> Ribbon chart est spectaculaire visuellement mais devient rapidement illisible avec trop de catégories. Toujours filtrer sur Top N (5-10 max) et utiliser couleurs très distinctes.
+            </div>
+            
+            <div class="avoid">
+                <strong>⚠️ Éviter :</strong> Rankings stables (pas d'insight de changement), trop de catégories (> 10), périodes non chronologiques
+            </div>
+        </div>
+        
+        <div class="visual-card" style="background: linear-gradient(135deg, #fa709a15 0%, #fee14015 100%); border-left: 5px solid #4caf50;">
+            <h2>🎯 Guide de Sélection: Visuels Avancés</h2>
+            
+            <h3 style="color: #fa709a; margin-top: 1.5rem;">Matrice de Décision</h3>
+            
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="background: #fa709a; color: white;">
+                        <th style="padding: 0.8rem; text-align: left;">Question Business</th>
+                        <th style="padding: 0.8rem; text-align: left;">Visuel Recommandé</th>
+                        <th style="padding: 0.8rem; text-align: left;">Alternative</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Y a-t-il une corrélation entre X et Y ?</td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;"><strong>Scatter Plot</strong></td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Line chart si temporel</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Comment suis-je passé de A à B ?</td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;"><strong>Waterfall</strong></td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Bar chart avec annotations</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Où perd-on des clients/leads ?</td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;"><strong>Funnel</strong></td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Waterfall pour montrer les pertes</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Quelle est la composition avec hiérarchie ?</td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;"><strong>Treemap</strong></td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Matrix avec drill-down</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Comment les rankings évoluent-ils ?</td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;"><strong>Ribbon</strong></td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Line chart avec spaghetti</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Où géographiquement ?</td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;"><strong>Map / Filled Map</strong></td>
+                        <td style="padding: 0.8rem; border-bottom: 1px solid #ddd;">Bar chart trié (plus rapide)</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="pro-tip" style="margin-top: 2rem;">
+                <strong>⚡ Règle Générale:</strong> Les visuels avancés sont impressionnants visuellement mais souvent plus lents et moins précis que les visuels de base. Les utiliser UNIQUEMENT quand ils apportent vraiment un insight que les bar/line/table ne peuvent pas donner.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
