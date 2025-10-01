@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Power BI - Visualisations</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #667eea;
+            --secondary: #764ba2;
+            --accent: #f093fb;
+            --success: #4caf50;
+            --warning: #ff9800;
+            --danger: #f44336;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        header h1 {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 0.8rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        header p {
+            text-align: center;
+            font-size: 1.3rem;
+            opacity: 0.95;
+        }
+        
+        .hero-section {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .hero-section h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+        
+        .hero-section p {
+            font-size: 1.1rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+        
+        .quick-nav {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+        
+        .nav-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary)05 0%, var(--secondary)05 100%);
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .nav-card:hover::before {
+            transform: translateY(0);
+        }
+        
+        .nav-card-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .nav-card h3 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-card .icon {
+            font-size: 2rem;
+        }
+        
+        .nav-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .nav-card ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .nav-card li {
+            padding: 0.3rem 0;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .nav-card li::before {
+            content: "▸";
+            color: var(--primary);
+            margin-right: 0.5rem;
+        }
+        
+        .nav-card.featured {
+            border-left-color: var(--accent);
+            background: linear-gradient(135deg, #f093fb05 0%, #fee14005 100%);
+        }
+        
+        .nav-card.featured h3 {
+            color: var(--accent);
+        }
+        
+        .nav-card.featured li::before {
+            color: var(--accent);
+        }
+        
+        .section-title {
+            color: var(--primary);
+            font-size: 2rem;
+            margin: 3rem 0 1.5rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+        
+        .features {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+        
+        .features h3 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .feature-item {
+            padding: 1.5rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border-left: 3px solid var(--success);
+        }
+        
+        .feature-item h4 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stats-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 3rem 0;
+            text-align: center;
+        }
+        
+        .stats-banner h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            color: #666;
+            margin-top: 4rem;
+            background: white;
+            border-radius: 12px;
+        }
+        
+        footer p {
+            margin: 0.5rem 0;
+        }
+        
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .quick-nav {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>📊 Guide Power BI</h1>
+            <p>Documentation complète des visualisations et bonnes pratiques</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="hero-section">
+            <h2>Bienvenue dans votre référence Power BI</h2>
+            <p>Ce guide couvre tous les aspects de Power BI : des visualisations de base aux bonnes pratiques de projets d'entreprise. Chaque page contient des explications détaillées, des options de configuration, et des recommandations d'utilisation.</p>
+        </div>
+        
+        <h2 class="section-title">📚 Navigation Principale</h2>
+        
+        <div class="quick-nav">
+            <a href="tables.html" class="nav-card">
+                <div class="nav-card-content">
+                    <h3><span class="icon">📋</span> Tables & Matrix</h3>
+                    <p>Tableaux et matrices avec mise en forme conditionnelle</p>
+                    <ul>
+                        <li>Table avec toutes les options</li>
+                        <li>Matrix (tableaux croisés)</li>
+                        <li>Conditional Formatting avancé</li>
+                        <li>Heatmaps, Data Bars, Icons</li>
+                    </ul>
+                </div>
+            </a>
+            
+            <a href="kpi.html" class="nav-card">
+                <div class="nav-card-content">
+                    <h3><span class="icon">🎯</span> KPI & Métriques</h3>
+                    <p>Indicateurs de performance et cartes de métriques</p>
+                    <ul>
+                        <li>Card (valeur unique)</li>
+                        <li>Multi-row Card</li>
+                        <li>KPI Visual avec trends</li>
+                        <li>Gauge (jauge)</li>
+                        <li>Formules DAX essentielles</li>
+                    </ul>
+                </div>
+            </a>
+            
+            <a href="powerbi_advanced.html" class="nav-card">
+                <div class="nav-card-content">
+                    <h3><span class="icon">🚀</span> Visuels Avancés</h3>
+                    <p>Graphiques spécialisés pour analyses complexes</p>
+                    <ul>
+                        <li>Scatter Plot (corrélations)</li>
+                        <li>Waterfall (variances)</li>
+                        <li>Funnel (conversions)</li>
+                        <li>Treemap (hiérarchies)</li>
+                        <li>Maps (géographie)</li>
+                        <li>Ribbon (rankings)</li>
+                    </ul>
+                </div>
+            </a>
+            
+            <a href="recommendations.html" class="nav-card">
+                <div class="nav-card-content">
+                    <h3><span class="icon">💡</span> Recommandations</h3>
+                    <p>Best practices pour dashboards efficaces</p>
+                    <ul>
+                        <li>Approche fondamentale</li>
+                        <li>Structure de dashboard</li>
+                        <li>Design et mise en forme</li>
+                        <li>Arbre de décision</li>
+                        <li>Erreurs à éviter</li>
+                    </ul>
+                </div>
+            </a>
+            
+            <a href="powerbi_project_bp.html" class="nav-card featured">
+                <div class="nav-card-content">
+                    <h3><span class="icon">🏗️</span> Bonnes Pratiques Projet</h3>
+                    <p>Guide complet du projet Power BI de A à Z</p>
+                    <ul>
+                        <li>Planification & Cadrage</li>
+                        <li>Modélisation des données</li>
+                        <li>DAX Best Practices</li>
+                        <li>Performance & Optimisation</li>
+                        <li>Sécurité & RLS</li>
+                        <li>Déploiement & Gouvernance</li>
+                        <li>Maintenance & Support</li>
+                    </ul>
+                </div>
+            </a>
+            
+            <a href="powerbi_quickref.html" class="nav-card" style="border-left-color: #f39c12; background: linear-gradient(135deg, #f39c1205 0%, #e67e2205 100%);">
+                <div class="nav-card-content">
+                    <h3 style="color: #f39c12;"><span class="icon">⚡</span> Quick Reference</h3>
+                    <p>Cheat sheet pour choisir le bon visuel en 3 secondes</p>
+                    <ul style="color: #555;">
+                        <li style="list-style: none;">▸ Arbre de décision rapide</li>
+                        <li style="list-style: none;">▸ Tableau comparatif des visuels</li>
+                        <li style="list-style: none;">▸ Fiches express par visuel</li>
+                        <li style="list-style: none;">▸ Raccourcis essentiels</li>
+                        <li style="list-style: none;">▸ Fonction de recherche</li>
+                    </ul>
+                </div>
+            </a>
+        </div>
+        
+        <div class="stats-banner">
+            <h3>📊 Contenu du Guide</h3>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <span class="stat-number">20+</span>
+                    <span class="stat-label">Types de Visuels</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">150+</span>
+                    <span class="stat-label">Options Détaillées</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Best Practices</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">8</span>
+                    <span class="stat-label">Phases Projet</span>
+                </div>
+            </div>
+        </div>
+        
+        <h2 class="section-title">🎨 Graphiques de Base</h2>
+        
+        <div class="features">
+            <h3>Graphiques disponibles sur cette page</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>Bar & Column Chart</h4>
+                    <p>Comparaisons et classements. Options : groupées, empilées, 100%, tri, zoom, conditional colors.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>Line Chart</h4>
+                    <p>Tendances temporelles. Options : marqueurs, lissage, prévisions, axe Y double, lignes de référence.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>Area Chart</h4>
+                    <p>Magnitude du changement. Options : empilées, 100%, transparence, ordre des séries.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>Pie & Donut Chart</h4>
+                    <p>Proportions simples (2-5 catégories). Options : rayon intérieur, extraction segment, rotation.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h3>✨ Fonctionnalités du Guide</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <h4>🌍 Noms Anglais</h4>
+                    <p>Tous les visuels et options utilisent les termes anglais de Power BI pour faciliter la recherche.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>💼 Cas d'Usage</h4>
+                    <p>Exemples concrets et situations d'utilisation pour chaque type de visualisation.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>⚡ Pro Tips</h4>
+                    <p>Astuces d'experts et raccourcis pour améliorer productivité et qualité.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>✅ Do/Don't</h4>
+                    <p>Ce qu'il faut faire et éviter pour chaque visuel et option.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>📐 Code DAX</h4>
+                    <p>Formules DAX essentielles et patterns réutilisables avec exemples commentés.</p>
+                </div>
+                
+                <div class="feature-item">
+                    <h4>🎯 Checklists</h4>
+                    <p>Listes de vérification complètes pour chaque phase de projet.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h3>🎓 Comment utiliser ce guide</h3>
+            <ol style="margin-left: 2rem; line-height: 2;">
+                <li><strong>Par Besoin :</strong> Utilisez la navigation pour trouver le type de visuel correspondant à votre question business</li>
+                <li><strong>Par Projet :</strong> Suivez la page "Bonnes Pratiques Projet" étape par étape pour structurer votre projet</li>
+                <li><strong>Référence Rapide :</strong> Cherchez l'option spécifique dont vous avez besoin dans les sections détaillées</li>
+                <li><strong>Apprentissage :</strong> Lisez les recommandations et best practices pour améliorer vos dashboards</li>
+            </ol>
+        </div>
+    </div>
+    
+    </div>
+</body>
+</html>
