@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcours Débutant - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🟢 Parcours Débutant</h1>
+            <p class="page-subtitle">Apprenez Power BI de zéro en 4-6 heures</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Parcours Débutant</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-beginner">
+            🟢 Débutant • ⏱️ 4-6 heures • 0 prérequis
+        </div>
+        
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Objectifs du Parcours</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎓 À la fin de ce parcours, vous saurez :</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ Créer vos premiers visuels (tables, cartes, graphiques)</li>
+                    <li>✅ Afficher des KPI avec contexte (croissance, objectifs)</li>
+                    <li>✅ Utiliser conditional formatting pour révéler patterns</li>
+                    <li>✅ Écrire vos premières mesures DAX simples</li>
+                    <li>✅ Structurer un dashboard de base efficace</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">📝 Prérequis</div>
+                <p><strong>Aucun !</strong> Ce parcours part de zéro.</p>
+                <p style="margin-top: 0.5rem;">Utile d'avoir : Connaissance Excel basique (somme, moyenne)</p>
+            </div>
+        </section>
+        
+        <!-- MODULE 1 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">1️⃣</span>
+                <h2 class="section-title">Module 1 : Tables & Données (1h)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Comprendre ce qu'est Power BI</li>
+                <li>Créer votre première table</li>
+                <li>Utiliser le conditional formatting de base</li>
+                <li>Trier et filtrer les données</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="tables-matrix.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">📋 Tables & Matrix</div>
+                    <div class="option-description">Guide complet des tableaux</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-beginner">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 1.1 : Ma Première Table</div>
+                </div>
+                <p><strong>Objectif :</strong> Créer une table des ventes par produit avec heatmap</p>
+                <p style="margin-top: 1rem;"><strong>Étapes :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Insérer un visuel "Table"</li>
+                    <li>Ajouter ProductName et Sales[Amount]</li>
+                    <li>Activer conditional formatting > Background color > Gradient</li>
+                    <li>Trier par Sales décroissant</li>
+                    <li>Limiter à Top 10</li>
+                </ol>
+                <div class="info-box info-box-when" style="margin-top: 1rem;">
+                    <strong>✅ Résultat attendu :</strong> Table avec produits triés, couleurs du rouge (faible) au vert (fort)
+                </div>
+            </div>
+        </section>
+        
+        <!-- MODULE 2 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">2️⃣</span>
+                <h2 class="section-title">Module 2 : KPI & Métriques (1h)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Créer des Cards pour afficher chiffres clés</li>
+                <li>Comprendre ce qu'est un KPI</li>
+                <li>Ajouter du contexte (vs période précédente)</li>
+                <li>Formater les nombres (€, %, K/M)</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="kpi-metrics.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🎯 KPI & Métriques</div>
+                    <div class="option-description">Cards, KPI Visual, Gauge</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-beginner">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 2.1 : Zone KPI</div>
+                </div>
+                <p><strong>Objectif :</strong> Créer 3 cards en haut du dashboard</p>
+                <p style="margin-top: 1rem;"><strong>Les 3 KPI à afficher :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Total des ventes (avec formatting € et K pour milliers)</li>
+                    <li>Nombre de commandes</li>
+                    <li>Valeur moyenne de commande</li>
+                </ol>
+                <div class="info-box info-box-tip" style="margin-top: 1rem;">
+                    <strong>💡 Bonus :</strong> Ajouter conditional formatting pour mettre en vert si > objectif
+                </div>
+            </div>
+        </section>
+        
+        <!-- MODULE 3 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">3️⃣</span>
+                <h2 class="section-title">Module 3 : Graphiques de Base (1.5h)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Bar Chart pour comparer catégories</li>
+                <li>Line Chart pour tendances temporelles</li>
+                <li>Choisir le bon visuel selon la question</li>
+                <li>Trier et formater les graphiques</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="basic-charts.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">📊 Graphiques de Base</div>
+                    <div class="option-description">Bar, Line, Pie, Area</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-beginner">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 3.1 : Duo Bar + Line</div>
+                </div>
+                <p><strong>Objectif :</strong> 2 graphiques côte à côte</p>
+                <p style="margin-top: 1rem;"><strong>Graphique 1 - Bar Chart :</strong></p>
+                <ul style="margin-left: 2rem;">
+                    <li>Top 10 régions par ventes</li>
+                    <li>Trié décroissant</li>
+                    <li>Data labels activés</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>Graphique 2 - Line Chart :</strong></p>
+                <ul style="margin-left: 2rem;">
+                    <li>Ventes par mois (12 derniers mois)</li>
+                    <li>Ligne de moyenne ajoutée</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- MODULE 4 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">4️⃣</span>
+                <h2 class="section-title">Module 4 : Premières Mesures DAX (1h)</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Qu'est-ce qu'une mesure DAX ?</li>
+                <li>Formules de base : SUM, AVERAGE, COUNT</li>
+                <li>Calculs simples : différences, ratios</li>
+                <li>Fonction DIVIDE pour éviter erreurs</li>
+            </ul>
+            
+            <div class="code-block">
+<span class="code-comment">// Vos 5 premières mesures DAX</span>
+
+<span class="code-comment">// 1. Somme simple</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// 2. Comptage</span>
+<span class="code-keyword">Order Count</span> = <span class="code-function">COUNTROWS</span>(<span class="code-string">Sales</span>)
+
+<span class="code-comment">// 3. Moyenne</span>
+<span class="code-keyword">Average Sales</span> = <span class="code-function">AVERAGE</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// 4. Calcul (division sécurisée)</span>
+<span class="code-keyword">Avg Order Value</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    [<span class="code-string">Order Count</span>],
+    <span class="code-string">0</span>  <span class="code-comment">// Retourne 0 si division par zéro</span>
+)
+
+<span class="code-comment">// 5. Pourcentage</span>
+<span class="code-keyword">Margin %</span> = 
+<span class="code-function">DIVIDE</span>(
+    <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>) - <span class="code-function">SUM</span>(<span class="code-string">Sales[Cost]</span>),
+    <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>),
+    <span class="code-string">0</span>
+)
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-beginner">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 4.1 : Créer 3 Mesures</div>
+                </div>
+                <p><strong>Créez ces 3 mesures :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Total Revenue (somme des ventes)</li>
+                    <li>Total Cost (somme des coûts)</li>
+                    <li>Profit (Revenue - Cost)</li>
+                </ol>
+                <p style="margin-top: 1rem;">Puis affichez-les dans 3 Cards</p>
+            </div>
+        </section>
+        
+        <!-- PROJET FINAL -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Projet Final : Mon Premier Dashboard (1.5h)</h2>
+            </div>
+            
+            <div class="example example-beginner">
+                <div class="example-header">
+                    <div class="example-title">🏆 Projet : Dashboard Ventes Complet</div>
+                </div>
+                
+                <p><strong>Créez un dashboard avec cette structure :</strong></p>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📊 ZONE SUPÉRIEURE (KPI)</h4>
+                <p>5 Cards côte à côte :</p>
+                <ul style="margin-left: 2rem;">
+                    <li>Total Revenus</li>
+                    <li>Total Profit</li>
+                    <li>Marge %</li>
+                    <li>Nombre Commandes</li>
+                    <li>Panier Moyen</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📈 ZONE CENTRALE (Analyse)</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Bar Chart : Top 10 Produits</li>
+                    <li>Line Chart : Ventes dans le temps</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📋 ZONE INFÉRIEURE (Détails)</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Table : Top 20 produits avec conditional formatting</li>
+                </ul>
+                
+                <div class="info-box info-box-tip" style="margin-top: 1.5rem;">
+                    <strong>💡 Checklist Qualité :</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>✅ Tous les chiffres sont formatés (€, %, K/M)</li>
+                        <li>✅ Graphiques ont des titres clairs</li>
+                        <li>✅ Conditional formatting activé sur la table</li>
+                        <li>✅ Visuels alignés et espacés proprement</li>
+                        <li>✅ Couleurs cohérentes</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PROCHAINES ÉTAPES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🚀</span>
+                <h2 class="section-title">Prochaines Étapes</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎓 Vous avez terminé le Parcours Débutant !</div>
+                <p>Félicitations ! Vous maîtrisez maintenant les bases de Power BI.</p>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">Continuez votre apprentissage :</h4>
+                <div class="options-grid" style="margin-top: 1rem;">
+                    <a href="intermediate-path.html" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">🟡 Parcours Intermédiaire</div>
+                        <div class="option-description">DAX avancé, visuels complexes, modélisation</div>
+                    </a>
+                    
+                    <a href="dax-library.html" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">💻 Bibliothèque DAX</div>
+                        <div class="option-description">Plus de formules DAX prêtes à utiliser</div>
+                    </a>
+                    
+                    <a href="best-practices-dashboards.html" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">💡 Best Practices</div>
+                        <div class="option-description">Améliorer le design de vos dashboards</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🎓 Parcours</h4>
+                <ul class="footer-links">
+                    <li><a href="beginner-path.html">🟢 Débutant</a></li>
+                    <li><a href="intermediate-path.html">🟡 Intermédiaire</a></li>
+                    <li><a href="expert-path.html">🔴 Expert</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #475569;">
+            <p style="color: #94a3b8;">Dernière mise à jour : Janvier 2025 • Fait avec ❤️ pour la communauté Power BI</p>
+        </div>
+    </footer>
+</body>
+</html>
