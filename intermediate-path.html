@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcours Intermédiaire - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🟡 Parcours Intermédiaire</h1>
+            <p class="page-subtitle">Maîtrisez les fonctionnalités avancées en 6-8 heures</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Parcours Intermédiaire</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-intermediate">
+            🟡 Intermédiaire • ⏱️ 6-8 heures • Bases Power BI requises
+        </div>
+        
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Objectifs du Parcours</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎓 À la fin de ce parcours, vous saurez :</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ Utiliser les visuels avancés (Scatter, Waterfall, Funnel)</li>
+                    <li>✅ Maîtriser DAX Time Intelligence (YTD, YoY, etc.)</li>
+                    <li>✅ Créer un modèle de données Star Schema</li>
+                    <li>✅ Optimiser les performances de vos rapports</li>
+                    <li>✅ Implémenter du conditional formatting avancé</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">📝 Prérequis</div>
+                <p>Avoir complété le <strong>Parcours Débutant</strong> ou avoir l'équivalent :</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Savoir créer tables, cards, bar/line charts</li>
+                    <li>Comprendre les mesures DAX de base (SUM, AVERAGE, COUNT)</li>
+                    <li>Avoir créé au moins 1 dashboard complet</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- MODULE 1 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">1️⃣</span>
+                <h2 class="section-title">Module 1 : Visuels Avancés (2h)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Scatter Plot pour corrélations et segmentation</li>
+                <li>Waterfall pour variance analysis</li>
+                <li>Funnel pour conversions</li>
+                <li>Treemap pour compositions hiérarchiques</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="advanced-visuals.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🚀 Visuels Avancés</div>
+                    <div class="option-description">Guide complet de tous les visuels avancés</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-intermediate">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 1.1 : Dashboard Analytique Avancé</div>
+                </div>
+                <p><strong>Objectif :</strong> Créer page d'analyse avec 4 visuels avancés</p>
+                <ol style="margin-left: 2rem;">
+                    <li><strong>Scatter Plot :</strong> Prix vs Volume de ventes (avec taille = marge)</li>
+                    <li><strong>Waterfall :</strong> Passage du revenu N-1 au revenu N</li>
+                    <li><strong>Funnel :</strong> Pipeline de ventes (Leads → Closed)</li>
+                    <li><strong>Treemap :</strong> Portfolio produits par catégorie</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- MODULE 2 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">2️⃣</span>
+                <h2 class="section-title">Module 2 : DAX Time Intelligence (1.5h)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Créer une table DimDate complète</li>
+                <li>Calculer YTD, QTD, MTD</li>
+                <li>Comparer périodes (YoY, MoM)</li>
+                <li>Gérer les années fiscales</li>
+            </ul>
+            
+            <div class="code-block">
+<span class="code-comment">// Mesures Time Intelligence essentielles</span>
+
+<span class="code-comment">// 1. Year-to-Date</span>
+<span class="code-keyword">Sales YTD</span> = 
+<span class="code-function">TOTALYTD</span>(
+    [<span class="code-string">Total Sales</span>],
+    Calendar[<span class="code-string">Date</span>]
+)
+
+<span class="code-comment">// 2. Période précédente</span>
+<span class="code-keyword">Sales LY</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">SAMEPERIODLASTYEAR</span>(Calendar[<span class="code-string">Date</span>])
+)
+
+<span class="code-comment">// 3. Croissance Year-over-Year</span>
+<span class="code-keyword">YoY Growth %</span> = 
+<span class="code-keyword">VAR</span> _Current = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _LastYear = [<span class="code-string">Sales LY</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(_Current - _LastYear, _LastYear, <span class="code-string">0</span>)
+
+<span class="code-comment">// 4. Derniers 12 mois (Rolling)</span>
+<span class="code-keyword">Sales L12M</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATESINPERIOD</span>(
+        Calendar[<span class="code-string">Date</span>],
+        <span class="code-function">MAX</span>(Calendar[<span class="code-string">Date</span>]),
+        <span class="code-string">-12</span>,
+        <span class="code-string">MONTH</span>
+    )
+)
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-intermediate">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 2.1 : KPI Temporels Complets</div>
+                </div>
+                <p><strong>Créez 6 mesures temporelles :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Sales YTD (Year-to-Date)</li>
+                    <li>Sales PYTD (Previous Year-to-Date)</li>
+                    <li>YTD Growth % (croissance YTD vs PYTD)</li>
+                    <li>Sales MTD (Month-to-Date)</li>
+                    <li>Sales PM (Previous Month)</li>
+                    <li>MoM Growth % (croissance mensuelle)</li>
+                </ol>
+                <p style="margin-top: 1rem;">Affichez-les dans un dashboard avec KPI Visuals montrant trends</p>
+            </div>
+        </section>
+        
+        <!-- MODULE 3 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">3️⃣</span>
+                <h2 class="section-title">Module 3 : Modélisation de Données (1.5h)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Comprendre et créer un Star Schema</li>
+                <li>Gérer les relations (1:*, direction filtrage)</li>
+                <li>Créer une table de dates (DimDate)</li>
+                <li>Éviter les erreurs de modélisation courantes</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="data-modeling.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🗄️ Modélisation de Données</div>
+                    <div class="option-description">Star Schema, relations, optimisation</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-intermediate">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 3.1 : Restructurer en Star Schema</div>
+                </div>
+                <p><strong>Prenez une table plate et restructurez-la :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Identifier les dimensions (Product, Customer, Date)</li>
+                    <li>Créer les tables de dimensions séparées</li>
+                    <li>Créer la table de faits (FactSales)</li>
+                    <li>Établir les relations (1:*)</li>
+                    <li>Vérifier direction des filtres (Dimension → Fact)</li>
+                </ol>
+                <div class="info-box info-box-tip" style="margin-top: 1rem;">
+                    <strong>✅ Validation :</strong> Votre modèle doit ressembler à une étoile ⭐ avec FactSales au centre
+                </div>
+            </div>
+        </section>
+        
+        <!-- MODULE 4 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">4️⃣</span>
+                <h2 class="section-title">Module 4 : DAX Avancé (1.5h)</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Maîtriser CALCULATE et modificateurs de contexte</li>
+                <li>Utiliser variables (VAR) pour lisibilité et performance</li>
+                <li>Créer des mesures avec SWITCH, IF imbriqués</li>
+                <li>Comprendre Filter Context vs Row Context</li>
+            </ul>
+            
+            <div class="code-block">
+<span class="code-comment">// Patterns DAX Intermédiaires</span>
+
+<span class="code-comment">// 1. CALCULATE avec ALL</span>
+<span class="code-keyword">% of Total</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">CALCULATE</span>(
+        [<span class="code-string">Total Sales</span>],
+        <span class="code-function">ALL</span>(Product)  <span class="code-comment">// Ignore filtres Product</span>
+    )
+)
+
+<span class="code-comment">// 2. Variables complexes</span>
+<span class="code-keyword">Customer Lifetime Value</span> = 
+<span class="code-keyword">VAR</span> TotalRevenue = 
+    <span class="code-function">CALCULATE</span>(
+        <span class="code-function">SUM</span>(Sales[<span class="code-string">Amount</span>]),
+        <span class="code-function">ALLEXCEPT</span>(Sales, Sales[<span class="code-string">CustomerID</span>])
+    )
+<span class="code-keyword">VAR</span> AvgMargin = <span class="code-string">0.30</span>
+<span class="code-keyword">VAR</span> AcquisitionCost = <span class="code-string">50</span>
+<span class="code-keyword">RETURN</span>
+    (TotalRevenue * AvgMargin) - AcquisitionCost
+
+<span class="code-comment">// 3. SWITCH pour catégorisation</span>
+<span class="code-keyword">Customer Segment</span> = 
+<span class="code-keyword">VAR</span> TotalSpent = [<span class="code-string">Total Sales by Customer</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">SWITCH</span>(
+        <span class="code-keyword">TRUE</span>(),
+        TotalSpent > <span class="code-string">10000</span>, <span class="code-string">"VIP"</span>,
+        TotalSpent > <span class="code-string">5000</span>, <span class="code-string">"Gold"</span>,
+        TotalSpent > <span class="code-string">1000</span>, <span class="code-string">"Silver"</span>,
+        <span class="code-string">"Bronze"</span>
+    )
+            </div>
+        </section>
+        
+        <!-- PROJET FINAL -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Projet Final : Dashboard Analytique Complet (2h)</h2>
+            </div>
+            
+            <div class="example example-intermediate">
+                <div class="example-header">
+                    <div class="example-title">🏆 Projet : Dashboard Commercial Avancé</div>
+                </div>
+                
+                <p><strong>Créez un dashboard analytique multi-pages :</strong></p>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📊 PAGE 1 : Executive Summary</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>5 KPI Visuals : Revenue, Margin, Customers, Orders, AOV (avec YoY)</li>
+                    <li>Line Chart : Tendance 12 derniers mois avec moyenne mobile</li>
+                    <li>Waterfall : Variance revenue vs année dernière</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📈 PAGE 2 : Product Analysis</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Scatter Plot : Prix vs Volume (taille = marge)</li>
+                    <li>Treemap : Portfolio par catégorie</li>
+                    <li>Matrix : Produits × Régions avec conditional formatting</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">🎯 PAGE 3 : Customer Insights</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Funnel : Customer Journey</li>
+                    <li>Table : Top 20 clients avec segmentation et heatmap</li>
+                    <li>KPI Cards : Retention rate, Churn rate, CLV</li>
+                </ul>
+                
+                <div class="info-box info-box-tip" style="margin-top: 1.5rem;">
+                    <strong>💡 Checklist Qualité :</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>✅ Star Schema correctement implémenté</li>
+                        <li>✅ Table DimDate avec Time Intelligence</li>
+                        <li>✅ Au moins 10 mesures DAX avancées</li>
+                        <li>✅ Conditional formatting sur toutes tables</li>
+                        <li>✅ Navigation entre pages fluide</li>
+                        <li>✅ Bookmarks pour vues alternatives</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- PROCHAINES ÉTAPES -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🚀</span>
+                <h2 class="section-title">Prochaines Étapes</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎓 Vous avez terminé le Parcours Intermédiaire !</div>
+                <p>Vous maîtrisez maintenant les fonctionnalités avancées de Power BI.</p>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">Continuez votre apprentissage :</h4>
+                <div class="options-grid" style="margin-top: 1rem;">
+                    <a href="expert-path.html" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">🔴 Parcours Expert</div>
+                        <div class="option-description">Optimisation, RLS, déploiement entreprise</div>
+                    </a>
+                    
+                    <a href="dax-advanced.html" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">🚀 DAX Avancé</div>
+                        <div class="option-description">Patterns complexes et optimisation</div>
+                    </a>
+                    
+                    <a href="best-practices-dashboards.html" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">💡 Best Practices</div>
+                        <div class="option-description">Perfectionner vos dashboards</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🎓 Parcours</h4>
+                <ul class="footer-links">
+                    <li><a href="beginner-path.html">🟢 Débutant</a></li>
+                    <li><a href="intermediate-path.html">🟡 Intermédiaire</a></li>
+                    <li><a href="expert-path.html">🔴 Expert</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #475569;">
+            <p style="color: #94a3b8;">Dernière mise à jour : Janvier 2025 • Fait avec ❤️ pour la communauté Power BI</p>
+        </div>
+    </footer>
+</body>
+</html>
