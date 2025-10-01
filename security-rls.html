@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sécurité & RLS - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🔒 Sécurité & RLS</h1>
+            <p class="page-subtitle">Row-Level Security et bonnes pratiques de sécurité</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Sécurité & RLS</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-expert">
+            🔴 Niveau Expert • ⏱️ 45 min de lecture
+        </div>
+        
+        <!-- INTRODUCTION RLS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔐</span>
+                <h2 class="section-title">Row-Level Security (RLS)</h2>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">💡 Qu'est-ce que RLS ?</div>
+                <p><strong>Row-Level Security (RLS)</strong> = Filtrer automatiquement les données selon l'utilisateur connecté</p>
+                <p style="margin-top: 1rem;"><strong>Exemple :</strong> Managers ne voient QUE leur région, pas les autres régions</p>
+            </div>
+            
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">⚠️ RLS ne fonctionne PAS dans Power BI Desktop</div>
+                <p>RLS s'active UNIQUEMENT dans Power BI Service après publication</p>
+                <p style="margin-top: 0.5rem;"><strong>Pour tester :</strong> Modeling > View as Roles dans Desktop</p>
+            </div>
+        </section>
+        
+        <!-- MÉTHODES RLS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Méthodes d'Implémentation RLS</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Méthode 1 : RLS Statique (Simple)</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 1 : Créer Rôle dans Power BI Desktop
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Modeling > Manage Roles > New</span>
+
+<span class="code-comment">// ROLE : France Only</span>
+<span class="code-comment">// Table : DimGeography</span>
+<span class="code-comment">// Filter : [Country] = "France"</span>
+
+[Country] = <span class="code-string">"France"</span>
+
+<span class="code-comment">// ROLE : Germany Only</span>
+[Country] = <span class="code-string">"Germany"</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 2 : Tester dans Desktop
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Modeling > View as > Select role "France Only"</span>
+<span class="code-comment">// → Vérifier que seules données France visibles</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 3 : Publier et assigner utilisateurs
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// 1. Publier rapport vers Power BI Service
+// 2. Dans Service > Dataset > Security
+// 3. Assigner utilisateurs/groupes aux rôles:
+//    - Role "France Only" → Groupe "France Managers"
+//    - Role "Germany Only" → Groupe "Germany Managers"</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Méthode 2 : RLS Dynamique (Avancé)</h3>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎯 Pourquoi RLS Dynamique ?</div>
+                <p><strong>Problème RLS Statique :</strong> 1 rôle par région = 100 régions = 100 rôles !</p>
+                <p><strong>Solution RLS Dynamique :</strong> 1 seul rôle qui s'adapte automatiquement</p>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 1 : Créer table de mapping User-Region
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Table : UserRegionMapping</span>
+╔══════════════════════════════╦══════════╗
+║ Email                        ║ Region   ║
+╠══════════════════════════════╬══════════╣
+║ john@company.com             ║ France   ║
+║ marie@company.com            ║ Germany  ║
+║ paul@company.com             ║ Spain    ║
+║ admin@company.com            ║ *        ║ <span class="code-comment">// Admin voit tout</span>
+╚══════════════════════════════╩══════════╝
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 2 : Créer relation
+// ═══════════════════════════════════════════════════════════</span>
+
+UserRegionMapping[Region] ──(1:*)──> DimGeography[Region]
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 3 : Créer UNIQUE Rôle "Dynamic RLS"
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Table : UserRegionMapping</span>
+<span class="code-comment">// DAX Filter Expression:</span>
+
+[Email] = <span class="code-function">USERPRINCIPALNAME</span>()
+
+<span class="code-comment">// OU avec support admin (*)</span>
+
+[Email] = <span class="code-function">USERPRINCIPALNAME</span>() 
+    <span class="code-keyword">|| </span>[Region] = <span class="code-string">"*"</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// FONCTIONNEMENT
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Utilisateur john@company.com se connecte:</span>
+<span class="code-comment">// 1. USERPRINCIPALNAME() retourne "john@company.com"</span>
+<span class="code-comment">// 2. Filtre UserRegionMapping → Ligne où Email = "john@company.com"</span>
+<span class="code-comment">// 3. Relation propage filtre → Region = "France"</span>
+<span class="code-comment">// 4. Toutes données filtrées automatiquement sur France</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Méthode 3 : RLS Multi-Niveaux</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// SCÉNARIO : Hiérarchie d'accès
+// ═══════════════════════════════════════════════════════════
+// - CEO : Voit tout
+// - Regional Manager : Voit sa région
+// - Store Manager : Voit son magasin uniquement</span>
+
+<span class="code-comment">// Table : UserAccess</span>
+╔════════════════╦════════════╦══════════╦═══════════╗
+║ Email          ║ Level      ║ Region   ║ StoreID   ║
+╠════════════════╬════════════╬══════════╬═══════════╣
+║ ceo@c.com      ║ CEO        ║ *        ║ *         ║
+║ mgr@c.com      ║ Regional   ║ France   ║ *         ║
+║ store@c.com    ║ Store      ║ France   ║ 101       ║
+╚════════════════╩════════════╩══════════╩═══════════╝
+
+<span class="code-comment">// Rôle DAX sur DimStore:</span>
+
+<span class="code-keyword">VAR</span> UserEmail = <span class="code-function">USERPRINCIPALNAME</span>()
+<span class="code-keyword">VAR</span> UserLevel = 
+    <span class="code-function">LOOKUPVALUE</span>(
+        UserAccess[Level],
+        UserAccess[Email], UserEmail
+    )
+<span class="code-keyword">VAR</span> UserRegion = 
+    <span class="code-function">LOOKUPVALUE</span>(
+        UserAccess[Region],
+        UserAccess[Email], UserEmail
+    )
+<span class="code-keyword">VAR</span> UserStore = 
+    <span class="code-function">LOOKUPVALUE</span>(
+        UserAccess[StoreID],
+        UserAccess[Email], UserEmail
+    )
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">SWITCH</span>(
+        UserLevel,
+        <span class="code-string">"CEO"</span>, <span class="code-keyword">TRUE</span>(),  <span class="code-comment">// Voit tout</span>
+        <span class="code-string">"Regional"</span>, [Region] = UserRegion <span class="code-keyword">|| </span>UserRegion = <span class="code-string">"*"</span>,
+        <span class="code-string">"Store"</span>, [StoreID] = UserStore,
+        <span class="code-keyword">FALSE</span>()  <span class="code-comment">// Par défaut : rien</span>
+    )
+            </div>
+        </section>
+        
+        <!-- PATTERNS RLS AVANCÉS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🚀</span>
+                <h2 class="section-title">Patterns RLS Avancés</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Pattern 1 : RLS avec Many-to-Many</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// SCÉNARIO : User peut voir plusieurs régions
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Table : UserRegions (Many-to-Many)</span>
+╔══════════════════╦══════════╗
+║ Email            ║ Region   ║
+╠══════════════════╬══════════╣
+║ john@c.com       ║ France   ║
+║ john@c.com       ║ Belgium  ║ <span class="code-comment">// John voit 2 régions</span>
+║ marie@c.com      ║ Germany  ║
+╚══════════════════╩══════════╝
+
+<span class="code-comment">// Rôle DAX sur DimGeography:</span>
+
+[Region] <span class="code-keyword">IN</span> 
+    <span class="code-function">CALCULATETABLE</span>(
+        <span class="code-function">VALUES</span>(UserRegions[Region]),
+        UserRegions[Email] = <span class="code-function">USERPRINCIPALNAME</span>()
+    )
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Pattern 2 : RLS Temporel</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// SCÉNARIO : Limiter accès aux données récentes
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Table : UserAccess</span>
+╔══════════════════╦══════════════════╗
+║ Email            ║ MonthsHistory    ║
+╠══════════════════╬══════════════════╣
+║ intern@c.com     ║ 3                ║ <span class="code-comment">// 3 derniers mois</span>
+║ manager@c.com    ║ 12               ║ <span class="code-comment">// 12 derniers mois</span>
+║ director@c.com   ║ 999              ║ <span class="code-comment">// Tout l'historique</span>
+╚══════════════════╩══════════════════╝
+
+<span class="code-comment">// Rôle DAX sur Calendar:</span>
+
+<span class="code-keyword">VAR</span> UserEmail = <span class="code-function">USERPRINCIPALNAME</span>()
+<span class="code-keyword">VAR</span> AllowedMonths = 
+    <span class="code-function">LOOKUPVALUE</span>(
+        UserAccess[MonthsHistory],
+        UserAccess[Email], UserEmail
+    )
+<span class="code-keyword">VAR</span> CutoffDate = 
+    <span class="code-function">EDATE</span>(<span class="code-function">TODAY</span>(), -AllowedMonths)
+<span class="code-keyword">RETURN</span>
+    [Date] >= CutoffDate
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Pattern 3 : RLS avec Budget/Actual</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// SCÉNARIO : Certains users voient Budget, d'autres non
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Table : UserPermissions</span>
+╔══════════════════╦══════════════════╗
+║ Email            ║ CanSeeBudget     ║
+╠══════════════════╬══════════════════╣
+║ analyst@c.com    ║ FALSE            ║
+║ manager@c.com    ║ TRUE             ║
+╚══════════════════╩══════════════════╝
+
+<span class="code-comment">// Rôle DAX sur FactSales (si Budget dans même table):</span>
+
+<span class="code-keyword">VAR</span> UserEmail = <span class="code-function">USERPRINCIPALNAME</span>()
+<span class="code-keyword">VAR</span> CanSeeBudget = 
+    <span class="code-function">LOOKUPVALUE</span>(
+        UserPermissions[CanSeeBudget],
+        UserPermissions[Email], UserEmail
+    )
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">IF</span>(
+        CanSeeBudget,
+        <span class="code-keyword">TRUE</span>(),              <span class="code-comment">// Voit tout (Actual + Budget)</span>
+        [Type] = <span class="code-string">"Actual"</span>     <span class="code-comment">// Voit uniquement Actual</span>
+    )
+            </div>
+        </section>
+        
+        <!-- TESTING RLS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🧪</span>
+                <h2 class="section-title">Tester RLS</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Dans Power BI Desktop</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// METHOD 1 : View as Roles
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Modeling > View as</span>
+<span class="code-comment">// ☑ Rôle: "Dynamic RLS"</span>
+<span class="code-comment">// ☑ Other user: john@company.com</span>
+
+<span class="code-comment">// → Visuel filtre automatiquement comme si john@company.com connecté</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// METHOD 2 : Mesure de test
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">RLS Test - Current User</span> = <span class="code-function">USERPRINCIPALNAME</span>()
+
+<span class="code-keyword">RLS Test - Allowed Regions</span> = 
+<span class="code-function">CONCATENATEX</span>(
+    <span class="code-function">VALUES</span>(DimGeography[Region]),
+    DimGeography[Region],
+    <span class="code-string">", "</span>
+)
+
+<span class="code-comment">// Afficher ces mesures dans Card pour vérifier filtres actifs</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Dans Power BI Service</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 1 : Test avec "Test as Role"
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Power BI Service > Dataset > Security
+// Cliquer sur "..." à côté du rôle > Test as role
+// Entrer email: john@company.com
+// → Preview du rapport avec RLS appliqué</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ÉTAPE 2 : Test en situation réelle
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// 1. Publier rapport
+// 2. Assigner test user au rôle
+// 3. Se connecter avec compte test
+// 4. Vérifier données visibles</span>
+            </div>
+        </section>
+        
+        <!-- BEST PRACTICES RLS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">✅</span>
+                <h2 class="section-title">Best Practices RLS</h2>
+            </div>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">1. RLS sur Dimensions, pas Facts</div>
+                    <div class="option-description">Appliquer filtres sur DimGeography, pas FactSales</div>
+                    <div class="option-relevance">→ Plus performant, évite calculs répétés</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">2. Préférer RLS Dynamique</div>
+                    <div class="option-description">1 rôle avec DAX vs 100 rôles statiques</div>
+                    <div class="option-relevance">→ Maintenabilité et scalabilité</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">3. Table de Mapping Séparée</div>
+                    <div class="option-description">UserRegionMapping distincte, pas dans dimensions</div>
+                    <div class="option-relevance">→ Facilite gestion et mises à jour</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">4. Toujours Tester AVANT Prod</div>
+                    <div class="option-description">Test as role + test users réels</div>
+                    <div class="option-relevance">→ Éviter fuites de données</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">5. Documenter Règles RLS</div>
+                    <div class="option-description">Qui voit quoi ? Pourquoi ?</div>
+                    <div class="option-relevance">→ Maintenance et audit</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">6. Prévoir Rôle Admin</div>
+                    <div class="option-description">Certains users doivent tout voir</div>
+                    <div class="option-relevance">→ Region = "*" ou IsAdmin flag</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- AUTRES SÉCURITÉS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔐</span>
+                <h2 class="section-title">Autres Aspects Sécurité</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Object-Level Security (OLS)</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// MASQUER colonnes/tables sensibles
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Dans Power BI Desktop:</span>
+<span class="code-comment">// Clic droit sur colonne/table > Hide</span>
+
+<span class="code-comment">// Ou dans Tabular Editor:</span>
+<span class="code-comment">// Column > IsHidden = true</span>
+
+<span class="code-comment">// Users ne verront PAS ces colonnes dans champs</span>
+
+<span class="code-comment">// ⚠️ ATTENTION : Hide ≠ Security
+// Users techniques peuvent contourner avec DAX Studio
+// Pour vraie sécurité : RLS + Ne pas importer colonnes sensibles</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Workspace Permissions</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">Admin</div>
+                    <div class="option-description">Tout : modifier, publier, gérer accès</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Member</div>
+                    <div class="option-description">Publier, modifier contenu</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Contributor</div>
+                    <div class="option-description">Modifier contenu existant, pas publier nouveau</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">Viewer</div>
+                    <div class="option-description">Lecture seule (+ RLS si défini)</div>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Credentials & Data Sources</h3>
+            
+            <div class="info-box info-box-warning">
+                <div class="info-box-title">🔑 Gestion Credentials</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>Service Principal</strong> : Pour connexions automatisées</li>
+                    <li>✅ <strong>OAuth2</strong> : Pour sources cloud (Azure SQL, etc.)</li>
+                    <li>✅ <strong>Gateway</strong> : Pour sources on-premise sécurisées</li>
+                    <li>❌ <strong>JAMAIS</strong> hardcoder credentials dans M ou DAX</li>
+                    <li>❌ <strong>JAMAIS</strong> partager credentials via email/chat</li>
+                </ul>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Audit & Monitoring</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// ACTIVER AUDIT LOGS
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Admin Portal > Audit logs > Enable
+// Permet tracer:
+// - Qui a consulté quel rapport
+// - Qui a modifié quoi
+// - Tentatives d'accès refusées
+// - Export de données</span>
+
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// USAGE METRICS
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-comment">// Workspace > Settings > Usage Metrics Report
+// Active rapport auto sur:
+// - Nombre vues par rapport
+// - Utilisateurs actifs
+// - Méthodes d'accès (Web, Mobile, API)</span>
+            </div>
+        </section>
+        
+        <!-- TROUBLESHOOTING -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔧</span>
+                <h2 class="section-title">Troubleshooting RLS</h2>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">Problèmes Courants</h3>
+            
+            <div class="options-grid">
+                <div class="option-card">
+                    <div class="option-name">❌ User voit tout</div>
+                    <div class="option-description">RLS pas assigné dans Service</div>
+                    <div class="option-relevance">→ Vérifier Dataset > Security > Membres rôle</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">❌ User ne voit rien</div>
+                    <div class="option-description">Filtre RLS trop restrictif ou email incorrect</div>
+                    <div class="option-relevance">→ Vérifier USERPRINCIPALNAME() retourne bon email</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">❌ Visuels vides après RLS</div>
+                    <div class="option-description">Relation cassée ou mauvaise table filtrée</div>
+                    <div class="option-relevance">→ RLS doit être sur dimension, pas fact</div>
+                </div>
+                
+                <div class="option-card">
+                    <div class="option-name">❌ Performances lentes</div>
+                    <div class="option-description">DAX RLS complexe avec LOOKUPVALUE imbriqués</div>
+                    <div class="option-relevance">→ Simplifier logique, utiliser relations</div>
+                </div>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 2rem 0 1rem;">Debug RLS</h3>
+            
+            <div class="code-block">
+<span class="code-comment">// ═══════════════════════════════════════════════════════════
+// MESURE DEBUG : Qui suis-je ?
+// ═══════════════════════════════════════════════════════════</span>
+
+<span class="code-keyword">DEBUG - Current User</span> = <span class="code-function">USERPRINCIPALNAME</span>()
+
+<span class="code-keyword">DEBUG - Is Admin</span> = 
+<span class="code-function">IF</span>(
+    <span class="code-function">USERPRINCIPALNAME</span>() = <span class="code-string">"admin@company.com"</span>,
+    <span class="code-string">"YES"</span>,
+    <span class="code-string">"NO"</span>
+)
+
+<span class="code-keyword">DEBUG - My Regions</span> = 
+<span class="code-function">CONCATENATEX</span>(
+    <span class="code-function">CALCULATETABLE</span>(
+        <span class="code-function">VALUES</span>(UserRegions[Region]),
+        UserRegions[Email] = <span class="code-function">USERPRINCIPALNAME</span>()
+    ),
+    UserRegions[Region],
+    <span class="code-string">", "</span>
+)
+
+<span class="code-comment">// Afficher ces mesures en Card sur page de test</span>
+<span class="code-comment">// → Vérifier valeurs correctes pour chaque user</span>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="best-practices-project.html">Best Practices Projet</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
