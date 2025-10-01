@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcours Expert - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">🔴 Parcours Expert</h1>
+            <p class="page-subtitle">Maîtrisez Power BI au niveau entreprise en 8-12 heures</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Parcours Expert</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="level-badge level-expert">
+            🔴 Expert • ⏱️ 8-12 heures • Maîtrise intermédiaire requise
+        </div>
+        
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Objectifs du Parcours</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎓 À la fin de ce parcours, vous saurez :</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ Optimiser les performances de rapports complexes</li>
+                    <li>✅ Implémenter Row-Level Security (RLS) avancé</li>
+                    <li>✅ Gérer le déploiement DEV/TEST/PROD</li>
+                    <li>✅ Maîtriser Power Query M pour ETL complexe</li>
+                    <li>✅ Architécturer des projets d'entreprise</li>
+                    <li>✅ Utiliser Git et CI/CD pour Power BI</li>
+                </ul>
+            </div>
+            
+            <div class="info-box info-box-definition">
+                <div class="info-box-title">📝 Prérequis</div>
+                <p>Maîtrise niveau intermédiaire :</p>
+                <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                    <li>Modélisation Star Schema</li>
+                    <li>DAX Time Intelligence et CALCULATE</li>
+                    <li>Plusieurs dashboards en production</li>
+                    <li>Connaissance des visuels avancés</li>
+                </ul>
+            </div>
+        </section>
+        
+        <!-- MODULE 1 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">1️⃣</span>
+                <h2 class="section-title">Module 1 : Optimisation Performance (2h)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Analyser et optimiser le modèle de données</li>
+                <li>Optimiser les requêtes DAX</li>
+                <li>Utiliser Performance Analyzer et DAX Studio</li>
+                <li>Implémenter agrégations et incremental refresh</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="best-practices-project.html#performance" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">⚡ Optimisation Performance</div>
+                    <div class="option-description">Guide complet d'optimisation</div>
+                </a>
+                
+                <a href="dax-advanced.html#performance" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🚀 DAX Performance</div>
+                    <div class="option-description">Patterns DAX optimisés</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-expert">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 1.1 : Audit et Optimisation</div>
+                </div>
+                <p><strong>Prenez un rapport existant et optimisez-le :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Utiliser Performance Analyzer pour identifier visuels lents</li>
+                    <li>Analyser modèle avec VertiPaq Analyzer (DAX Studio)</li>
+                    <li>Supprimer colonnes inutilisées (réduction taille)</li>
+                    <li>Remplacer colonnes calculées par mesures</li>
+                    <li>Optimiser DAX avec variables</li>
+                    <li>Mesurer amélioration (temps chargement avant/après)</li>
+                </ol>
+                <div class="info-box info-box-tip" style="margin-top: 1rem;">
+                    <strong>🎯 Objectif :</strong> Réduire taille modèle de 30% et temps de chargement de 50%
+                </div>
+            </div>
+        </section>
+        
+        <!-- MODULE 2 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">2️⃣</span>
+                <h2 class="section-title">Module 2 : Row-Level Security (RLS) (2h)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Implémenter RLS statique et dynamique</li>
+                <li>Gérer hiérarchies d'accès (CEO, Manager, Store)</li>
+                <li>Tester RLS dans Desktop et Service</li>
+                <li>Patterns RLS avancés (many-to-many, temporel)</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="security-rls.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🔒 Sécurité & RLS</div>
+                    <div class="option-description">Guide complet RLS et sécurité</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-expert">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 2.1 : RLS Multi-Niveaux</div>
+                </div>
+                <p><strong>Implémentez une sécurité hiérarchique :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Créer table UserAccess (Email, Level, Region, StoreID)</li>
+                    <li>Implémenter rôle dynamique avec SWITCH sur Level</li>
+                    <li>CEO voit tout, Regional voit région, Store voit magasin</li>
+                    <li>Tester avec "View as" pour chaque niveau</li>
+                    <li>Publier et assigner utilisateurs dans Service</li>
+                    <li>Créer mesures debug (Current User, My Regions)</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- MODULE 3 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">3️⃣</span>
+                <h2 class="section-title">Module 3 : Power Query M Avancé (2h)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Écrire du code M personnalisé</li>
+                <li>Créer fonctions réutilisables</li>
+                <li>Utiliser paramètres pour environnements</li>
+                <li>Optimiser avec Query Folding</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="power-query-m.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🔄 Power Query M</div>
+                    <div class="option-description">Guide complet langage M</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-expert">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 3.1 : Fonction M Personnalisée</div>
+                </div>
+                <p><strong>Créez une fonction pour automatiser import de fichiers :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Fonction qui accepte chemin dossier en paramètre</li>
+                    <li>Liste tous fichiers CSV du dossier</li>
+                    <li>Combine tous fichiers en une seule table</li>
+                    <li>Ajoute colonne "SourceFile" avec nom fichier</li>
+                    <li>Gère erreurs (fichiers corrompus)</li>
+                    <li>Teste avec paramètres DEV/PROD</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- MODULE 4 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">4️⃣</span>
+                <h2 class="section-title">Module 4 : Déploiement & CI/CD (2h)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Gérer environnements DEV/TEST/PROD</li>
+                <li>Version control avec Git (Tabular Editor)</li>
+                <li>CI/CD avec Azure DevOps ou GitHub Actions</li>
+                <li>Deployment Pipelines Power BI</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="git-devops.html" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🔄 Git & DevOps</div>
+                    <div class="option-description">CI/CD complet pour Power BI</div>
+                </a>
+                
+                <a href="best-practices-project.html#deployment" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">🚀 Déploiement</div>
+                    <div class="option-description">Best practices déploiement</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-expert">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 4.1 : Pipeline Complet</div>
+                </div>
+                <p><strong>Configurez un pipeline DEV → TEST → PROD :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Créer 3 workspaces (DEV, TEST, PROD)</li>
+                    <li>Extraire modèle avec Tabular Editor</li>
+                    <li>Initialiser Git repository</li>
+                    <li>Créer paramètres par environnement (ServerName, DB)</li>
+                    <li>Configurer Deployment Pipeline dans Service</li>
+                    <li>Tester déploiement complet avec changement paramètres</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- MODULE 5 -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">5️⃣</span>
+                <h2 class="section-title">Module 5 : Gouvernance & Best Practices (2h)</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📚 Ce que vous allez apprendre</h3>
+            <ul style="margin-left: 2rem;">
+                <li>Établir standards et conventions organisation</li>
+                <li>Documenter modèles et rapports</li>
+                <li>Gérer accès et permissions</li>
+                <li>Mettre en place monitoring et audit</li>
+            </ul>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">📖 Ressources</h3>
+            <div class="options-grid">
+                <a href="best-practices-project.html#governance" class="option-card" style="text-decoration: none; color: inherit;">
+                    <div class="option-name">📋 Gouvernance</div>
+                    <div class="option-description">Standards et documentation</div>
+                </a>
+            </div>
+            
+            <h3 style="color: var(--primary); margin: 1.5rem 0 1rem;">✏️ Exercice Pratique</h3>
+            <div class="example example-expert">
+                <div class="example-header">
+                    <div class="example-title">🎯 Exercice 5.1 : Package Gouvernance</div>
+                </div>
+                <p><strong>Créez un package de gouvernance complet :</strong></p>
+                <ol style="margin-left: 2rem;">
+                    <li>Template .pbit avec standards (thème, structure)</li>
+                    <li>Data Dictionary (toutes tables, colonnes, mesures)</li>
+                    <li>Naming Conventions document</li>
+                    <li>Access Matrix (qui accède à quoi)</li>
+                    <li>Checklist qualité (validation avant publication)</li>
+                    <li>User Guide avec captures d'écran</li>
+                </ol>
+            </div>
+        </section>
+        
+        <!-- PROJET FINAL -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Projet Final : Solution Entreprise (4h)</h2>
+            </div>
+            
+            <div class="example example-expert">
+                <div class="example-header">
+                    <div class="example-title">🏆 Projet : Solution Power BI Complète</div>
+                </div>
+                
+                <p><strong>Créez une solution entreprise de A à Z :</strong></p>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">🏗️ Architecture</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Star Schema optimisé (< 500 MB)</li>
+                    <li>3 environnements (DEV/TEST/PROD) avec Deployment Pipeline</li>
+                    <li>Paramètres gérés par environnement</li>
+                    <li>RLS multi-niveaux implémenté</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📊 Rapports</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Dashboard Executive (5 KPI + tendances)</li>
+                    <li>Analyse détaillée (visuels avancés, drill-through)</li>
+                    <li>Page admin (usage metrics, performance)</li>
+                    <li>Mobile layout pour toutes pages</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">🔧 Technique</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Version control avec Git</li>
+                    <li>Power Query M avec fonctions personnalisées</li>
+                    <li>Incremental refresh configuré</li>
+                    <li>Performance < 3 sec par page</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">📋 Documentation</h4>
+                <ul style="margin-left: 2rem;">
+                    <li>Data Dictionary complet</li>
+                    <li>Architecture diagram</li>
+                    <li>User Guide PDF</li>
+                    <li>Process de support défini</li>
+                </ul>
+                
+                <div class="info-box info-box-tip" style="margin-top: 1.5rem;">
+                    <strong>💡 Checklist Validation :</strong>
+                    <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                        <li>✅ Tests UAT complétés avec users</li>
+                        <li>✅ RLS testé pour tous rôles</li>
+                        <li>✅ Performance validée (< 3 sec)</li>
+                        <li>✅ Documentation review par pairs</li>
+                        <li>✅ Backup et rollback plan</li>
+                        <li>✅ Formation utilisateurs effectuée</li>
+                        <li>✅ Monitoring configuré</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- CERTIFICATION -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🏅</span>
+                <h2 class="section-title">Certification & Suite</h2>
+            </div>
+            
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">🎓 Félicitations !</div>
+                <p>Vous avez terminé le Parcours Expert. Vous êtes maintenant capable d'architecturer et déployer des solutions Power BI au niveau entreprise.</p>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">Prochaines étapes :</h4>
+                <ul style="margin-left: 1.5rem;">
+                    <li>🏅 <strong>Certification Microsoft PL-300</strong> : Power BI Data Analyst Associate</li>
+                    <li>📚 <strong>Veille technologique</strong> : Suivre nouveautés Power BI mensuelles</li>
+                    <li>🤝 <strong>Communauté</strong> : Partager et apprendre avec Power BI Community</li>
+                    <li>🎤 <strong>Mentorat</strong> : Aider d'autres développeurs Power BI</li>
+                </ul>
+                
+                <h4 style="margin-top: 1.5rem; color: var(--primary);">Ressources avancées :</h4>
+                <div class="options-grid" style="margin-top: 1rem;">
+                    <a href="https://sqlbi.com" target="_blank" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">📚 SQLBI</div>
+                        <div class="option-description">Marco Russo & Alberto Ferrari (référence DAX)</div>
+                    </a>
+                    
+                    <a href="https://www.youtube.com/c/GuyinaCube" target="_blank" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">🎥 Guy in a Cube</div>
+                        <div class="option-description">Channel YouTube officiel Microsoft</div>
+                    </a>
+                    
+                    <a href="https://community.powerbi.com" target="_blank" class="option-card" style="text-decoration: none; color: inherit;">
+                        <div class="option-name">🌐 Power BI Community</div>
+                        <div class="option-description">Forums et partages d'experts</div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>🎓 Parcours</h4>
+                <ul class="footer-links">
+                    <li><a href="beginner-path.html">🟢 Débutant</a></li>
+                    <li><a href="intermediate-path.html">🟡 Intermédiaire</a></li>
+                    <li><a href="expert-path.html">🔴 Expert</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #475569;">
+            <p style="color: #94a3b8;">Dernière mise à jour : Janvier 2025 • Fait avec ❤️ pour la communauté Power BI</p>
+        </div>
+    </footer>
+</body>
+</html>
