@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliothèque DAX - Guide Power BI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="header-content">
+            <h1 class="page-title">💻 Bibliothèque DAX</h1>
+            <p class="page-subtitle">Mesures prêtes à copier-coller</p>
+        </div>
+    </header>
+    
+    <nav class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="index.html">🏠 Accueil</a>
+            <span>›</span>
+            <span>Bibliothèque DAX</span>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <!-- MESURES DE BASE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🟢</span>
+                <h2 class="section-title">Mesures de Base</h2>
+                <span class="section-level level-beginner">🟢 Débutant</span>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// Somme</span>
+<span class="code-keyword">Total Sales</span> = <span class="code-function">SUM</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// Comptage lignes</span>
+<span class="code-keyword">Order Count</span> = <span class="code-function">COUNTROWS</span>(<span class="code-string">Sales</span>)
+
+<span class="code-comment">// Comptage distinct</span>
+<span class="code-keyword">Customer Count</span> = <span class="code-function">DISTINCTCOUNT</span>(<span class="code-string">Sales[CustomerID]</span>)
+
+<span class="code-comment">// Moyenne</span>
+<span class="code-keyword">Average Sales</span> = <span class="code-function">AVERAGE</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// Min/Max</span>
+<span class="code-keyword">Min Sales</span> = <span class="code-function">MIN</span>(<span class="code-string">Sales[Amount]</span>)
+<span class="code-keyword">Max Sales</span> = <span class="code-function">MAX</span>(<span class="code-string">Sales[Amount]</span>)
+
+<span class="code-comment">// Division sécurisée (évite #DIV/0!)</span>
+<span class="code-keyword">Average Order Value</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    [<span class="code-string">Order Count</span>],
+    <span class="code-string">0</span>  <span class="code-comment">// Valeur par défaut si division par 0</span>
+)
+            </div>
+        </section>
+        
+        <!-- TIME INTELLIGENCE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">⏰</span>
+                <h2 class="section-title">Time Intelligence</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// Année précédente (Year-over-Year)</span>
+<span class="code-keyword">Sales LY</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">SAMEPERIODLASTYEAR</span>(Calendar[<span class="code-string">Date</span>])
+)
+
+<span class="code-comment">// Mois précédent</span>
+<span class="code-keyword">Sales PM</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATEADD</span>(Calendar[<span class="code-string">Date</span>], <span class="code-string">-1</span>, <span class="code-string">MONTH</span>)
+)
+
+<span class="code-comment">// Croissance YoY en %</span>
+<span class="code-keyword">YoY Growth %</span> = 
+<span class="code-keyword">VAR</span> _Current = [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">VAR</span> _LastYear = [<span class="code-string">Sales LY</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(_Current - _LastYear, _LastYear, <span class="code-string">0</span>)
+
+<span class="code-comment">// Year-to-Date (Cumul depuis début d'année)</span>
+<span class="code-keyword">Sales YTD</span> = 
+<span class="code-function">TOTALYTD</span>(
+    [<span class="code-string">Total Sales</span>],
+    Calendar[<span class="code-string">Date</span>]
+)
+
+<span class="code-comment">// Quarter-to-Date</span>
+<span class="code-keyword">Sales QTD</span> = 
+<span class="code-function">TOTALQTD</span>(
+    [<span class="code-string">Total Sales</span>],
+    Calendar[<span class="code-string">Date</span>]
+)
+
+<span class="code-comment">// Month-to-Date</span>
+<span class="code-keyword">Sales MTD</span> = 
+<span class="code-function">TOTALMTD</span>(
+    [<span class="code-string">Total Sales</span>],
+    Calendar[<span class="code-string">Date</span>]
+)
+
+<span class="code-comment">// Derniers 12 mois (Rolling)</span>
+<span class="code-keyword">Sales L12M</span> = 
+<span class="code-function">CALCULATE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">DATESINPERIOD</span>(
+        Calendar[<span class="code-string">Date</span>],
+        <span class="code-function">MAX</span>(Calendar[<span class="code-string">Date</span>]),
+        <span class="code-string">-12</span>,
+        <span class="code-string">MONTH</span>
+    )
+)
+            </div>
+        </section>
+        
+        <!-- OBJECTIFS & VARIANCE -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🎯</span>
+                <h2 class="section-title">Objectifs & Variance</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// Objectif (depuis table Targets)</span>
+<span class="code-keyword">Sales Target</span> = <span class="code-function">SUM</span>(<span class="code-string">Targets[TargetAmount]</span>)
+
+<span class="code-comment">// Variance absolue</span>
+<span class="code-keyword">Variance</span> = [<span class="code-string">Total Sales</span>] - [<span class="code-string">Sales Target</span>]
+
+<span class="code-comment">// Variance en %</span>
+<span class="code-keyword">Variance %</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>] - [<span class="code-string">Sales Target</span>],
+    [<span class="code-string">Sales Target</span>],
+    <span class="code-string">0</span>
+)
+
+<span class="code-comment">// % d'atteinte de l'objectif</span>
+<span class="code-keyword">Achievement %</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    [<span class="code-string">Sales Target</span>],
+    <span class="code-string">0</span>
+)
+
+<span class="code-comment">// Statut (pour conditional formatting)</span>
+<span class="code-keyword">Target Status</span> = 
+<span class="code-function">SWITCH</span>(
+    <span class="code-keyword">TRUE</span>(),
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">1.1</span>, <span class="code-string">"Excellent"</span>,
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">1</span>, <span class="code-string">"On Target"</span>,
+    [<span class="code-string">Achievement %</span>] >= <span class="code-string">0.9</span>, <span class="code-string">"At Risk"</span>,
+    <span class="code-string">"Below Target"</span>
+)
+            </div>
+        </section>
+        
+        <!-- RANKINGS & TOP N -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🏆</span>
+                <h2 class="section-title">Rankings & Top N</h2>
+                <span class="section-level level-intermediate">🟡 Intermédiaire</span>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// Rang du produit par ventes</span>
+<span class="code-keyword">Product Rank</span> = 
+<span class="code-function">RANKX</span>(
+    <span class="code-function">ALL</span>(Product[<span class="code-string">ProductName</span>]),
+    [<span class="code-string">Total Sales</span>],
+    ,
+    <span class="code-string">DESC</span>  <span class="code-comment">// Décroissant (1 = plus haut)</span>
+)
+
+<span class="code-comment">// Top 10 seulement (pour filtrer)</span>
+<span class="code-keyword">Is Top 10</span> = <span class="code-function">IF</span>([<span class="code-string">Product Rank</span>] <= <span class="code-string">10</span>, <span class="code-string">1</span>, <span class="code-string">0</span>)
+
+<span class="code-comment">// % du total (Part de marché)</span>
+<span class="code-keyword">% of Total</span> = 
+<span class="code-function">DIVIDE</span>(
+    [<span class="code-string">Total Sales</span>],
+    <span class="code-function">CALCULATE</span>(
+        [<span class="code-string">Total Sales</span>],
+        <span class="code-function">ALL</span>(Product)  <span class="code-comment">// Enlever filtres sur produits</span>
+    ),
+    <span class="code-string">0</span>
+)
+            </div>
+        </section>
+        
+        <!-- PATTERNS AVANCÉS -->
+        <section class="section">
+            <div class="section-header">
+                <span class="section-icon">🔴</span>
+                <h2 class="section-title">Patterns Avancés</h2>
+                <span class="section-level level-expert">🔴 Expert</span>
+            </div>
+            
+            <div class="code-block">
+<span class="code-comment">// Premier/Dernier achat client</span>
+<span class="code-keyword">First Purchase Date</span> = 
+<span class="code-function">CALCULATE</span>(
+    <span class="code-function">MIN</span>(Sales[<span class="code-string">OrderDate</span>]),
+    <span class="code-function">ALLEXCEPT</span>(Sales, Sales[<span class="code-string">CustomerID</span>])
+)
+
+<span class="code-comment">// Clients actifs (achat dans derniers 90 jours)</span>
+<span class="code-keyword">Active Customers</span> = 
+<span class="code-function">CALCULATE</span>(
+    <span class="code-function">DISTINCTCOUNT</span>(Sales[<span class="code-string">CustomerID</span>]),
+    Sales[<span class="code-string">OrderDate</span>] > <span class="code-function">TODAY</span>() - <span class="code-string">90</span>
+)
+
+<span class="code-comment">// Taux de rétention</span>
+<span class="code-keyword">Retention Rate</span> = 
+<span class="code-keyword">VAR</span> CustomersThisPeriod = <span class="code-function">DISTINCTCOUNT</span>(Sales[<span class="code-string">CustomerID</span>])
+<span class="code-keyword">VAR</span> CustomersLastPeriod = 
+    <span class="code-function">CALCULATE</span>(
+        <span class="code-function">DISTINCTCOUNT</span>(Sales[<span class="code-string">CustomerID</span>]),
+        <span class="code-function">DATEADD</span>(Calendar[<span class="code-string">Date</span>], <span class="code-string">-1</span>, <span class="code-string">MONTH</span>)
+    )
+<span class="code-keyword">VAR</span> ReturnedCustomers = 
+    <span class="code-function">CALCULATE</span>(
+        <span class="code-function">DISTINCTCOUNT</span>(Sales[<span class="code-string">CustomerID</span>]),
+        <span class="code-function">FILTER</span>(
+            <span class="code-function">ALL</span>(Sales),
+            [<span class="code-string">First Purchase Date</span>] < <span class="code-function">MIN</span>(Calendar[<span class="code-string">Date</span>])
+        )
+    )
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">DIVIDE</span>(ReturnedCustomers, CustomersLastPeriod, <span class="code-string">0</span>)
+
+<span class="code-comment">// ABC Analysis (Pareto)</span>
+<span class="code-keyword">ABC Category</span> = 
+<span class="code-keyword">VAR</span> CumulativePct = 
+    <span class="code-function">CALCULATE</span>(
+        <span class="code-function">SUM</span>(Sales[<span class="code-string">Amount</span>]),
+        <span class="code-function">FILTER</span>(
+            <span class="code-function">ALL</span>(Product),
+            [<span class="code-string">Product Rank</span>] <= <span class="code-function">EARLIER</span>([<span class="code-string">Product Rank</span>])
+        )
+    ) / [<span class="code-string">Total Sales</span>]
+<span class="code-keyword">RETURN</span>
+    <span class="code-function">SWITCH</span>(
+        <span class="code-keyword">TRUE</span>(),
+        CumulativePct <= <span class="code-string">0.8</span>, <span class="code-string">"A"</span>,  <span class="code-comment">// Top 80%</span>
+        CumulativePct <= <span class="code-string">0.95</span>, <span class="code-string">"B"</span>, <span class="code-comment">// Next 15%</span>
+        <span class="code-string">"C"</span>  <span class="code-comment">// Bottom 5%</span>
+    )
+            </div>
+        </section>
+        
+        <!-- TIPS -->
+        <section class="section">
+            <div class="info-box info-box-tip">
+                <div class="info-box-title">💡 Bonnes Pratiques DAX</div>
+                <ul style="margin-left: 1.5rem;">
+                    <li>✅ <strong>Variables (VAR)</strong> : Lisibilité + Performance</li>
+                    <li>✅ <strong>DIVIDE</strong> : Toujours pour divisions (évite erreurs)</li>
+                    <li>✅ <strong>Mesures > Colonnes</strong> : 90% du temps</li>
+                    <li>✅ <strong>Noms clairs</strong> : "Total Sales" pas "Measure1"</li>
+                    <li>✅ <strong>Commenter</strong> : Expliquer logique complexe</li>
+                    <li>✅ <strong>Formater</strong> : Retours à la ligne pour lisibilité</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <footer class="page-footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>📚 Documentation</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Accueil</a></li>
+                    <li><a href="glossaire.html">Glossaire</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
